@@ -1,0 +1,144 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+datasource db {
+  provider = "postgresql"
+  url = env("POSTGRES_PRISMA_URL")
+  directUrl = env("POSTGRES_URL_NON_POOLING")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id             Int       @id @default(autoincrement())
+  name           String?
+  email          String    @unique
+  password       String
+  userType       String?   @default("KARYAWAN")
+  accounts       Account[]
+  sessions       Session[]
+  TransaksisAsUser  Transaksi[]  @relation("TransaksiUser")
+}
+
+model Kategori {
+  id            Int       @id @default(autoincrement())
+  nama          String
+  status        String    @default("AKTIF")
+
+  produk        Produk[]
+}
+
+model Pelanggan {
+  id            Int       @id @default(autoincrement())
+  nama          String
+  alamat        String?
+  notelp        BigInt?
+  email         String?   @unique
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  TransaksiAsPelanggan  Transaksi[] @relation("TransaksiPelanggan")
+}
+
+model Produk {
+  id            Int       @id @default(autoincrement())
+  barcode       BigInt?   @unique
+  nama          String
+  stok          Int?      @default(0)
+  harga         BigInt
+  kategoriId    Int
+  packagingId   Int
+  gambar        String?
+  status        String    @default("AKTIF")
+  keterangan    String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  transaksiproduk TransaksiDetail[]
+  kategoriproduk  Kategori  @relation(fields: [kategoriId], references: [id])
+  packagingproduk Packaging  @relation(fields: [packagingId], references: [id])
+}
+
+model TransaksiDetail {
+  id            Int        @id @default(autoincrement())
+  transaksiId   Int
+  produkId      Int
+  packagingId   Int
+  jumlah        Int
+  harga         BigInt
+  total         BigInt     @default(0) // total = quantity * price
+
+  transaksi     Transaksi  @relation(fields: [transaksiId], references: [id])
+  produk        Produk     @relation(fields: [produkId], references: [id])
+  packaging     Packaging  @relation(fields: [packagingId], references: [id])
+}
+
+model Transaksi {
+  id             Int              @id @default(autoincrement())
+  nomor          String           @unique
+  userId         Int
+  pelangganId    Int?
+  jumlahTotal    BigInt           @default(0) // sum of all TransaksiDetail.total
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+
+  user           User             @relation("TransaksiUser", fields: [userId], references: [id])
+  pelanggan      Pelanggan?       @relation("TransaksiPelanggan", fields: [pelangganId], references: [id])
+  details        TransaksiDetail[]
+
+}
+
+model Packaging {
+  id            Int       @id @default(autoincrement())
+  nama          String
+  jumlah        Int       // Jumlah packing per pcs
+  keterangan    String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  produk        Produk[]
+  transaksidetail  TransaksiDetail[]
+}
+
+model Account {
+  id                Int       @id @default(autoincrement())
+  userId            Int
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+
+  user              User      @relation(fields: [userId], references: [id])
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           Int       @id @default(autoincrement())
+  sessionToken String    @unique
+  userId       Int
+  expires      DateTime
+
+  user         User      @relation(fields: [userId], references: [id])
+}
+
+model VerificationToken {
+  identifier String
+  token      String    @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+
