@@ -21,3 +21,5 @@ https://github.com/GesangPJ/KasbonManajer/assets/26625652/bd2fe23c-ba7d-4281-9fc
 9. Admin Master Key autentikasi bagi admin untuk mengganti password akun dan data akun.
 
 *Aplikasi masih dalam tahap pengembangan awal*
+
+*Menggunakan Kasbon Manager sebagai template*
