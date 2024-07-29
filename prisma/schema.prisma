@@ -20,17 +20,24 @@ model User {
   email          String    @unique
   password       String
   userType       String?   @default("KARYAWAN")
+
   accounts       Account[]
   sessions       Session[]
   TransaksisAsUser  Transaksi[]  @relation("TransaksiUser")
+  KategoriAsUser    Kategori[]
+  ProdukAsUser      Produk[]
 }
 
 model Kategori {
   id            Int       @id @default(autoincrement())
+  userId        Int
   nama          String
   status        String    @default("AKTIF")
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
 
   produk        Produk[]
+  user          User[]
 }
 
 model Pelanggan {
@@ -47,12 +54,13 @@ model Pelanggan {
 
 model Produk {
   id            Int       @id @default(autoincrement())
+  userId        Int
   barcode       BigInt?   @unique
   nama          String
   stok          Int?      @default(0)
+  satuan        String    @default("pcs")
   harga         BigInt
   kategoriId    Int
-  packagingId   Int
   gambar        String?
   status        String    @default("AKTIF")
   keterangan    String?
@@ -60,22 +68,20 @@ model Produk {
   updatedAt     DateTime  @updatedAt
 
   transaksiproduk TransaksiDetail[]
+  userproduk      User    @relation(fields: [userId], references: [id])
   kategoriproduk  Kategori  @relation(fields: [kategoriId], references: [id])
-  packagingproduk Packaging  @relation(fields: [packagingId], references: [id])
 }
 
 model TransaksiDetail {
   id            Int        @id @default(autoincrement())
   transaksiId   Int
   produkId      Int
-  packagingId   Int
   jumlah        Int
   harga         BigInt
   total         BigInt     @default(0) // total = quantity * price
 
   transaksi     Transaksi  @relation(fields: [transaksiId], references: [id])
   produk        Produk     @relation(fields: [produkId], references: [id])
-  packaging     Packaging  @relation(fields: [packagingId], references: [id])
 }
 
 model Transaksi {
@@ -91,18 +97,6 @@ model Transaksi {
   pelanggan      Pelanggan?       @relation("TransaksiPelanggan", fields: [pelangganId], references: [id])
   details        TransaksiDetail[]
 
-}
-
-model Packaging {
-  id            Int       @id @default(autoincrement())
-  nama          String
-  jumlah        Int       // Jumlah packing per pcs
-  keterangan    String?
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-
-  produk        Produk[]
-  transaksidetail  TransaksiDetail[]
 }
 
 model Account {
