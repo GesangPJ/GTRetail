@@ -18,9 +18,9 @@ export const POST = async (req) => {
   }
 
   try {
-    const { userId, nama, status } = await req.json()
+    const { nama, status } = await req.json()
 
-    if (!userId || !nama || !status) {
+    if (!nama || !status) {
       return NextResponse.json({ error: "Semua bidang harus diisi." }, { status: 400 });
     }
 
@@ -31,7 +31,6 @@ export const POST = async (req) => {
     try {
       const kategori = await prisma.kategori.create({
         data: {
-          userId,
           nama,
           status,
 
