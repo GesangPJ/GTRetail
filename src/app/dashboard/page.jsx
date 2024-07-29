@@ -37,14 +37,14 @@ const DashboardAnalytics = () => {
           <div>
             <h1>Dashboard Admin</h1>
             <br />
-            <TabelAdmin/>
+            {/* <TabelAdmin/> */}
           </div>
         )}
         {isKaryawan && (
             <div>
               <h1>Dashboard Karyawan</h1>
               <br />
-            <TabelKaryawan/>
+            {/* <TabelKaryawan/> */}
             </div>
         )}
     </div>
