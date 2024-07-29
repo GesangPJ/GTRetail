@@ -6,6 +6,8 @@ import { useRouter } from 'next/navigation'
 
 import { useSession } from 'next-auth/react'
 
+import TabelKategori from '@/views/produk/daftar-kategori'
+
 import FormTambahKategori from '@/views/produk/tambah-kategori'
 
 const HalamanKategori = () => {
@@ -27,17 +29,18 @@ const HalamanKategori = () => {
   return(
     <div>
       <div>
-      <h1 className="text-lg font-bold">
+      <h1 className="text-3xl font-extrabold">
         Halaman Kategori Produk
       </h1>
       </div>
         <br />
       <div>
-
+        <TabelKategori/>
       </div>
+      <br />
 
       <div>
-
+        <FormTambahKategori/>
       </div>
 
     </div>
