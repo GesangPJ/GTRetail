@@ -22,6 +22,7 @@ const FormTambahProduk = () =>{
   const [alert, setAlert] = useState(null)
   const [message, setMessage] = useState('')
   const [KategoriProduk, setKategoriProduk] = useState([])
+  const [selectedImage, setSelectedImage] = useState(null)
   const formRef = useRef(null)
 
   useEffect(() => {
@@ -54,25 +55,25 @@ const FormTambahProduk = () =>{
     const data = new FormData(event.target)
 
     // Validasi form sebelum mengirimkan
-  if (!data.get('jumlah') || !data.get('nama') || !data.get('metode')) {
+  if (!data.get('kategoriproduk') || !data.get('nama') || !data.get('harga') || !data.get('stok')) {
     setAlert('error')
     setMessage('Semua bidang harus diisi.')
 
     return
   }
 
-    const formData = {
-      userId : session.user.id,
-      kategoriId: parseInt(data.get('kategoriproduk')),
-      barcode: data.get('barcode'),
-      nama: data.get('nama'),
-      harga: data.get('harga'),
-      stok: data.get('stok'),
-      satuan: data.get('satuan'),
-      gambar: data.get('gambar'),
-      status: data.get('status'),
-      keterangan: data.get('keterangan')
-    }
+  const formData = {
+    userId: session.user.id,
+    kategoriId: parseInt(data.get('kategoriproduk')),
+    barcode: data.get('barcode'),
+    nama: data.get('nama'),
+    harga: data.get('harga'),
+    stok: data.get('stok'),
+    satuan: data.get('satuan'),
+    gambar: '', // Will be set after the image is uploaded
+    status: data.get('status'),
+    keterangan: data.get('keterangan'),
+  }
 
     try {
       const response = await fetch('/api/tambah-produk', {
@@ -97,6 +98,10 @@ const FormTambahProduk = () =>{
       setAlert('error')
       setMessage('Terjadi kesalahan saat mengirim data.')
     }
+  }
+
+  const handleReset = async ()=>{
+    formRef.current.reset()
   }
 
   return(
@@ -212,7 +217,10 @@ const FormTambahProduk = () =>{
                   />
                 </Grid>
                 <Grid item xs={12} justifyContent="center" alignItems="center">
-                  <Button variant="contained" type="submit" sx={ { borderRadius: 30 } }>
+                <Button variant="contained" onClick="handleReset" color="error" sx={ { borderRadius: 30 } }>
+                    Reset Form
+                  </Button>
+                  <Button variant="contained" type="submit" color="success" sx={ { borderRadius: 30 } }>
                     Tambah Transaksi
                   </Button>
                 </Grid>
