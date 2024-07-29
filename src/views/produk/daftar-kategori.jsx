@@ -86,10 +86,10 @@ const TabelKategori = () => {
   }, [session])
 
   const columns = [
-    { field: 'no', headernama: 'No', width: 90 },
-    { field: 'nama', headernama: 'Nama Kategori', width: 200 },
-    { field: 'status', headernama: 'Status Kategori', width: 200 },
-    { field: 'edit', headernama:'Edit', width: 100,
+    { field: 'no', headerName: 'No', width: 90 },
+    { field: 'nama', headerName: 'Nama Kategori', width: 170 },
+    { field: 'status', headerName: 'Status Kategori', width: 100 },
+    { field: 'edit', headerName:'Edit', width: 100,
       renderCell: (params)=>(
         <Button
         variant='contained'
@@ -103,12 +103,9 @@ const TabelKategori = () => {
     },
   ]
 
-
   return (
-    <div classnama='max-w-[100%]'>
-      <h2 classnama='font-bold'>
-        Daftar Kategori
-      </h2>
+    <div className='max-w-[100%]'>
+      <br />
       <DataGrid
         rows={rows}
         sx={{
@@ -119,7 +116,6 @@ const TabelKategori = () => {
             color: 'primary.main',
           },
         }}
-        slots={{ toolbar: GridToolbar }}
         columns={columns}
         pageSize={5}
         pageSizeOptions={[5, 10, 25]}
@@ -146,7 +142,7 @@ const TabelKategori = () => {
             onChange={handleChange}
           />
           <FormControl fullWidth>
-            <InputLabel htmlFor='metode'>Status Kategori</InputLabel>
+            <InputLabel htmlFor='metode'>Status</InputLabel>
             <Select
               native
               label='Status'
