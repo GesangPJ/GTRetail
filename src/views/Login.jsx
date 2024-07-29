@@ -51,7 +51,7 @@ const Login = () => {
         <CardContent className='p-6 sm:!p-12 justify-center'>
           <div className='flex flex-col gap-5'>
             <div className='items-center justify-center text-center'>
-              <Typography variant='h4'><i className="ri-store-3-line"></i>GT-Retail</Typography>
+              <Typography variant='h4'><i className="ri-store-3-line"></i> GTRetail</Typography>
               <Typography className='mbs-1'>Masuk Akun Anda</Typography>
             </div>
             <form noValidate autoComplete='off' onSubmit={handleSubmit} className='flex flex-col gap-5'>
