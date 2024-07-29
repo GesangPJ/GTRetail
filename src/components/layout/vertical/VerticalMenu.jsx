@@ -87,9 +87,6 @@ const VerticalMenu = ({ scrollMenu }) => {
                 <MenuItem href='/dashboard/produk'>Daftar Produk</MenuItem>
                 <MenuItem href='/dashboard/tambah-produk'>Tambah Produk</MenuItem>
                 <MenuItem href='/dashboard/kategori'>Kategori Produk</MenuItem>
-                <MenuItem href='/dashboard/tambah-kategori'>Tambah Kategori</MenuItem>
-                <MenuItem href='/dashboard/daftar-satuan'>Daftar Packing</MenuItem>
-                <MenuItem href='/dashboard/tambah-packing'>Tambah Packing</MenuItem>
             </SubMenu>
             <SubMenu
               label='Pembelian'
