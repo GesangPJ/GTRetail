@@ -17,7 +17,6 @@ import InputLabel from '@mui/material/InputLabel'
 import FormControl from '@mui/material/FormControl'
 
 const FormTambahKategori = () =>{
-  const { data: session} = useSession()
   const [alert, setAlert] = useState(null)
   const [message, setMessage] = useState('')
   const formRef = useRef(null)
@@ -39,7 +38,7 @@ const FormTambahKategori = () =>{
     const data = new FormData(event.target)
 
     // Validasi form sebelum mengirimkan
-  if (!data.get('jumlah') || !data.get('nama') || !data.get('metode')) {
+  if (!data.get('nama') || !data.get('status')) {
     setAlert('error')
     setMessage('Semua bidang harus diisi.')
 
@@ -47,7 +46,6 @@ const FormTambahKategori = () =>{
   }
 
     const formData = {
-      userId : session.user.id,
       nama: data.get('nama'),
       status: data.get('status')
     }
@@ -65,15 +63,15 @@ const FormTambahKategori = () =>{
 
       if (response.ok) {
         setAlert('success')
-        setMessage('Permintaan Kategori Produk berhasil dikirim!')
+        setMessage('Data Kategori Produk berhasil disimpan!')
         formRef.current.reset() // Kosongkan form setelah berhasil didaftarkan
       } else {
         setAlert('error')
-        setMessage(result.error || 'Terjadi kesalahan saat mengirim data permintaan Kategori Produk.')
+        setMessage(result.error || 'Terjadi kesalahan saat menyimpan data Kategori Produk.')
       }
     } catch (error) {
       setAlert('error')
-      setMessage('Terjadi kesalahan saat mengirim data.')
+      setMessage('Terjadi kesalahan saat menyimpan data.')
     }
   }
 
@@ -81,7 +79,7 @@ const FormTambahKategori = () =>{
     <div>
       <div>
         <Card>
-          <CardHeader title='Form Kategori' />
+          <CardHeader title='Form Tambah Kategori' />
           <CardContent>
             {alert && (
               <Alert severity={alert} style={{ marginBottom: '1rem' }}>
@@ -106,8 +104,8 @@ const FormTambahKategori = () =>{
                   />
                 </Grid>
                 <Grid item xs={12}>
-                  <FormControl fullWidth>
-                    <InputLabel htmlFor='metode'>Status Kategori</InputLabel>
+                  <FormControl>
+                    <InputLabel htmlFor='metode'>Status</InputLabel>
                     <Select
                       native
                       label='Status'
