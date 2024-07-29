@@ -94,6 +94,7 @@ const VerticalMenu = ({ scrollMenu }) => {
             >
               <MenuItem href='/dashboard/pembelian'>Pembelian Produk</MenuItem>
               <MenuItem href='/dashboard/atur-stok'>Atur Stok Produk</MenuItem>
+              <MenuItem href='/dashboard/distributor'>Daftar Distributor</MenuItem>
 
             </SubMenu>
             <SubMenu
@@ -102,6 +103,7 @@ const VerticalMenu = ({ scrollMenu }) => {
             >
               <MenuItem href='/dashboard/cetak-bulanan'>Transaksi Bulanan</MenuItem>
               <MenuItem href='/dashboard/cetak-produk'>Produk</MenuItem>
+              <MenuItem href='/dashboard/cetak-pembelian'>Pembelian Barang</MenuItem>
               <MenuItem href='/dashboard/cetak-pelanggan'>Pelanggan</MenuItem>
               <MenuItem></MenuItem>
             </SubMenu>
@@ -147,9 +149,6 @@ const VerticalMenu = ({ scrollMenu }) => {
                 <MenuItem href='/dashboard/produk'>Daftar Produk</MenuItem>
                 <MenuItem href='/dashboard/tambah-produk'>Tambah Produk</MenuItem>
                 <MenuItem href='/dashboard/kategori'>Kategori Produk</MenuItem>
-                <MenuItem href='/dashboard/tambah-kategori'>Tambah Kategori</MenuItem>
-                <MenuItem href='/dashboard/daftar-satuan'>Daftar Packing</MenuItem>
-                <MenuItem href='/dashboard/tambah-packing'>Tambah Packing</MenuItem>
               </SubMenu>
               <SubMenu
               label='Pembelian'
@@ -157,6 +156,7 @@ const VerticalMenu = ({ scrollMenu }) => {
             >
               <MenuItem href='/dashboard/pembelian-k'>Pembelian Produk</MenuItem>
               <MenuItem href='/dashboard/atur-stok'>Atur Stok Produk</MenuItem>
+              <MenuItem href='/dashboard/distributor'>Daftar Distributor</MenuItem>
 
             </SubMenu>
               <SubMenu
