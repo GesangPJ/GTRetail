@@ -49,6 +49,37 @@ model Pelanggan {
   TransaksiAsPelanggan  Transaksi[] @relation("TransaksiPelanggan")
 }
 
+model Distributor {
+  id            Int       @id @default(autoincrement())
+  nama          String
+  notelp        BigInt
+  alamat        String
+  email         String
+
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+
+  pembelian     Pembelian[]
+}
+
+model Pembelian {
+  id            Int       @id @default(autoincrement())
+  kode          String    @unique
+  distributorId Int
+  produkId      Int
+  jumlah        BigInt
+  hargabeli     BigInt
+  totalharga    BigInt
+  keterangan    String?
+  kedatangan    DateTime?
+
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  produk        Produk    @relation(fields: [produkId], references: [id])
+  distributor   Distributor @relation(fields: [distributorId], references: [id])
+}
+
 model Produk {
   id            Int       @id @default(autoincrement())
   userId        Int
@@ -67,6 +98,7 @@ model Produk {
   transaksiproduk TransaksiDetail[]
   userproduk      User    @relation(fields: [userId], references: [id])
   kategoriproduk  Kategori  @relation(fields: [kategoriId], references: [id])
+  pembelianproduk Pembelian[]
 }
 
 model TransaksiDetail {
