@@ -24,20 +24,17 @@ model User {
   accounts       Account[]
   sessions       Session[]
   TransaksisAsUser  Transaksi[]  @relation("TransaksiUser")
-  KategoriAsUser    Kategori[]
   ProdukAsUser      Produk[]
 }
 
 model Kategori {
   id            Int       @id @default(autoincrement())
-  userId        Int
   nama          String
   status        String    @default("AKTIF")
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
 
   produk        Produk[]
-  user          User[]
 }
 
 model Pelanggan {
