@@ -70,7 +70,6 @@ const FormTambahProduk = () =>{
     harga: data.get('harga'),
     stok: data.get('stok'),
     satuan: data.get('satuan'),
-    gambar: gambar, // Will be set after the image is uploaded
     status: data.get('status'),
     keterangan: data.get('keterangan'),
   }
@@ -97,35 +96,6 @@ const FormTambahProduk = () =>{
     } catch (error) {
       setAlert('error')
       setMessage('Terjadi kesalahan saat mengirim data.')
-    }
-  }
-
-  const handleImageUpload = async (event) => {
-    const file = event.target.files[0]
-
-    if (!file) return
-
-    const formData = new FormData()
-
-    formData.append('file', file)
-
-    try {
-      const response = await fetch('/api/upload-gambar', {
-        method: 'POST',
-        body: formData,
-      })
-
-      const result = await response.json()
-
-      if (response.ok) {
-        setGambar(result.filePath) // Set the image path from the response
-      } else {
-        setAlert('error')
-        setMessage(result.error || 'Terjadi kesalahan saat mengunggah gambar.')
-      }
-    } catch (error) {
-      setAlert('error')
-      setMessage('Terjadi kesalahan saat mengunggah gambar.')
     }
   }
 
@@ -246,20 +216,12 @@ const FormTambahProduk = () =>{
                     }}
                   />
                 </Grid>
-                <Grid item xs={12}>
-                  <input
-                    type="file"
-                    name="gambar"
-                    accept="image/*"
-                    onChange={handleImageUpload}
-                  />
-                </Grid>
                 <Grid item xs={12} style={{ display: 'flex', justifyContent: 'space-between' }}>
                   <Button variant="contained" onClick={handleReset} color="error" sx={{ borderRadius: 30 }}>
                     Reset Form
                   </Button>
                   <Button variant="contained" type="submit" color="success" sx={{ borderRadius: 30 }}>
-                    Tambah Transaksi
+                    Tambah Produk
                   </Button>
                 </Grid>
               </Grid>
