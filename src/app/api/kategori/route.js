@@ -20,7 +20,13 @@ export async function GET(req) {
   }
 
   try{
-    const kategoris = await prisma.kategori.findFirst()
+    const kategoris = await prisma.kategori.findMany({
+      select:{
+        id:true,
+        nama:true,
+        status:true,
+      }
+    })
 
     return NextResponse.json(kategoris, { status: 200})
   }
