@@ -23,8 +23,9 @@ model User {
 
   accounts       Account[]
   sessions       Session[]
-  TransaksisAsUser  Transaksi[]  @relation("TransaksiUser")
-  ProdukAsUser      Produk[]
+
+  transaksi  Transaksi[]  @relation("TransaksiUser")
+  produk      Produk[]
 }
 
 model Kategori {
@@ -46,7 +47,7 @@ model Pelanggan {
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
 
-  TransaksiAsPelanggan  Transaksi[] @relation("TransaksiPelanggan")
+  transaksi  Transaksi[] @relation("TransaksiPelanggan")
 }
 
 model Distributor {
@@ -89,16 +90,15 @@ model Produk {
   satuan        String    @default("pcs")
   harga         BigInt
   kategoriId    Int
-  gambar        String?
   status        String    @default("AKTIF")
   keterangan    String?
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
 
-  transaksiproduk TransaksiDetail[]
+  transaksi TransaksiDetail[]
   userproduk      User    @relation(fields: [userId], references: [id])
-  kategoriproduk  Kategori  @relation(fields: [kategoriId], references: [id])
-  pembelianproduk Pembelian[]
+  kategori  Kategori  @relation(fields: [kategoriId], references: [id])
+  pembelian Pembelian[]
 }
 
 model TransaksiDetail {
