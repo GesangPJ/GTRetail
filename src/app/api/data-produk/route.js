@@ -35,11 +35,17 @@ export async function GET(req){
         stok:true,
         harga:true,
         satuan:true,
+        status:true,
         kategori:{select:{nama:true,},},
       }
     })
 
-    return NextResponse.json(produks, {status:200})
+    const formattedproduk = {
+      ...produks,
+      kategori: produks.kategori?.nama || '-'
+    }
+
+    return NextResponse.json(formattedproduk, {status:200})
   }
   catch(error){
     console.error('Error mengambil data produk:', error)
@@ -47,9 +53,5 @@ export async function GET(req){
     return NextResponse.json({ error: 'Terjadi kesalahan saat mengambil data produk' }, { status: 500 })
 
   }
-
-
-
-
 
 }
