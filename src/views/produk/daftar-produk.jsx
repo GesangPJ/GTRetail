@@ -45,29 +45,52 @@ const DaftarProduk = () =>{
   }, [session])
 
   const columns = [
-    { field: 'no', headerName: 'No', headerClassName:'app-theme--header', width: 90 },
-    { field: 'nama', headerName: 'Produk', headerClassName:'app-theme--header', width: 170 },
-    { field: 'stok', headerName: 'Stok', headerClassName:'app-theme--header', width: 100 },
-    { field: 'satuan', headerName: 'Satuan', headerClassName:'app-theme--header', width: 100},
-    { field: 'harga', headerName: 'Harga', headerClassName:'app-theme--header', width: 110},
-    { field: 'kategori', headerName: 'Kategori', headerClassName:'app-theme--header', width: 150},
+    { field: 'no',
+      headerName: 'No',
+      headerClassName:'app-theme--header',
+      width: 90 },
+    { field: 'nama',
+      headerName: 'Produk',
+      headerClassName:'app-theme--header',
+      width: 170 },
+    { field: 'harga',
+      headerName: 'Harga',
+      headerClassName:'app-theme--header',
+      width: 110,
+      renderCell: (params) => <div>{formatCurrency(params.value)}</div>,},
+    { field: 'satuan',
+       headerName: 'Satuan',
+       headerClassName:'app-theme--header',
+        width: 100},
+    { field: 'stok',
+       headerName: 'Stok',
+        headerClassName:'app-theme--header',
+         width: 100 },
+    { field: 'kategori',
+       headerName: 'Kategori',
+        headerClassName:'app-theme--header',
+         width: 150},
+    { field: 'status',
+       headerName: 'Status',
+        headerClassName:'app-theme--header',
+         width: 110},
     {
-      field: 'edit',
+      field: 'detail',
       disableExport: true,
-      headerName: 'Edit',
+      headerName: '',
       headerClassName:'app-theme--header',
       width: 100,
       renderCell: (params) => (
-        <Button variant="contained" color="primary" onClick={() => handleEditClick(params.row)}>
-          Edit &raquo;
+        <Button variant="contained" color="primary" onClick={() => handleDetailClick(params.row)}>
+          Detail &raquo;
         </Button>
       ),
     },
   ]
 
-  const handleEditClick = (row) => {
+  const handleDetailClick = (row) => {
     if (row && row.id) {
-      router.push(`/dashboard/edit-produk/${row.id}`)
+      router.push(`/dashboard/detail-produk/${row.id}`)
     } else {
       console.error('ID tidak valid:', row)
     }
