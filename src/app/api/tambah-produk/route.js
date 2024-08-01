@@ -18,24 +18,30 @@ export const POST = async (req) => {
   }
 
   try {
-    const { kategoriproduk, barcode, nama, harga, stok, satuan, keterangan } = await req.json()
+    const data = await req.json()
 
-    if (!nama || !stok || !kategoriproduk || !satuan || !harga) {
+    console.log('Request Data:', data)
+
+    const { userId, kategoriId, barcode, nama, harga, stok, satuan, keterangan } = data
+
+    if (!nama || !stok || !kategoriId || !satuan || !harga) {
       return NextResponse.json({ error: "Semua bidang harus diisi." }, { status: 400 });
     }
 
     const status = "AKTIF"
+    const barcodeValue = barcode || "0"
 
     try {
       const produk = await prisma.produk.create({
         data: {
+          userId,
           nama,
-          barcode,
+          barcode: barcodeValue,
           harga,
           stok,
           satuan,
           status,
-          kategoriId: kategoriproduk,
+          kategoriId,
           keterangan,
         },
       })
@@ -46,7 +52,7 @@ export const POST = async (req) => {
     } catch (error) {
       console.error('Error membuat produk:', error)
 
-      return NextResponse.json({ error: "produk sudah ada" }, { status: 400 })
+      return NextResponse.json({ error: "Error nilai produk" }, { status: 400 })
     }
   } catch (error) {
     console.error('Error membuat produk:', error)
