@@ -84,7 +84,7 @@ const FormTambahProduk = () =>{
 
       if (response.ok) {
         setAlert('success')
-        setMessage('Permintaan Tambah Produk berhasil dikirim!')
+        setMessage(`Produk  ${formData.nama} berhasil ditambahkan!`)
         formRef.current.reset() // Kosongkan form setelah berhasil didaftarkan
       } else {
         setAlert('error')
