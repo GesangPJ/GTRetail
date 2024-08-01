@@ -42,7 +42,7 @@ export async function GET(req) {
       ...produk,
       createdAt: produk.createdAt.toISOString(),
       updatedAt: produk.updatedAt.toISOString(),
-      namaKaryawan: produk.user?.name || "-",
+      namaKaryawan: produk.userproduk?.name || "-",
       kategori: produk.kategori?.nama || '-'
     }
 
