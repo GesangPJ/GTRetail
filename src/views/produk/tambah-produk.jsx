@@ -53,7 +53,6 @@ const FormTambahProduk = () =>{
     event.preventDefault()
     const data = new FormData(event.target)
 
-    // Validasi form sebelum mengirimkan
   if (!data.get('kategoriproduk') || !data.get('nama') || !data.get('harga') || !data.get('stok')) {
     setAlert('error')
     setMessage('Semua bidang harus diisi.')
@@ -66,10 +65,9 @@ const FormTambahProduk = () =>{
     kategoriId: parseInt(data.get('kategoriproduk')),
     barcode: data.get('barcode'),
     nama: data.get('nama'),
-    harga: data.get('harga'),
-    stok: data.get('stok'),
+    harga: parseInt(data.get('harga')),
+    stok: parseInt(data.get('stok')),
     satuan: data.get('satuan'),
-    status: data.get('status'),
     keterangan: data.get('keterangan'),
   }
 
@@ -168,23 +166,23 @@ const FormTambahProduk = () =>{
                 </Grid>
               <Grid item xs={12}>
                   <FormControl fullWidth required>
-                    <InputLabel htmlFor="anggota">Pilih Kategori</InputLabel>
+                    <InputLabel htmlFor="kategoriproduk">Pilih Kategori</InputLabel>
                     <Select
-                      label="Pilih Kategori"
-                      inputProps={{
-                        name: 'kategoriproduk',
-                        id: 'kategoriproduk'
-                      }}
-                    >
-                      <MenuItem value="">
-                        <em>-</em>
+                    label="Pilih Kategori"
+                    inputProps={{
+                      name: 'kategoriproduk',
+                      id: 'kategoriproduk'
+                    }}
+                  >
+                    <MenuItem value="">
+                      <em>-</em>
+                    </MenuItem>
+                    {KategoriProduk.map((item) => (
+                      <MenuItem key={item.id} value={item.id}>
+                        {item.nama}
                       </MenuItem>
-                      {KategoriProduk.map((item) => (
-                        <MenuItem key={item.id} value={item.id}>
-                          {item.nama}
-                        </MenuItem>
-                      ))}
-                    </Select>
+                    ))}
+                  </Select>
                   </FormControl>
                 </Grid>
                 <Grid item xs={12}>
