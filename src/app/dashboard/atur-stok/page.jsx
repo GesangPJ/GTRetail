@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation"
 
 import { useSession } from "next-auth/react"
 
-
+import FormAturStok from "@/views/produk/atur-stok"
 
 const HalamanAturStok =() => {
   const {data: session, status} = useSession()
@@ -33,7 +33,7 @@ const HalamanAturStok =() => {
       </div>
       <br />
       <div>
-
+        <FormAturStok/>
       </div>
 
     </div>
