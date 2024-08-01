@@ -113,7 +113,7 @@ const TambahKasbon = () =>{
                   InputProps={{
                     startAdornment: (
                       <InputAdornment position='start'>
-                        <i class="ri-money-dollar-circle-line"></i>
+                        <i className="ri-money-dollar-circle-line"></i>
                       </InputAdornment>
                     )
                   }}
@@ -129,7 +129,7 @@ const TambahKasbon = () =>{
                   InputProps={{
                     startAdornment: (
                       <InputAdornment position='start'>
-                        <i class="ri-message-2-line"></i>
+                        <i className="ri-message-2-line"></i>
                       </InputAdornment>
                     )
                   }}
