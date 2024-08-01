@@ -87,13 +87,13 @@ const VerticalMenu = ({ scrollMenu }) => {
                 <MenuItem href='/dashboard/produk'>Daftar Produk</MenuItem>
                 <MenuItem href='/dashboard/tambah-produk'>Tambah Produk</MenuItem>
                 <MenuItem href='/dashboard/kategori'>Kategori Produk</MenuItem>
+                <MenuItem href='/dashboard/atur-stok'>Atur Stok Produk</MenuItem>
             </SubMenu>
             <SubMenu
               label='Pembelian'
               icon={<i className="ri-bank-card-2-line"></i>}
             >
               <MenuItem href='/dashboard/pembelian'>Pembelian Produk</MenuItem>
-              <MenuItem href='/dashboard/atur-stok'>Atur Stok Produk</MenuItem>
               <MenuItem href='/dashboard/distributor'>Daftar Distributor</MenuItem>
 
             </SubMenu>
@@ -117,7 +117,7 @@ const VerticalMenu = ({ scrollMenu }) => {
             </SubMenu>
             <SubMenu
               label='Bantuan'
-              icon={<i class="ri-question-line"></i>}
+              icon={<i className="ri-question-line"></i>}
             >
               <MenuItem href='/dashboard/bantuan'>Penggunaan</MenuItem>
               <MenuItem href='/dashboard/dokumentasi-api'>Dokumentasi API</MenuItem>
@@ -149,19 +149,20 @@ const VerticalMenu = ({ scrollMenu }) => {
                 <MenuItem href='/dashboard/produk'>Daftar Produk</MenuItem>
                 <MenuItem href='/dashboard/tambah-produk'>Tambah Produk</MenuItem>
                 <MenuItem href='/dashboard/kategori'>Kategori Produk</MenuItem>
+                <MenuItem href='/dashboard/atur-stok'>Atur Stok Produk</MenuItem>
               </SubMenu>
-              <SubMenu
+
+            {/* <SubMenu
               label='Pembelian'
               icon={<i className="ri-bank-card-2-line"></i>}
             >
               <MenuItem href='/dashboard/pembelian-k'>Pembelian Produk</MenuItem>
-              <MenuItem href='/dashboard/atur-stok'>Atur Stok Produk</MenuItem>
               <MenuItem href='/dashboard/distributor'>Daftar Distributor</MenuItem>
 
-            </SubMenu>
+            </SubMenu> */}
               <SubMenu
               label='Bantuan'
-              icon={<i class="ri-question-line"></i>}
+              icon={<i className="ri-question-line"></i>}
             >
               <MenuItem href='/dashboard/bantuan'>Penggunaan</MenuItem>
             </SubMenu>
