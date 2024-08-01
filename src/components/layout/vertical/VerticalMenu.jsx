@@ -95,6 +95,7 @@ const VerticalMenu = ({ scrollMenu }) => {
             >
               <MenuItem href='/dashboard/pembelian'>Pembelian Produk</MenuItem>
               <MenuItem href='/dashboard/distributor'>Daftar Distributor</MenuItem>
+              <MenuItem href='/dashboard/tambah-distributor'>Tambah Distributor</MenuItem>
 
             </SubMenu>
             <SubMenu
