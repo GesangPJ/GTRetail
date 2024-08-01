@@ -17,7 +17,7 @@ const formatCurrency = (amount) => {
   }).format(amount)
 }
 
-const DaftarProduk = () =>{
+const TabelDaftarProduk = () =>{
   const router = useRouter()
   const { data: session } = useSession()
   const [rows, setRows] = useState([])
@@ -46,11 +46,11 @@ const DaftarProduk = () =>{
 
   const columns = [
     { field: 'no',
-      headerName: 'No',
+      headerName: 'No.',
       headerClassName:'app-theme--header',
-      width: 90 },
+      width: 70 },
     { field: 'nama',
-      headerName: 'Produk',
+      headerName: 'Nama Produk',
       headerClassName:'app-theme--header',
       width: 170 },
     { field: 'harga',
@@ -66,7 +66,7 @@ const DaftarProduk = () =>{
        headerName: 'Stok',
         headerClassName:'app-theme--header',
          width: 100 },
-    { field: 'kategori',
+    { field: 'namaKategori',
        headerName: 'Kategori',
         headerClassName:'app-theme--header',
          width: 150},
@@ -79,10 +79,10 @@ const DaftarProduk = () =>{
       disableExport: true,
       headerName: '',
       headerClassName:'app-theme--header',
-      width: 100,
+      width: 150,
       renderCell: (params) => (
-        <Button variant="contained" color="primary" onClick={() => handleDetailClick(params.row)}>
-          Detail &raquo;
+        <Button variant="contained" size='small' color="primary" onClick={() => handleDetailClick(params.row)}>
+          Detail Produk &raquo;
         </Button>
       ),
     },
@@ -133,4 +133,4 @@ const DaftarProduk = () =>{
   )
 }
 
-export default DaftarProduk
+export default TabelDaftarProduk
