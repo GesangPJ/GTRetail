@@ -4,13 +4,13 @@
 
 # GT-RETAIL
 
-Aplikasi Manajemen Penjualan untuk UMKM berbasis Node.JS dengan framework Next.JS 14.2
+Aplikasi Sistem Manajemen Penjualan untuk UMKM berbasis Node.JS dengan framework Next.JS 14.2
 
 ## Fitur Website
 
-1. App Router.
+1. Next.JS App Router.
 2. Next-Auth untuk Autentikasi.
-3. Json Web Token (JWT) untuk mengamankan session.
+3. Json Web Token (JWT).
 4. MUI DataGrid untuk penyajian data lebih baik.
 5. Multi-Role account, akun terbagi menjadi 2 tipe : Admin dan Karyawan.
 6. Bcrypt untuk password hashing.
