@@ -19,11 +19,11 @@ export const PUT = async (req) =>{
   }
 
   try{
-    const {id, stok} = await req.json()
+    const {produkId, stok} = await req.json()
 
     try{
       const gantistok = await prisma.produk.update({
-        where: {id:parseInt(id)},
+        where: {id:parseInt(produkId)},
         data:{
           stok: parseInt(stok),
         }
