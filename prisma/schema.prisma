@@ -84,11 +84,11 @@ model Pembelian {
 model Produk {
   id            Int       @id @default(autoincrement())
   userId        Int
-  barcode       BigInt?   @unique
+  barcode       String?
   nama          String
   stok          Int?      @default(0)
   satuan        String    @default("pcs")
-  harga         BigInt
+  harga         Int
   kategoriId    Int
   status        String    @default("AKTIF")
   keterangan    String?
