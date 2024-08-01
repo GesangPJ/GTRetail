@@ -39,7 +39,7 @@ const FormAturStok = () => {
 
     try {
       const response = await fetch('/api/ubah-stok', {
-        method: 'POST',
+        method: 'PUT',
         headers: {
           'Content-Type': 'application/json'
         },
