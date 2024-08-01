@@ -51,7 +51,8 @@ const Login = () => {
         <CardContent className='p-6 sm:!p-12 justify-center'>
           <div className='flex flex-col gap-5'>
             <div className='items-center justify-center text-center'>
-              <Typography variant='h4'><i className="ri-store-3-line"></i> GTRetail</Typography>
+              <Typography variant='h4' className='text-3xl font-bold'><i className="ri-store-3-line"></i> GT-Retail</Typography>
+              <br />
               <Typography className='mbs-1'>Sistem Manajemen Penjualan untuk UMKM</Typography>
             </div>
             <form noValidate autoComplete='off' onSubmit={handleSubmit} className='flex flex-col gap-5'>
