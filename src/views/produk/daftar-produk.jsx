@@ -111,12 +111,6 @@ const TabelDaftarProduk = () =>{
         >
           <DataGrid
             rows={rows}
-
-            // slots={{ toolbar: GridToolbar, printOptions:{
-            //   pageStyle: '.MuiDataGrid-root .MuiDataGrid-main { color: rgba(0, 0, 0, 0.87); }',
-            //   hideToolbar: true,
-            //   hideFooter: true,
-            // } }}
             columns={columns}
             pageSize={5}
             pageSizeOptions={[5, 10, 25, 50, 100]}
