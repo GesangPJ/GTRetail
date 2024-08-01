@@ -22,13 +22,12 @@ const FormTambahProduk = () =>{
   const [alert, setAlert] = useState(null)
   const [message, setMessage] = useState('')
   const [KategoriProduk, setKategoriProduk] = useState([])
-  const [gambar, setGambar] = useState('')
   const formRef = useRef(null)
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const kategoriResponse = await fetch('/api/daftar-kategori/')
+        const kategoriResponse = await fetch(`/api/daftar-kategori?userId=${session.user.id}`)
 
         const kategoriData = await kategoriResponse.json()
 
@@ -48,7 +47,7 @@ const FormTambahProduk = () =>{
     }
 
     fetchData()
-  }, [alert])
+  }, [alert, session])
 
   const handleSubmit = async (event) => {
     event.preventDefault()
@@ -101,14 +100,13 @@ const FormTambahProduk = () =>{
 
   const handleReset = async () => {
     formRef.current.reset()
-    setGambar('')
   }
 
   return(
     <div>
       <div>
         <Card>
-          <CardHeader title='Form Tambah Transaksi' />
+          <CardHeader title='' />
           <CardContent>
             {alert && (
               <Alert severity={alert} style={{ marginBottom: '1rem' }}>
@@ -119,6 +117,8 @@ const FormTambahProduk = () =>{
               <Grid container spacing={5}>
               <Grid item xs={12}>
                   <TextField
+                    fullWidth
+                    required
                     id='nama'
                     name='nama'
                     label='Nama Produk'
@@ -134,6 +134,24 @@ const FormTambahProduk = () =>{
                 </Grid>
                 <Grid item xs={12}>
                   <TextField
+                    fullWidth
+                    id='barcode'
+                    name='barcode'
+                    label='Barcode Produk'
+                    placeholder='Barcode Produk'
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position='start'>
+                          <i className="ri-barcode-box-line"></i>
+                        </InputAdornment>
+                      )
+                    }}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    fullWidth
+                    required
                     id='harga'
                     name='harga'
                     label='Harga Produk'
@@ -163,7 +181,7 @@ const FormTambahProduk = () =>{
                       </MenuItem>
                       {KategoriProduk.map((item) => (
                         <MenuItem key={item.id} value={item.id}>
-                          {item.name}
+                          {item.nama}
                         </MenuItem>
                       ))}
                     </Select>
@@ -171,6 +189,8 @@ const FormTambahProduk = () =>{
                 </Grid>
                 <Grid item xs={12}>
                   <TextField
+                    fullWidth
+                    required
                     id='stok'
                     name='stok'
                     label='Stok Awal Produk'
@@ -187,6 +207,8 @@ const FormTambahProduk = () =>{
                 </Grid>
                 <Grid item xs={12}>
                   <TextField
+                    fullWidth
+                    required
                     id='satuan'
                     name='satuan'
                     label='Satuan Produk'
