@@ -152,14 +152,14 @@ const DetailPage = () => {
 
   return (
     <div>
-      <h1>Detail Produk : {data.namaKaryawan} | ID : {data.userId} </h1>
+      <h1>Detail Produk : {data.nama} | ID : {data.id} </h1>
       <br />
       <TableContainer component={Paper}>
-        <Table id="detail-table" sx={{ minWidth: 200 }} aria-label="Detail Produk">
+        <Table id="detail-table" sx={{ minWidth: 200 }} aria-label="Detail Produk" className='border-none'>
           <TableBody>
             {rows.map((row, index) => (
               <TableRow key={index}>
-                <TableCell component="th" scope="row" className='text-xl'>
+                <TableCell component="th" scope="row" className='text-xl max-w-[120px]'>
                   {row.label}
                 </TableCell>
                 <TableCell className='text-xl'>{row.value}</TableCell>
