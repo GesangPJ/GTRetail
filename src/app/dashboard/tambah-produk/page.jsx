@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation'
 
 import { useSession } from 'next-auth/react'
 
-
+import FormTambahProduk from '@/views/produk/tambah-produk'
 
 const HalamanTambahProduk =()=>{
   const { data: session, status } = useSession()
@@ -29,6 +29,10 @@ const HalamanTambahProduk =()=>{
       <h1 className="text-ls font-bold">
         Tambah Produk
       </h1>
+
+      <div>
+        <FormTambahProduk/>
+      </div>
 
     </div>
   )
