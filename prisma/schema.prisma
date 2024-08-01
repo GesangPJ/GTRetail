@@ -106,8 +106,8 @@ model TransaksiDetail {
   transaksiId   Int
   produkId      Int
   jumlah        Int
-  harga         BigInt
-  total         BigInt     @default(0) // total = quantity * price
+  harga         Int
+  total         Int        @default(0) // total = quantity * price
 
   transaksi     Transaksi  @relation(fields: [transaksiId], references: [id])
   produk        Produk     @relation(fields: [produkId], references: [id])
@@ -117,8 +117,8 @@ model Transaksi {
   id             Int              @id @default(autoincrement())
   nomor          String           @unique
   userId         Int
-  pelangganId    Int?
-  jumlahTotal    BigInt           @default(0) // sum of all TransaksiDetail.total
+  pelangganId    Int?             @default(0)
+  jumlahTotal    Int
   createdAt      DateTime         @default(now())
   updatedAt      DateTime         @updatedAt
 
