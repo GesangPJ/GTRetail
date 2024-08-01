@@ -40,10 +40,10 @@ export async function GET(req){
       }
     })
 
-    const formattedproduk = {
-      ...produks,
-      kategori: produks.kategori?.nama || '-'
-    }
+    const formattedproduk = produks.map(produk => ({
+      ...produk,
+      namaKategori: produk.kategori?.nama || '-',
+    }))
 
     return NextResponse.json(formattedproduk, {status:200})
   }
