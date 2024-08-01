@@ -42,7 +42,7 @@ model Pelanggan {
   id            Int       @id @default(autoincrement())
   nama          String
   alamat        String?
-  notelp        BigInt?
+  notelp        String?
   email         String?   @unique
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
@@ -53,8 +53,8 @@ model Pelanggan {
 model Distributor {
   id            Int       @id @default(autoincrement())
   nama          String
-  notelp        BigInt
-  alamat        String
+  notelp        String?
+  alamat        String?
   email         String
 
   createdAt     DateTime   @default(now())
