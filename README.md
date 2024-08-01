@@ -6,8 +6,6 @@
 
 Aplikasi Manajemen Penjualan untuk UMKM berbasis Node.JS dengan framework Next.JS 14.2
 
-https://github.com/GesangPJ/KasbonManajer/assets/26625652/bd2fe23c-ba7d-4281-9fc3-c162a7805261
-
 ## Fitur Website
 
 1. App Router.
