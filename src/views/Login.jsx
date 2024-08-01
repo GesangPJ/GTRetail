@@ -52,7 +52,7 @@ const Login = () => {
           <div className='flex flex-col gap-5'>
             <div className='items-center justify-center text-center'>
               <Typography variant='h4'><i className="ri-store-3-line"></i> GTRetail</Typography>
-              <Typography className='mbs-1'>Masuk Akun Anda</Typography>
+              <Typography className='mbs-1'>Sistem Manajemen Penjualan untuk UMKM</Typography>
             </div>
             <form noValidate autoComplete='off' onSubmit={handleSubmit} className='flex flex-col gap-5'>
               <TextField
