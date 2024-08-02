@@ -53,7 +53,7 @@ const FormTambahProduk = () =>{
     event.preventDefault()
     const data = new FormData(event.target)
 
-  if (!data.get('kategoriproduk') || !data.get('nama') || !data.get('harga') || !data.get('stok')) {
+  if (!data.get('kategoriproduk') || !data.get('nama') || !data.get('harga') || !data.get('hargabeli') || !data.get('stok')) {
     setAlert('error')
     setMessage('Semua bidang harus diisi.')
 
@@ -66,6 +66,7 @@ const FormTambahProduk = () =>{
     barcode: data.get('barcode'),
     nama: data.get('nama'),
     harga: parseInt(data.get('harga')),
+    hargebeli: parseInt(data.get('hargabeli')),
     stok: parseInt(data.get('stok')),
     satuan: data.get('satuan'),
     keterangan: data.get('keterangan'),
@@ -159,6 +160,24 @@ const FormTambahProduk = () =>{
                       startAdornment: (
                         <InputAdornment position='start'>
                           <i className="ri-price-tag-3-line"></i>
+                        </InputAdornment>
+                      )
+                    }}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    fullWidth
+                    required
+                    id='hargabeli'
+                    name='hargabeli'
+                    label='Harga Beli'
+                    type='number'
+                    placeholder='Harga Beli Produk'
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position='start'>
+                          <i className="ri-price-tag-2-line"></i>
                         </InputAdornment>
                       )
                     }}
