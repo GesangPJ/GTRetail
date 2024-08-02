@@ -33,6 +33,7 @@ export async function GET(req){
         nama:true,
         stok:true,
         harga:true,
+        hargabeli:true,
         satuan:true,
         status:true,
         kategori:{select:{nama:true,},},
