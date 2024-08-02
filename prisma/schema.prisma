@@ -68,9 +68,9 @@ model Pembelian {
   kode          String    @unique
   distributorId Int
   produkId      Int
-  jumlah        BigInt
-  hargabeli     BigInt
-  totalharga    BigInt
+  jumlah        Int
+  hargabeli     Int
+  totalharga    Int
   keterangan    String?
   kedatangan    DateTime?
 
@@ -89,6 +89,7 @@ model Produk {
   stok          Int?      @default(0)
   satuan        String    @default("pcs")
   harga         Int
+  hargabeli     Int?
   kategoriId    Int
   status        String    @default("AKTIF")
   keterangan    String?
