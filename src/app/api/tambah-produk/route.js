@@ -22,7 +22,7 @@ export const POST = async (req) => {
 
     console.log('Request Data:', data)
 
-    const { userId, kategoriId, barcode, nama, harga, stok, satuan, keterangan } = data
+    const { userId, kategoriId, barcode, nama, harga, hargabeli, stok, satuan, keterangan } = data
 
     if (!nama || !stok || !kategoriId || !satuan || !harga) {
       return NextResponse.json({ error: "Semua bidang harus diisi." }, { status: 400 });
@@ -38,6 +38,7 @@ export const POST = async (req) => {
           nama,
           barcode: barcodeValue,
           harga,
+          hargabeli,
           stok,
           satuan,
           status,
