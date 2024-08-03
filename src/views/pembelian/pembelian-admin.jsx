@@ -200,7 +200,7 @@ const FormPembelianProduk = () => {
         onChange={handleProductChange}
         renderOption={(props, option) => (
           <Box component="li" {...props}>
-            {option.nama} | Stok: {option.stok}
+            {option.nama} | Stok: {option.stok} | Harga: {option.hargabeli}
           </Box>
         )}
         renderInput={(params) => (
