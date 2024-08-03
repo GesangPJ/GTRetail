@@ -1,6 +1,6 @@
 // API Edit Data Admin. Lokasi : /src/app/api/edit-admin
 
-// API untuk mengubah email, nama akun Karyawan.
+// API untuk mengubah email, nama akun Admin.
 
 import { NextResponse } from "next/server"
 
@@ -15,7 +15,7 @@ export const PUT = async (req) =>{
   console.log('Token :', token)
 
   if(!token){
-    console.log('Unauthorized Access : API Edit Karyawan')
+    console.log('Unauthorized Access : API Edit Admin')
 
     return NextResponse.json({error:'Unauthorized Access'}, {status:401})
   }
