@@ -1,3 +1,5 @@
+// API tambah pembelian
+
 import { NextResponse } from 'next/server'
 
 import { getToken } from 'next-auth/jwt'
@@ -16,9 +18,9 @@ export const POST = async (req) => {
   }
 
   try {
-    const { distributorId, products } = await req.json()
+    const { distributorId, produk } = await req.json()
 
-    if (!distributorId || !products || products.length === 0) {
+    if (!distributorId || !produk) {
       return NextResponse.json({ error: 'Data tidak lengkap' }, { status: 400 })
     }
 
@@ -29,7 +31,7 @@ export const POST = async (req) => {
     const currentYear = currentDate.getFullYear()
 
     // Menghitung total harga
-    const totalHarga = products.reduce((acc, product) => acc + (product.hargabeli * product.jumlah), 0)
+    const totalHarga = produk.reduce((acc, produk) => acc + (produk.hargabeli * produk.jumlah), 0)
 
     // Mengambil nomor urut terakhir dari pembelian bulan dan tahun ini
     const lastPembelian = await prisma.pembelian.findFirst({
@@ -46,28 +48,30 @@ export const POST = async (req) => {
 
     const lastNumber = lastPembelian ? parseInt(lastPembelian.kode.split('/').pop(), 10) : 0
     const newNumber = (lastNumber + 1).toString().padStart(5, '0')
+    const status = "DIPESAN"
 
     // Membuat kode baru
-    const newKode = `GT/SALES/${currentMonth}${currentYear}/${newNumber}`
+    const newKode = `GT/PURCHASE/${currentMonth}/${currentYear}/${newNumber}`
 
     const newPembelian = await prisma.pembelian.create({
       data: {
         kode: newKode,
         distributorId,
+        status,
         jumlahtotalharga: totalHarga,
         pembeliandetail: {
-          create: products.map(product => ({
-            produkId: product.produkId,
-            jumlah: product.jumlah,
-            hargabeli: product.hargabeli,
-            satuan: product.satuan || '',
-            total: product.hargabeli * product.jumlah,
+          create: produk.map(produk => ({
+            produkId: produk.id,
+            jumlah: parseInt(produk.jumlah),
+            hargabeli: parseInt(produk.hargabeli),
+            total: produk.hargabeli * produk.jumlah,
           })),
         },
       },
     })
 
     return NextResponse.json(newPembelian, { status: 201 })
+
   } catch (error) {
     console.error('Error menambah pembelian:', error)
 
