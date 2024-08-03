@@ -10,6 +10,14 @@ import Box from '@mui/material/Box'
 import Autocomplete from '@mui/material/Autocomplete'
 import { DataGrid } from '@mui/x-data-grid'
 
+const formatCurrency = (amount) => {
+  return new Intl.NumberFormat('id-ID', {
+    style: 'currency',
+    currency: 'IDR',
+    minimumFractionDigits: 0,
+  }).format(amount)
+}
+
 const FormPembelianProduk = () => {
   const {data: session} = useSession()
 
@@ -93,16 +101,19 @@ const FormPembelianProduk = () => {
       return
     }
 
+    const totalHarga = data.jumlah * data.hargabeli
+
     const newRow = {
       id: selectedProduct.id,
       nama: selectedProduct.nama,
-      jumlah: data.jumlah,
-      hargabeli: data.hargabeli
+      jumlah: parseInt(data.jumlah),
+      totalharga: parseInt(totalHarga),
+      hargabeli: parseInt(data.hargabeli),
     }
 
     setRows(prevRows => [...prevRows, newRow])
     setSelectedProduct(null)
-    setData(prevData => ({ ...prevData, produkId: '', jumlah: '', hargabeli: '' }))
+    setData(prevData => ({ ...prevData, produkId: '', jumlah: '', hargabeli: '', totalharga:'', }))
   }
 
   const handleRemoveClick = (row) => {
@@ -118,6 +129,13 @@ const FormPembelianProduk = () => {
 
       return
     }
+
+    const payload = {
+      distributorId: selectedDistributor.id,
+      produk: rows
+    }
+
+    console.log('Payload:', payload)
 
     try {
       const response = await fetch('/api/tambah-pembelian', {
@@ -152,12 +170,13 @@ const FormPembelianProduk = () => {
   const columns = [
     { field: 'id', headerName: 'ID', width: 100 },
     { field: 'nama', headerName: 'Nama Produk', width: 200 },
-    { field: 'hargabeli', headerName: 'Harga Beli', width: 150 },
+    { field: 'hargabeli', headerName: 'Harga Beli', width: 150, renderCell: (params) => <div>{formatCurrency(params.value)}</div>, },
     { field: 'jumlah', headerName: 'Jumlah', width: 150 },
+    { field: 'totalharga', headerName: 'Total Harga', width: 150, renderCell: (params) => <div>{formatCurrency(params.value)}</div>,},
     {
       field: 'hapus',
       headerName: 'Hapus',
-      width: 100,
+      width: 150,
       renderCell: (params) => (
         <Button variant="contained" color="primary" onClick={() => handleRemoveClick(params.row)}>
           Hapus
@@ -236,9 +255,11 @@ const FormPembelianProduk = () => {
         fullWidth
         sx={{ marginBottom: 2 }}
       />
+      <br />
       <Button variant="contained" color="primary" onClick={handleAddProduct}>
         Tambah
       </Button>
+      <br />
 
       <Box sx={{ height: 400, width: '100%', marginTop: 2 }}>
         <DataGrid
@@ -248,12 +269,15 @@ const FormPembelianProduk = () => {
           rowsPerPageOptions={[5]}
         />
       </Box>
+      <br />
 
       {alert && (
         <Alert severity={alert} style={{ marginBottom: '1rem' }}>
           {message}
         </Alert>
       )}
+
+      <br />
 
       <Button
         type="submit"
