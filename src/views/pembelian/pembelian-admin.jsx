@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState, useRef } from 'react'
 
+import { useSession } from 'next-auth/react'
 import {
   Grid, Button, TextField, InputAdornment, Alert, FormControl, InputLabel
 } from '@mui/material'
@@ -10,6 +11,8 @@ import Autocomplete from '@mui/material/Autocomplete'
 import { DataGrid } from '@mui/x-data-grid'
 
 const FormPembelianProduk = () => {
+  const {data: session} = useSession()
+
   const [data, setData] = useState({
     produkId: '',
     jumlah: '',
@@ -30,8 +33,8 @@ const FormPembelianProduk = () => {
     const fetchData = async () => {
       try {
         const [produkResponse, distributorResponse] = await Promise.all([
-          fetch('/api/data-produk'),
-          fetch('/api/data-distributor')
+          fetch(`/api/data-produk?userId=${session.user.id}`),
+          fetch(`/api/data-distributor?userId=${session.user.id}`)
         ])
 
         const produkData = await produkResponse.json()
@@ -54,7 +57,7 @@ const FormPembelianProduk = () => {
 
       return () => clearTimeout(timer)
     }
-  }, [alert])
+  }, [alert, session])
 
   const handleChange = (e) => {
     const { name, value } = e.target
