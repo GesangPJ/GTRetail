@@ -67,6 +67,7 @@ model Distributor {
 model Pembelian {
   id            Int       @id @default(autoincrement())
   kode          String    @unique
+  status        String?
   distributorId Int
   jumlahtotalharga    Int
 
@@ -83,7 +84,6 @@ model PembelianDetail {
   produkId      Int
   jumlah        Int
   hargabeli     Int
-  satuan        String?
   total         Int
 
   kedatangan    Kedatangan[]
