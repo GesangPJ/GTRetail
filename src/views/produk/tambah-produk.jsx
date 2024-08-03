@@ -66,7 +66,7 @@ const FormTambahProduk = () =>{
     barcode: data.get('barcode'),
     nama: data.get('nama'),
     harga: parseInt(data.get('harga')),
-    hargebeli: parseInt(data.get('hargabeli')),
+    hargabeli: parseInt(data.get('hargabeli')),
     stok: parseInt(data.get('stok')),
     satuan: data.get('satuan'),
     keterangan: data.get('keterangan'),
