@@ -23,6 +23,7 @@ import ExcelJS from 'exceljs'
 import Select from '@mui/material/Select'
 import InputLabel from '@mui/material/InputLabel'
 import FormControl from '@mui/material/FormControl'
+import ModeEditIcon from '@mui/icons-material/ModeEdit'
 
 
 const formatDate = (dateString) => {
@@ -54,6 +55,7 @@ const DetailPage = () => {
 
   const [formData, setFormData] = useState({
     produkId: '',
+    barcode:'',
     nama: '',
     harga: '',
     hargabeli: '',
@@ -62,17 +64,7 @@ const DetailPage = () => {
     keterangan:'',
    })
 
-   const handleClickOpen = (row) => {
-    setFormData({ produkId: data.id,
-    nama: data.nama,
-    harga: data.harga,
-    hargabeli: data.hargabeli,
-    satuan: data.satuan,
-    keterangan: data.keterangan,
-    status: data.status,
-    })
-    setOpen(true)
-  }
+
 
   const handleClose = () => {
     setOpen(false)
@@ -154,6 +146,19 @@ const DetailPage = () => {
     { label: 'Tanggal Produk Diperbarui', value: formatDate(data.updatedAt) },
   ]
 
+  const handleClickOpen = (row) => {
+    setFormData({ produkId: data.id,
+    nama: data.nama,
+    barcode: data.barcode,
+    harga: data.harga,
+    hargabeli: parseInt(data.hargabeli),
+    satuan: data.satuan,
+    keterangan: data.keterangan,
+    status: data.status,
+    })
+    setOpen(true)
+  }
+
   const handlePrint = () => {
     const doc = new jsPDF()
 
@@ -198,22 +203,17 @@ const DetailPage = () => {
       const result = await response.json()
 
       if (response.ok) {
-        alert('Data Admin Berhasil diubah')
-        setRows((prevRows) =>
-          prevRows.map((row) =>
-            row.id === formData.userId
-              ? { ...row, name: formData.nama, email: formData.email }
-              : row
-          )
-        )
-      } else {
-        alert(result.error || 'Ada kesalahan ketika mengganti data akun')
+        alert('Data Produk Berhasil diubah')
+        handleClose() // Tutup dialog jika sukses
+      }
+      else {
+        alert(result.error || 'Ada kesalahan ketika mengganti data produk')
       }
 
       handleClose()
     } catch (error) {
-      console.error('Error mengubah data akun:', error)
-      alert('Ada kesalahan ketika mengganti data akun')
+      console.error('Error mengubah data produk:', error)
+      alert('Ada kesalahan ketika mengganti data produk')
     }
   }
 
@@ -240,6 +240,9 @@ const DetailPage = () => {
         <Button variant='contained' color="primary" sx={ { borderRadius: 30 } } href="/dashboard/produk" size="large" >
           &laquo; Daftar Produk
         </Button>
+        <Button variant='outlined' color="warning" onClick={handleClickOpen} size="large" sx={ { borderRadius: 30 } } startIcon={<ModeEditIcon/>}>
+          Edit Produk
+        </Button>
         <Button variant='outlined' color="error" onClick={handlePrint} size="large" sx={ { borderRadius: 30 } } startIcon={<PictureAsPdfIcon/>}>
           PDF Export
         </Button>
@@ -254,6 +257,16 @@ const DetailPage = () => {
           <DialogContentText>
             Masukkan data yang ingin diubah.
           </DialogContentText>
+          <TextField
+            autoFocus
+            margin="dense"
+            name="barcode"
+            label="Barcode Produk"
+            type="text"
+            fullWidth
+            value={formData.barcode}
+            onChange={handleChange}
+          />
           <TextField
             autoFocus
             margin="dense"
