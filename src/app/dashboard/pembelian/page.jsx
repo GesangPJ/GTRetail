@@ -7,6 +7,8 @@ import { useRouter } from 'next/navigation'
 
 import { useSession } from 'next-auth/react'
 
+import FormPembelianProduk from '@/views/pembelian/pembelian-admin'
+
 const PembelianProdukAdmin = () =>{
   const { data: session, status } = useSession()
   const router = useRouter()
@@ -29,6 +31,10 @@ const PembelianProdukAdmin = () =>{
         <h1 className="text-2xl font-bold">
           Pembelian Produk
         </h1>
+      </div>
+      <br />
+      <div>
+        <FormPembelianProduk/>
       </div>
 
     </div>
