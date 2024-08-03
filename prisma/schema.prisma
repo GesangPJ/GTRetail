@@ -26,6 +26,7 @@ model User {
 
   transaksi  Transaksi[]  @relation("TransaksiUser")
   produk      Produk[]
+  kedatangan  Kedatangan[]
 }
 
 model Kategori {
@@ -67,18 +68,41 @@ model Pembelian {
   id            Int       @id @default(autoincrement())
   kode          String    @unique
   distributorId Int
-  produkId      Int
-  jumlah        Int
-  hargabeli     Int
-  totalharga    Int
-  keterangan    String?
-  kedatangan    DateTime?
+  jumlahtotalharga    Int
 
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
 
-  produk        Produk    @relation(fields: [produkId], references: [id])
+  pembeliandetail PembelianDetail[]
   distributor   Distributor @relation(fields: [distributorId], references: [id])
+}
+
+model PembelianDetail {
+  id            Int      @id  @default(autoincrement())
+  pembelianId   Int
+  produkId      Int
+  jumlah        Int
+  hargabeli     Int
+  satuan        String?
+  total         Int
+
+  kedatangan    Kedatangan[]
+  pembelian     Pembelian @relation(fields: [pembelianId], references: [id])
+  produk        Produk    @relation(fields: [produkId], references: [id])
+
+}
+
+model Kedatangan {
+  id                Int               @id @default(autoincrement())
+  pembeliandetailId Int
+  tanggalkedatangan DateTime          @default(now())
+  jumlahproduk      Int
+  status            String            @default("pending")
+  receivedBy        Int?
+  notes             String?
+
+  pembelian         PembelianDetail   @relation(fields: [pembeliandetailId], references: [id])
+  user              User?             @relation(fields: [receivedBy], references: [id])
 }
 
 model Produk {
@@ -99,7 +123,7 @@ model Produk {
   transaksi TransaksiDetail[]
   userproduk      User    @relation(fields: [userId], references: [id])
   kategori  Kategori  @relation(fields: [kategoriId], references: [id])
-  pembelian Pembelian[]
+  pembelian PembelianDetail[]
 }
 
 model TransaksiDetail {
