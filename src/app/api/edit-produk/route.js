@@ -18,7 +18,7 @@ export const PUT = async (req) => {
   }
 
   try{
-    const {produkId, nama, harga, hargabeli, satuan,
+    const {produkId, nama, barcode, harga, hargabeli, satuan,
           status, keterangan } = await req.json()
 
     if (!produkId || !nama || !harga || !hargabeli || !satuan || !status){
@@ -31,8 +31,9 @@ export const PUT = async (req) => {
         where: {id:produkId},
         data:{
           nama,
-          harga,
-          hargabeli,
+          barcode,
+          harga: parseInt(harga),
+          hargabeli: parseInt(hargabeli),
           status,
           satuan,
           keterangan,
