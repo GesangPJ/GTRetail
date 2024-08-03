@@ -302,6 +302,16 @@ const DetailPage = () => {
               <MenuItem value="NONAKTIF">NONAKTIF</MenuItem>
             </Select>
           </FormControl>
+          <TextField
+            autoFocus
+            margin="dense"
+            name="keterangan"
+            label="Keterangan"
+            type="text"
+            fullWidth
+            value={formData.keterangan}
+            onChange={handleChange}
+          />
         </DialogContent>
         <DialogActions>
           <Button variant="contained" onClick={handleClose} color="error" sx={ { borderRadius: 30 } }>
