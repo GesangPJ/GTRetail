@@ -66,7 +66,7 @@ export const POST = async (req) => {
       newNumber = '00001'
     }
 
-    const status = "DIPESAN"
+    const status = "PENDING"
 
     // Membuat kode baru
     const newKode = `GT/PURCHASE/${currentMonth}/${currentYear}/${newNumber}`
