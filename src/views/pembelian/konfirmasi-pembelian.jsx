@@ -167,7 +167,7 @@ export const FormKonfirmasiPembelian = () => {
             startIcon={<ErrorOutlineIcon />}
             onClick={() => handleStatusChange(params.row.id, 'BATAL')}
           >
-            TOLAK
+            BATAL
           </Button>
         </ButtonGroup>
       ),
