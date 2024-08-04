@@ -33,7 +33,7 @@ export async function GET(req){
         kode:true,
         status: true,
         jumlahtotalharga:true,
-        createdAt: true,
+        updatedAt: true,
         distributor:{select:{nama:true,},},
       }
     })
