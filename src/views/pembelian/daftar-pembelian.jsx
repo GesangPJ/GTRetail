@@ -12,6 +12,7 @@ import Box from '@mui/material/Box'
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline'
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline'
 import PauseCircleIcon from '@mui/icons-material/PauseCircle'
+import DoneAllIcon from '@mui/icons-material/DoneAll'
 
 const formatCurrency = (amount) => {
   return new Intl.NumberFormat('id-ID', {
@@ -27,6 +28,8 @@ const getStatusChip = (status) => {
       return <Chip label="PENDING" color="warning" variant="outlined" icon= {<PauseCircleIcon/>} />
     case 'DIPESAN':
       return <Chip label="DIPESAN" color="success" variant="outlined" icon= {<CheckCircleOutlineIcon/>} />
+    case 'SELESAI':
+      return <Chip label="SELESAI" color="primary" variant="outlined" icon= {<DoneAllIcon/>} />
     case 'BATAL':
       return <Chip label="BATAL" color="error" variant="outlined"  icon= {<ErrorOutlineIcon/>} />
     default:
@@ -75,18 +78,18 @@ const TabelDaftarPembelian = () => {
   }, [session])
 
   const columns = [
-    { field: 'no', headerName: 'No', width: 50, headerClassName:'app-theme--header', },
+    // { field: 'no', headerName: 'No', width: 50, headerClassName:'app-theme--header', },
     {
       field: 'updatedAt',
       headerName: 'Tanggal/Jam',
       headerClassName:'app-theme--header',
-      width: 150,
+      width: 130,
       renderCell: (params) => <div>{formatDate(params.value)}</div>,
     },
     { field: 'kode',
       headerName: 'Kode',
       headerClassName:'app-theme--header',
-      width: 160 },
+      width: 250 },
 
     {
       field: 'namaDistributor',
@@ -96,9 +99,9 @@ const TabelDaftarPembelian = () => {
     },
     {
       field: 'jumlahtotalharga',
-      headerName: 'Jumlah Total',
+      headerName: 'Total Harga',
       headerClassName:'app-theme--header',
-      width: 100,
+      width: 120,
       renderCell: (params) => <div>{formatCurrency(params.value)}</div>,
     },
     {
