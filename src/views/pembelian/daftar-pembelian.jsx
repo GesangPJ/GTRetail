@@ -95,7 +95,7 @@ const TabelDaftarPembelian = () => {
       field: 'namaDistributor',
       headerName: 'Distributor',
       headerClassName:'app-theme--header',
-      width: 150,
+      width: 180,
     },
     {
       field: 'jumlahtotalharga',
