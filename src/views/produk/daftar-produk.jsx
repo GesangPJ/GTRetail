@@ -62,7 +62,7 @@ const TabelDaftarProduk = () =>{
     { field: 'hargabeli',
       headerName: 'Harga Beli',
       headerClassName:'app-theme--header',
-      width: 150,
+      width: 110,
       renderCell: (params) => <div>{formatCurrency(params.value)}</div>,
     },
     { field: 'satuan',
@@ -86,10 +86,10 @@ const TabelDaftarProduk = () =>{
       disableExport: true,
       headerName: '',
       headerClassName:'app-theme--header',
-      width: 150,
+      width: 110,
       renderCell: (params) => (
         <Button variant="contained" size='small' color="primary" onClick={() => handleDetailClick(params.row)}>
-          Detail Produk &raquo;
+          Detail &raquo;
         </Button>
       ),
     },
