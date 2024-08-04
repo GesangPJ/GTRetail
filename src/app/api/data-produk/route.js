@@ -4,6 +4,8 @@ import { NextResponse } from 'next/server'
 
 import { getToken } from 'next-auth/jwt'
 
+import {logToFile} from '@/app/lib/logger'
+
 import prisma from '@/app/lib/prisma'
 
 export async function GET(req){
@@ -13,6 +15,8 @@ export async function GET(req){
 
   if (!token) {
     console.log('Unauthorized Access : API Data Produk')
+
+    logToFile('Unauthorized Access : API Data Produk')
 
     return NextResponse.json({ error: 'Unauthorized Access' }, { status: 401 })
   }
@@ -25,6 +29,7 @@ export async function GET(req){
   }
 
   console.log('User dengan Id : ',userId,' mengakses API data produk')
+  logToFile(`User dengan Id : ${userId} mengakses API data produk`)
 
   try{
     const produks = await prisma.produk.findMany({
@@ -49,6 +54,7 @@ export async function GET(req){
   }
   catch(error){
     console.error('Error mengambil data produk:', error)
+    logToFile('Error mengambil data produk', error)
 
     return NextResponse.json({ error: 'Terjadi kesalahan saat mengambil data produk' }, { status: 500 })
 
