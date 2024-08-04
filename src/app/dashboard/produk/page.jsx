@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect } from 'react'
+import { useEffect, Suspense } from 'react'
 
 import { useRouter } from 'next/navigation'
 
@@ -32,9 +32,12 @@ const HalamanProduk = () => {
         </h1>
       </div>
       <br />
+      <Suspense fallback={<div>Memuat Data...</div>}>
       <div>
         <TabelDaftarProduk/>
       </div>
+      </Suspense>
+
     </div>
   )
 }
