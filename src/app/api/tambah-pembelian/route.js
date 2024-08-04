@@ -46,8 +46,26 @@ export const POST = async (req) => {
       },
     })
 
-    const lastNumber = lastPembelian ? parseInt(lastPembelian.kode.split('/').pop(), 10) : 0
-    const newNumber = (lastNumber + 1).toString().padStart(5, '0')
+    let newNumber
+
+    if (lastPembelian) {
+      const lastPembelianDate = new Date(lastPembelian.createdAt)
+      const lastMonth = monthNames[lastPembelianDate.getMonth()]
+      const lastYear = lastPembelianDate.getFullYear()
+
+      // Reset nomor seri jika masuk bulan baru
+
+      if (currentMonth !== lastMonth || currentYear !== lastYear) {
+        newNumber = '00001'
+      } else {
+        const lastNumber = parseInt(lastPembelian.kode.split('/').pop(), 10)
+
+        newNumber = (lastNumber + 1).toString().padStart(5, '0')
+      }
+    } else {
+      newNumber = '00001'
+    }
+
     const status = "DIPESAN"
 
     // Membuat kode baru
