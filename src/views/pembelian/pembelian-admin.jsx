@@ -189,6 +189,7 @@ const FormPembelianProduk = () => {
     <div>
       <Autocomplete
         id="distributor"
+        fullWidth
         sx={{ width: 300 }}
         options={distributors}
         getOptionLabel={(option) => option.nama}
