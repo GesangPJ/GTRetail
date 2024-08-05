@@ -25,7 +25,7 @@ export const POST = async (req) => {
 
     console.log('Request Data:', data)
 
-    const { userId, kategoriId, barcode, nama, harga, hargabeli, stok, satuan, keterangan } = data
+    const { userId, kategoriId, barcode, nama, harga, hargabeli, jenis, stok, satuan, keterangan, kadaluarsa } = data
 
     if (!nama || !stok || !kategoriId || !satuan || !harga) {
       logToFile("Semua bidang harus diisi.(API tambah produk)")
@@ -44,6 +44,8 @@ export const POST = async (req) => {
           barcode: barcodeValue,
           harga,
           hargabeli,
+          kadaluarsa: kadaluarsa ? new Date(kadaluarsa) : null,
+          jenis,
           stok,
           satuan,
           status,
@@ -54,7 +56,7 @@ export const POST = async (req) => {
 
       console.log('Produk dibuat :', produk)
 
-      logToFile(`Produk berhasil ditambahkan : ${produk}`)
+      logToFile(`Produk berhasil ditambahkan : ${nama}`)
 
       return NextResponse.json(produk, { status: 201 })
     } catch (error) {
