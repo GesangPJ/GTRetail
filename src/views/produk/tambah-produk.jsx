@@ -4,6 +4,9 @@ import { useState, useEffect, useRef } from 'react'
 
 import { useSession } from 'next-auth/react'
 
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
+import { DatePicker } from '@mui/x-date-pickers/DatePicker'
 import Card from '@mui/material/Card'
 import Grid from '@mui/material/Grid'
 import Button from '@mui/material/Button'
@@ -15,7 +18,8 @@ import Alert from '@mui/material/Alert'
 import Select from '@mui/material/Select'
 import InputLabel from '@mui/material/InputLabel'
 import FormControl from '@mui/material/FormControl'
-import MenuItem from '@mui/material/MenuItem'
+import Autocomplete from '@mui/material/Autocomplete'
+import Box from '@mui/material/Box'
 
 const FormTambahProduk = () =>{
   const { data: session} = useSession()
@@ -23,6 +27,11 @@ const FormTambahProduk = () =>{
   const [message, setMessage] = useState('')
   const [KategoriProduk, setKategoriProduk] = useState([])
   const formRef = useRef(null)
+  const [selectedDate, setSelectedDate] = useState(null)
+
+  const handleDateChange = (date) => {
+    setSelectedDate(date)
+  }
 
   useEffect(() => {
     const fetchData = async () => {
@@ -66,7 +75,9 @@ const FormTambahProduk = () =>{
     barcode: data.get('barcode'),
     nama: data.get('nama'),
     harga: parseInt(data.get('harga')),
+    jenis: data.get('jenis'),
     hargabeli: parseInt(data.get('hargabeli')),
+    kadaluarsa: selectedDate ? selectedDate.toISOString() : null,
     stok: parseInt(data.get('stok')),
     satuan: data.get('satuan'),
     keterangan: data.get('keterangan'),
@@ -99,6 +110,7 @@ const FormTambahProduk = () =>{
 
   const handleReset = async () => {
     formRef.current.reset()
+    setSelectedDate(null)
   }
 
   return(
@@ -183,26 +195,55 @@ const FormTambahProduk = () =>{
                     }}
                   />
                 </Grid>
-              <Grid item xs={12}>
-                  <FormControl fullWidth required>
-                    <InputLabel htmlFor="kategoriproduk">Pilih Kategori</InputLabel>
-                    <Select
-                    label="Pilih Kategori"
+                <Grid item xs={12}>
+                  <Autocomplete
+                    id="kategoriproduk"
+                    fullWidth
+                    options={KategoriProduk}
+                    getOptionLabel={(option) => option.nama}
+                    renderOption={(props, option) => (
+                      <Box component="li" {...props}>
+                        {option.nama}
+                      </Box>
+                    )}
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        label="Pilih Kategori"
+                        inputProps={{
+                          ...params.inputProps,
+                          autoComplete: 'new-password'
+                        }}
+                      />
+                    )}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                <FormControl fullWidth>
+                  <InputLabel htmlFor='jenis'>Jenis Produk</InputLabel>
+                  <Select
+                    native
+                    label='Pilih Jenis'
+                    defaultValue=''
                     inputProps={{
-                      name: 'kategoriproduk',
-                      id: 'kategoriproduk'
+                      name: 'jenis',
+                      id: 'jenis'
                     }}
                   >
-                    <MenuItem value="">
-                      <em>-</em>
-                    </MenuItem>
-                    {KategoriProduk.map((item) => (
-                      <MenuItem key={item.id} value={item.id}>
-                        {item.nama}
-                      </MenuItem>
-                    ))}
+                    <option value={'BARANG'}>Barang</option>
+                    <option value={'PANGAN'}>Pangan / Makanan</option>
                   </Select>
-                  </FormControl>
+                </FormControl>
+              </Grid>
+              <Grid item xs={12}>
+                  <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <DatePicker
+                      label='Tanggal Kadaluarsa (jika ada)'
+                      views={['year', 'month', 'day']}
+                      value={selectedDate}
+                      onChange={handleDateChange}
+                    />
+                  </LocalizationProvider>
                 </Grid>
                 <Grid item xs={12}>
                   <TextField
