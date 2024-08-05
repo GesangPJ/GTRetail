@@ -28,9 +28,21 @@ import ModeEditIcon from '@mui/icons-material/ModeEdit'
 
 
 const formatDate = (dateString) => {
-  if (!dateString) return 'Invalid Date'
+  // Cek apakah tanggal bernilai null/tidak sesuai format
+  if (!dateString || dateString === '-') return '-'
+
   const date = new Date(dateString)
-  const options = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' }
+
+  // Cek apakah valid
+  if (isNaN(date.getTime())) return '-'
+
+  const options = {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+  }
 
   return new Intl.DateTimeFormat('id-ID', options).format(date)
 }
@@ -60,12 +72,11 @@ const DetailPage = () => {
     nama: '',
     harga: '',
     hargabeli: '',
+    jenis:'',
     satuan:'',
     status:'',
     keterangan:'',
    })
-
-
 
   const handleClose = () => {
     setOpen(false)
@@ -140,6 +151,8 @@ const DetailPage = () => {
     { label: 'Satuan', value: data.satuan},
     { label: 'Stok', value: data.stok},
     { label: 'Kategori', value: data.kategori},
+    { label: 'Jenis Produk', value: data.jenis},
+    { label: 'Kadaluarsa', value: formatDate(data.kadaluarsa)},
     { label: 'Keterangan', value: data.keterangan },
     { label: 'Status', value: data.status},
     { label: 'Dibuat / Diedit oleh ', value: data.namaKaryawan },
@@ -153,6 +166,7 @@ const DetailPage = () => {
     barcode: data.barcode,
     harga: data.harga,
     hargabeli: parseInt(data.hargabeli),
+    jenis: data.jenis,
     satuan: data.satuan,
     keterangan: data.keterangan,
     status: data.status,
@@ -255,9 +269,6 @@ const DetailPage = () => {
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>Edit Data Admin</DialogTitle>
         <DialogContent>
-          <DialogContentText>
-            Masukkan data yang ingin diubah.
-          </DialogContentText>
           <TextField
             autoFocus
             margin="dense"
@@ -305,7 +316,18 @@ const DetailPage = () => {
             value={formData.satuan}
             onChange={handleChange}
           />
-          <FormControl fullWidth margin="dense">
+          <FormControl fullWidth margin="dense" className=' py-[10px]'>
+            <InputLabel>Jenis</InputLabel>
+            <Select
+              name="jenis"
+              value={formData.jenis}
+              onChange={handleChange}
+            >
+              <MenuItem value="BARANG">Barang</MenuItem>
+              <MenuItem value="PANGAN">Pangan / Makanan</MenuItem>
+            </Select>
+          </FormControl>
+          <FormControl fullWidth margin="dense" className=' py-[10px]'>
             <InputLabel>Status</InputLabel>
             <Select
               name="status"
