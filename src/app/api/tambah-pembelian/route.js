@@ -1,4 +1,4 @@
-// API tambah pembelian
+// API tambah pembelian admin
 
 import { NextResponse } from 'next/server'
 
@@ -12,7 +12,7 @@ export const POST = async (req) => {
   console.log('Token:', token)
 
   if (!token) {
-    console.log('Unauthorized Access : API Tambah Pembelian')
+    console.log('Unauthorized Access : API Tambah Pembelian Admin')
 
     return NextResponse.json({ error: 'Unauthorized Access' }, { status: 401 })
   }
@@ -66,7 +66,7 @@ export const POST = async (req) => {
       newNumber = '00001'
     }
 
-    const status = "PENDING"
+    const status = "DIPESAN"
 
     // Membuat kode baru
     const newKode = `GT/PURCHASE/${currentMonth}/${currentYear}/${newNumber}`
