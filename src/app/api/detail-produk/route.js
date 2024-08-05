@@ -49,6 +49,7 @@ export async function GET(req) {
     const formattedproduk = {
       ...produk,
       createdAt: produk.createdAt.toISOString(),
+      kadaluarsa: produk.kadaluarsa ? produk.kadaluarsa.toISOString() : "-",
       updatedAt: produk.updatedAt.toISOString(),
       namaKaryawan: produk.userproduk?.name || "-",
       kategori: produk.kategori?.nama || '-'
