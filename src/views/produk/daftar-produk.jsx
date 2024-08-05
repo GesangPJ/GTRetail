@@ -17,6 +17,21 @@ const formatCurrency = (amount) => {
   }).format(amount)
 }
 
+const formatDate = (dateString) => {
+  if (!dateString || dateString === '-') return '-'
+
+  const date = new Date(dateString)
+
+  // cek apakah tanggal valid
+  if (isNaN(date.getTime())) return '-'
+
+  const day = String(date.getDate()).padStart(2, '0')
+  const month = String(date.getMonth() + 1).padStart(2, '0')
+  const year = date.getFullYear()
+
+  return `${day}-${month}-${year}`
+}
+
 const TabelDaftarProduk = () =>{
   const router = useRouter()
   const { data: session } = useSession()
@@ -72,11 +87,22 @@ const TabelDaftarProduk = () =>{
     { field: 'stok',
        headerName: 'Stok',
         headerClassName:'app-theme--header',
-         width: 100 },
+         width: 50 },
     { field: 'namaKategori',
        headerName: 'Kategori',
         headerClassName:'app-theme--header',
          width: 150},
+    { field: 'jenis',
+    headerName: 'Jenis',
+    headerClassName:'app-theme--header',
+      width: 100},
+    {
+      field: 'kadaluarsa',
+      headerName: 'Kadaluarsa',
+      headerClassName:'app-theme--header',
+      width: 150,
+      renderCell: (params) => <div>{formatDate(params.value)}</div>,
+    },
     { field: 'status',
        headerName: 'Status',
         headerClassName:'app-theme--header',
