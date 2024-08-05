@@ -105,6 +105,11 @@ model Kedatangan {
   user              User?             @relation(fields: [receivedBy], references: [id])
 }
 
+enum jenis_p {
+  BARANG
+  PANGAN
+}
+
 model Produk {
   id            Int       @id @default(autoincrement())
   userId        Int
@@ -115,6 +120,8 @@ model Produk {
   harga         Int
   hargabeli     Int?
   kategoriId    Int
+  jenis         jenis_p   @default(BARANG)
+  kadaluarsa    DateTime?
   status        String    @default("AKTIF")
   keterangan    String?
   createdAt     DateTime  @default(now())
