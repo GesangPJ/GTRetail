@@ -40,6 +40,8 @@ export async function GET(req){
         harga:true,
         hargabeli:true,
         satuan:true,
+        jenis:true,
+        kadaluarsa:true,
         status:true,
         kategori:{select:{nama:true,},},
       }
@@ -48,6 +50,7 @@ export async function GET(req){
     const formattedproduk = produks.map(produk => ({
       ...produk,
       namaKategori: produk.kategori?.nama || '-',
+      kadaluarsa: produk.kadaluarsa ? produk.kadaluarsa.toISOString() : "-",
     }))
 
     return NextResponse.json(formattedproduk, {status:200})
