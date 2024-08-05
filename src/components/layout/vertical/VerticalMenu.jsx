@@ -160,6 +160,7 @@ const VerticalMenu = ({ scrollMenu }) => {
               icon={<i className="ri-bank-card-2-line"></i>}
             >
               <MenuItem href='/dashboard/pembelian-k'>Pembelian Produk</MenuItem>
+              <MenuItem href='/dashboard/daftar-pembelian'>Daftar Pembelian</MenuItem>
               <MenuItem href='/dashboard/distributor'>Daftar Distributor</MenuItem>
 
             </SubMenu>
