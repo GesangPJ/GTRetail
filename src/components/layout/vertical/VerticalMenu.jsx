@@ -155,14 +155,14 @@ const VerticalMenu = ({ scrollMenu }) => {
                 <MenuItem href='/dashboard/atur-stok'>Atur Stok Produk</MenuItem>
               </SubMenu>
 
-            {/* <SubMenu
+            <SubMenu
               label='Pembelian'
               icon={<i className="ri-bank-card-2-line"></i>}
             >
               <MenuItem href='/dashboard/pembelian-k'>Pembelian Produk</MenuItem>
               <MenuItem href='/dashboard/distributor'>Daftar Distributor</MenuItem>
 
-            </SubMenu> */}
+            </SubMenu>
               <SubMenu
               label='Bantuan'
               icon={<i className="ri-question-line"></i>}
