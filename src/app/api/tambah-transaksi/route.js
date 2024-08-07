@@ -1,4 +1,4 @@
-// API tambah pembelian admin
+// API tambah Transaksi admin
 
 import { NextResponse } from 'next/server'
 
@@ -12,17 +12,19 @@ export const POST = async (req) => {
   console.log('Token:', token)
 
   if (!token) {
-    console.log('Unauthorized Access : API Tambah Pembelian Admin')
+    console.log('Unauthorized Access : API Tambah Transaksi Admin')
 
     return NextResponse.json({ error: 'Unauthorized Access' }, { status: 401 })
   }
 
   try {
-    const { pelangganId, pelangganNama, produk } = await req.json()
+    const { pelangganId, userId, pelangganNama, produk } = await req.json()
 
-    if (!distributorId || !produk) {
+    if (!produk) {
       return NextResponse.json({ error: 'Data tidak lengkap' }, { status: 400 })
     }
+
+    console.log(`User dengan Id: ${userId} Menambahkan transaksi`)
 
     // Mengambil bulan dan tahun saat ini
     const currentDate = new Date()
@@ -33,8 +35,8 @@ export const POST = async (req) => {
     // Menghitung total harga
     const totalHarga = produk.reduce((acc, produk) => acc + (produk.harga * produk.jumlah), 0)
 
-    // Mengambil nomor urut terakhir dari pembelian bulan dan tahun ini
-    const lastTransaksi = await prisma.pembelian.findFirst({
+    // Mengambil nomor urut terakhir dari Transaksi bulan dan tahun ini
+    const lastTransaksi = await prisma.transaksi.findFirst({
       where: {
         createdAt: {
           gte: new Date(currentYear, currentDate.getMonth(), 1),
@@ -74,7 +76,8 @@ export const POST = async (req) => {
     const newTransaksi = await prisma.transaksi.create({
       data: {
         kode: newKode,
-        userId:pelangganId,
+        userId:userId,
+        pelangganId,
         namapelanggan:pelangganNama,
         status,
         jumlahTotal: totalHarga,
@@ -89,11 +92,19 @@ export const POST = async (req) => {
       },
     })
 
+    // Mengurangi stok produk
+    for (const item of produk) {
+      await prisma.produk.update({
+        where: { id: item.id },
+        data: { stok: { decrement: parseInt(item.jumlah) } }
+      })
+    }
+
     return NextResponse.json(newTransaksi, { status: 201 })
 
   } catch (error) {
-    console.error('Error menambah pembelian:', error)
+    console.error('Error menambah Transaksi:', error)
 
-    return NextResponse.json({ error: 'Terjadi kesalahan saat menambah pembelian' }, { status: 500 })
+    return NextResponse.json({ error: 'Terjadi kesalahan saat menambah Transaksi' }, { status: 500 })
   }
 }
