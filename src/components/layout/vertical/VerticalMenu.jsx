@@ -140,7 +140,7 @@ const VerticalMenu = ({ scrollMenu }) => {
                 label='Penjualan'
                 icon={<i className="ri-shopping-cart-line"></i>}
               >
-                <MenuItem href='/dashboard/transaksi-k'>Daftar Transaksi</MenuItem>
+                <MenuItem href='/dashboard/transaksi'>Daftar Transaksi</MenuItem>
                 <MenuItem href='/dashboard/pelanggan'>Daftar Pelanggan</MenuItem>
                 <MenuItem href='/dashboard/tambah-pelanggan'>Tambah Pelanggan</MenuItem>
               </SubMenu>
