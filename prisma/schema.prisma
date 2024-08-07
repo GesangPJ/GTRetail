@@ -147,9 +147,10 @@ model TransaksiDetail {
 
 model Transaksi {
   id             Int              @id @default(autoincrement())
-  nomor          String           @unique
+  kode           String           @unique
+  status         String
   userId         Int
-  pelangganId    Int?             @default(0)
+  pelangganId    Int?
   namapelanggan  String?
   jumlahTotal    Int
   createdAt      DateTime         @default(now())
@@ -157,7 +158,7 @@ model Transaksi {
 
   user           User             @relation("TransaksiUser", fields: [userId], references: [id])
   pelanggan      Pelanggan?       @relation("TransaksiPelanggan", fields: [pelangganId], references: [id])
-  details        TransaksiDetail[]
+  transaksidetail  TransaksiDetail[]
 
 }
 
