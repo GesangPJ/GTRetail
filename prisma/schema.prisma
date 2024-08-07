@@ -150,6 +150,7 @@ model Transaksi {
   nomor          String           @unique
   userId         Int
   pelangganId    Int?             @default(0)
+  namapelanggan  String?
   jumlahTotal    Int
   createdAt      DateTime         @default(now())
   updatedAt      DateTime         @updatedAt
