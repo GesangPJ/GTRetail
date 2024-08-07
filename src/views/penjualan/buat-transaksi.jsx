@@ -138,6 +138,7 @@ const MesinKasir = () => {
     }
 
     const payload = {
+      userId: session.user?.id,
       pelangganId: selectedPelanggan?.id || null,
       pelangganNama: selectedPelanggan?.nama || data.pelangganNama || '-',
       produk: rows
