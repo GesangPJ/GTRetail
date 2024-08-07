@@ -2,7 +2,7 @@
 
 'use client'
 
-import { useEffect } from 'react'
+import { useEffect, Suspense } from 'react'
 
 import { useRouter } from 'next/navigation'
 
@@ -11,6 +11,8 @@ import { useSession } from 'next-auth/react'
 //Import Komponen dan pastikan komponen menjadi dynamic page
 import TabelAdmin from '@/views/dashboard/DashboardAdmin'
 import TabelKaryawan from '@/views/dashboard/DashboardKaryawan'
+
+import MesinKasir from '@/views/penjualan/buat-transaksi'
 
 const DashboardAnalytics = () => {
   const { data: session, status } = useSession()
@@ -35,16 +37,16 @@ const DashboardAnalytics = () => {
     <div style={{ height: 400, width: '100%' }}>
         {isAdmin && (
           <div>
-            <h1>Dashboard Admin</h1>
+            <h1 className='text-2xl font-bold'>Dashboard Admin</h1>
             <br />
-            {/* <TabelAdmin/> */}
+            <MesinKasir/>
           </div>
         )}
         {isKaryawan && (
             <div>
-              <h1>Dashboard Karyawan</h1>
+              <h1 className='text-2xl font-bold'>Dashboard Karyawan</h1>
               <br />
-            {/* <TabelKaryawan/> */}
+              <MesinKasir/>
             </div>
         )}
     </div>
