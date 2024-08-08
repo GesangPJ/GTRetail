@@ -56,7 +56,6 @@ export const POST = async (req) => {
       const lastYear = lastTransaksiDate.getFullYear()
 
       // Reset nomor seri jika masuk bulan baru
-
       if (currentMonth !== lastMonth || currentYear !== lastYear) {
         newNumber = '00001'
       } else {
@@ -73,12 +72,13 @@ export const POST = async (req) => {
     // Membuat kode baru
     const newKode = `GT/SALES/${currentMonth}/${currentYear}/${newNumber}`
 
+    // Membuat transaksi baru
     const newTransaksi = await prisma.transaksi.create({
       data: {
         kode: newKode,
-        userId:userId,
+        userId,
         pelangganId,
-        namapelanggan:pelangganNama,
+        namapelanggan: pelangganNama,
         status,
         jumlahTotal: totalHarga,
         transaksidetail: {
@@ -89,6 +89,15 @@ export const POST = async (req) => {
             total: produk.harga * produk.jumlah,
           })),
         },
+      },
+    })
+
+    // Membuat jurnal transaksi baru
+    const newJurnalTransaksi = await prisma.jurnalTransaksi.create({
+      data: {
+        transaksiId: newTransaksi.id,
+        kode: newKode,
+        pemasukan: totalHarga,
       },
     })
 
