@@ -8,10 +8,6 @@ import { useRouter } from 'next/navigation'
 
 import { useSession } from 'next-auth/react'
 
-//Import Komponen dan pastikan komponen menjadi dynamic page
-import TabelAdmin from '@/views/dashboard/DashboardAdmin'
-import TabelKaryawan from '@/views/dashboard/DashboardKaryawan'
-
 import MesinKasir from '@/views/penjualan/buat-transaksi'
 
 const DashboardAnalytics = () => {
