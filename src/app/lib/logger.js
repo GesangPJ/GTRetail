@@ -3,7 +3,7 @@ import fs from 'fs'
 import path from 'path'
 
 // Define the log file path
-const logFilePath = path.join(process.cwd(), '/tmp', 'api.log')
+const logFilePath = path.join(process.cwd(), '/src/app/api', 'api.log')
 
 // Ensure the logs directory exists
 if (!fs.existsSync(path.dirname(logFilePath))) {
