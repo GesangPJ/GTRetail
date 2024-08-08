@@ -9,6 +9,9 @@ import {
 import Box from '@mui/material/Box'
 import Autocomplete from '@mui/material/Autocomplete'
 import { DataGrid } from '@mui/x-data-grid'
+import SaveIcon from '@mui/icons-material/Save'
+import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart'
+import DeleteIcon from '@mui/icons-material/Delete'
 
 const formatCurrency = (amount) => {
   return new Intl.NumberFormat('id-ID', {
@@ -183,7 +186,12 @@ const MesinKasir = () => {
       headerName: 'Hapus',
       width: 150,
       renderCell: (params) => (
-        <Button variant="contained" color="primary" onClick={() => handleRemoveClick(params.row)}>
+        <Button
+        variant="contained"
+        color="error"
+        sx={ { borderRadius: 30 } }
+        onClick={() => handleRemoveClick(params.row)}
+        startIcon={<DeleteIcon/>}>
           Hapus
         </Button>
       ),
@@ -192,6 +200,12 @@ const MesinKasir = () => {
 
   return (
     <div>
+      {alert && (
+        <Alert severity={alert} style={{ marginBottom: '1rem' }}>
+          {message}
+        </Alert>
+      )}
+
       <Autocomplete
         id="pelanggan"
         fullWidth
@@ -263,37 +277,37 @@ const MesinKasir = () => {
         sx={{ marginBottom: 2 }}
       />
       <br />
-      <Button variant="contained" color="primary" onClick={handleAddProduct}>
+      <Button
+      variant="contained"
+      color="primary"
+      onClick={handleAddProduct}
+      sx={{ borderRadius: 30 }}
+      startIcon={<AddShoppingCartIcon/>}
+      >
         Tambah
       </Button>
       <br />
 
-      <Box sx={{ height: 400, width: '100%', marginTop: 2 }}>
+      <Box sx={{ height: 300, width: '100%', marginTop: 2 }}>
         <DataGrid
           rows={rows}
           columns={columns}
           pageSize={5}
           rowsPerPageOptions={[5]}
         />
-      </Box>
-      <br />
-
-      {alert && (
-        <Alert severity={alert} style={{ marginBottom: '1rem' }}>
-          {message}
-        </Alert>
-      )}
-
-      <br />
-
-      <Button
+        <br />
+        <Button
         type="submit"
         variant="contained"
-        color="primary"
+        color="success"
+        size='large'
         onClick={handleSubmit}
+        sx={{ borderRadius: 30 }}
+        startIcon={<SaveIcon/>}
       >
         Simpan Transaksi
       </Button>
+      </Box>
     </div>
   )
 }
