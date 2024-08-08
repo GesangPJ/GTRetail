@@ -4,8 +4,6 @@ import { NextResponse } from 'next/server'
 
 import { getToken } from 'next-auth/jwt'
 
-import { logToFile } from '@/app/lib/logger'
-
 import prisma from '@/app/lib/prisma'
 
 export async function GET(req){
@@ -16,8 +14,6 @@ export async function GET(req){
   if (!token) {
     console.log('Unauthorized Access : API Ambil Status Pembelian')
 
-    logToFile('Unauthorized Access : API Ambil Status Pembelian')
-
     return NextResponse.json({ error: 'Unauthorized Access' }, { status: 401 })
   }
 
@@ -25,7 +21,6 @@ export async function GET(req){
   const userId = searchParams.get('userId')
 
   if (!userId) {
-    logToFile('User ID tidak ditemukan!')
 
     return NextResponse.json({ error: 'User ID tidak ditemukan!' }, { status: 400 })
   }
