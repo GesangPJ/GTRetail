@@ -28,6 +28,7 @@ const FormTambahProduk = () =>{
   const [KategoriProduk, setKategoriProduk] = useState([])
   const formRef = useRef(null)
   const [selectedDate, setSelectedDate] = useState(null)
+  const [selectedKategori, setSelectedKategori] = useState(null)
 
   const handleDateChange = (date) => {
     setSelectedDate(date)
@@ -62,7 +63,15 @@ const FormTambahProduk = () =>{
     event.preventDefault()
     const data = new FormData(event.target)
 
-  if (!data.get('kategoriproduk') || !data.get('nama') || !data.get('harga') || !data.get('hargabeli') || !data.get('stok')) {
+    console.log({
+      kategoriId: selectedKategori.id,
+      harga: data.get('harga'),
+      hargabeli: data.get('hargabeli'),
+      jenis: data.get('jenis'),
+      nama: data.get('nama'),
+    })
+
+  if (!selectedKategori.id || !data.get('nama') || !data.get('harga') || !data.get('hargabeli') || !data.get('stok')) {
     setAlert('error')
     setMessage('Semua bidang harus diisi.')
 
@@ -71,7 +80,7 @@ const FormTambahProduk = () =>{
 
   const formData = {
     userId: session.user.id,
-    kategoriId: parseInt(data.get('kategoriproduk')),
+    kategoriId: selectedKategori.id,
     barcode: data.get('barcode'),
     nama: data.get('nama'),
     harga: parseInt(data.get('harga')),
@@ -82,6 +91,8 @@ const FormTambahProduk = () =>{
     satuan: data.get('satuan'),
     keterangan: data.get('keterangan'),
   }
+
+
 
     try {
       const response = await fetch('/api/tambah-produk', {
@@ -196,27 +207,29 @@ const FormTambahProduk = () =>{
                   />
                 </Grid>
                 <Grid item xs={12}>
-                  <Autocomplete
-                    id="kategoriproduk"
-                    fullWidth
-                    options={KategoriProduk}
-                    getOptionLabel={(option) => option.nama}
-                    renderOption={(props, option) => (
-                      <Box component="li" {...props}>
-                        {option.nama}
-                      </Box>
-                    )}
-                    renderInput={(params) => (
-                      <TextField
-                        {...params}
-                        label="Pilih Kategori"
-                        inputProps={{
-                          ...params.inputProps,
-                          autoComplete: 'new-password'
-                        }}
-                      />
-                    )}
-                  />
+                <Autocomplete
+                  id="kategoriproduk"
+                  fullWidth
+                  options={KategoriProduk}
+                  getOptionLabel={(option) => option.nama}
+                  value={selectedKategori}
+                  onChange={(event, newValue) => setSelectedKategori(newValue)}
+                  renderOption={(props, option) => (
+                    <Box component="li" {...props} key={option.id}>
+                      {option.nama}
+                    </Box>
+                  )}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      label="Pilih Kategori"
+                      inputProps={{
+                        ...params.inputProps,
+                        autoComplete: 'new-password'
+                      }}
+                    />
+                  )}
+                />
                 </Grid>
                 <Grid item xs={12}>
                 <FormControl fullWidth>

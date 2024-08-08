@@ -88,6 +88,14 @@ export const POST = async (req) => {
       },
     })
 
+    const newJurnalPembelian = await prisma.jurnalPembelian.create({
+      data:{
+        pembelianId: newPembelian.id,
+        kode: newKode,
+        pengeluaran: totalHarga,
+      }
+    })
+
     return NextResponse.json(newPembelian, { status: 201 })
 
   } catch (error) {

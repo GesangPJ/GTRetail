@@ -1,6 +1,6 @@
 {
   "name": "GTRetail",
-  "version": "1.0.0",
+  "version": "1.1.7",
   "license": "Commercial",
   "private": true,
   "scripts": {
@@ -15,7 +15,7 @@
     "postinstall": "prisma generate && npm run build:icons",
     "seedadmin": "node prisma/seedAdmin.js",
     "seedkaryawan": "node prisma/seedKaryawan.js",
-    "deletekasbon": "node prisma/deleteKasbon.js"
+    "resettransaksi": "node prisma/resetTransaksi.js"
   },
   "dependencies": {
     "@emotion/cache": "^11.11.0",

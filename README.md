@@ -18,24 +18,28 @@ Aplikasi Sistem Manajemen Penjualan untuk UMKM berbasis Node.JS dengan framework
 8. Pages protection menggunakan session.
 9. Admin Master Key autentikasi bagi admin untuk mengganti password akun dan data akun.
 
-## Halaman
+## Fitur Sistem Penjualan
 
-1. Dashboard (Admin & Karyawan)
-2. Daftar Transaksi
-3. Daftar Pelanggan
-4. Tambah Pelanggan
-5. Daftar Produk
-6. Daftar Kategori Produk
-7. Tambah Produk
-8. Tambah Kategori Produk
-9. Daftar Pembelian (Purchasing)
-10. Tambah Pembelian
-11. Daftar Distributor
-12. Tambah Distributor
-13. Daftar Akun (Admin & Karyawan)
-14. Tambah Akun
+1. Transaksi Penjualan : Tambah Transaksi, daftar transaksi, edit status transaksi.
+2. Detail Transaksi
+3. Produk : Tambah Produk, Daftar Produk, Edit Produk.
+4. Kategori Produk : Tambah Kategori Produk, edit status kategori produk.
+5. Pembelian / Purchasing : Tambah Pembelian, edit pembelian.
+6. Detail Pembelian
+7. Stok : Atur Stok Produk.
+8. Pelanggan : Tambah pelanggan, daftar pelanggan, edit pelanggan.
+9. Distributor : Tambah Distributor, daftar distributor, edit distributor.
+10. Akun : Akun Admin & Karyawan : Tambah Akun, Edit Akun.
 
 ## Changelog
+
+### v1.1.7
+
+- Fix Bug Tambah Produk, dimana kategoriId berisi Null.
+- Membuat Jurnal Transaksi.
+- Membuat Jurnal Pembelian.
+- Fungsi Jurnal Sementara.
+- Ganti Prisma connection menggunakan `DATABASE_URL`.
 
 ### v1.0.0
 

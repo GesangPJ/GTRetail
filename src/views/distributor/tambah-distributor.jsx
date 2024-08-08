@@ -41,7 +41,7 @@ const FormTambahDistributor = () => {
 
       if (response.ok) {
         setAlert('success')
-        setMessage('Distributor berhasil ditambahkan!')
+        setMessage(`Distributor ${formData.nama} berhasil ditambahkan!`)
         formRef.current.reset() // Kosongkan form setelah berhasil didaftarkan
       } else {
         setAlert('error')

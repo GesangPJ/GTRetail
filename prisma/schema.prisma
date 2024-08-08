@@ -5,9 +5,8 @@
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 datasource db {
-  provider = "postgresql"
-  url = env("POSTGRES_PRISMA_URL")
-  directUrl = env("POSTGRES_URL_NON_POOLING")
+ provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 generator client {
@@ -27,6 +26,30 @@ model User {
   transaksi  Transaksi[]  @relation("TransaksiUser")
   produk      Produk[]
   kedatangan  Kedatangan[]
+}
+
+model JurnalTransaksi {
+  id            Int      @id  @default(autoincrement())
+  transaksiId   Int
+  kode          String
+  pemasukan     Int       @default(0)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  transaksi     Transaksi @relation(fields: [transaksiId], references: [id])
+}
+
+model JurnalPembelian {
+  id            Int       @id @default(autoincrement())
+  pembelianId   Int
+  kode          String
+  pengeluaran   Int       @default(0)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  pembelian     Pembelian @relation(fields: [pembelianId], references: [id])
+
+
 }
 
 model Kategori {
@@ -76,6 +99,7 @@ model Pembelian {
 
   pembeliandetail PembelianDetail[]
   distributor   Distributor @relation(fields: [distributorId], references: [id])
+  jurnalpembelian   JurnalPembelian[]
 }
 
 model PembelianDetail {
@@ -159,6 +183,7 @@ model Transaksi {
   user           User             @relation("TransaksiUser", fields: [userId], references: [id])
   pelanggan      Pelanggan?       @relation("TransaksiPelanggan", fields: [pelangganId], references: [id])
   transaksidetail  TransaksiDetail[]
+  jurnaltransaksi  JurnalTransaksi[]
 
 }
 

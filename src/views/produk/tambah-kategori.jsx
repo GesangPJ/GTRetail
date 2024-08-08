@@ -63,7 +63,7 @@ const FormTambahKategori = () =>{
 
       if (response.ok) {
         setAlert('success')
-        setMessage('Data Kategori Produk berhasil disimpan!')
+        setMessage(`Kategori Produk ${formData.nama} berhasil disimpan!`)
         formRef.current.reset() // Kosongkan form setelah berhasil didaftarkan
       } else {
         setAlert('error')
