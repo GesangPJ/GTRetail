@@ -5,8 +5,6 @@ import { NextResponse } from "next/server"
 
 import { getToken } from 'next-auth/jwt'
 
-import { logToFile } from '@/app/lib/logger'
-
 import prisma from "@/app/lib/prisma"
 
 export async function GET(req) {
@@ -17,8 +15,6 @@ export async function GET(req) {
   if (!token) {
     console.log('Unauthorized Access : API Ambil Detail produk')
 
-    logToFile('Unauthorized Access : API Ambil Detail produk')
-
     return NextResponse.json({ error: 'Unauthorized Access' }, { status: 401 })
   }
 
@@ -27,7 +23,6 @@ export async function GET(req) {
 
   try {
     if (!id) {
-      logToFile('Id produk kosong (API detail produk)')
 
       return NextResponse.json({ error: "Id produk kosong" }, { status: 400 })
     }
@@ -41,7 +36,6 @@ export async function GET(req) {
     })
 
     if (!produk) {
-      logToFile('data produk tidak ada')
 
       return NextResponse.json({ error: "produk tidak ditemukan" }, { status: 404 })
     }
@@ -57,13 +51,9 @@ export async function GET(req) {
 
     console.log("Detail produk", formattedproduk)
 
-    logToFile(`Data detail produk berhasil diambil : ${formattedproduk.nama}`)
-
     return NextResponse.json(formattedproduk, { status: 200 })
   } catch (error) {
     console.error("Error mengambil data produk", error)
-
-    logToFile('Error mengambil data detail produk')
 
     return NextResponse.json({ error: "Terjadi kesalahan saat mengambil data produk" }, { status: 500 })
   }
