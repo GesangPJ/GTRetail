@@ -4,8 +4,6 @@ import { NextResponse } from 'next/server'
 
 import { getToken } from 'next-auth/jwt'
 
-import {logToFile} from '@/app/lib/logger'
-
 import prisma from '@/app/lib/prisma'
 
 export const POST = async (req) => {
@@ -15,7 +13,6 @@ export const POST = async (req) => {
 
   if (!token) {
     console.log('Unauthorized Access : API Tambah Kategori Produk')
-    logToFile('Unauthorized Access : API Tambah Kategori Produk')
 
     return NextResponse.json({ error: 'Unauthorized Access' }, { status: 401 })
   }
@@ -28,7 +25,6 @@ export const POST = async (req) => {
     const { userId, kategoriId, barcode, nama, harga, hargabeli, jenis, stok, satuan, keterangan, kadaluarsa } = data
 
     if (!nama || !stok || !kategoriId || !satuan || !harga) {
-      logToFile("Semua bidang harus diisi.(API tambah produk)")
 
       return NextResponse.json({ error: "Semua bidang harus diisi." }, { status: 400 });
     }
@@ -56,22 +52,16 @@ export const POST = async (req) => {
 
       console.log('Produk dibuat :', produk)
 
-      logToFile(`Produk berhasil ditambahkan : ${nama}`)
-
       return NextResponse.json(produk, { status: 201 })
     } catch (error) {
       console.error('Error membuat produk:', error)
-      logToFile('Error membuat produk:', error)
 
       return NextResponse.json({ error: "Error nilai produk" }, { status: 400 })
     }
   } catch (error) {
     console.error('Error membuat produk:', error)
-    logToFile('Error menambahkan produk', error)
 
     return NextResponse.json({ error: "Terjadi kesalahan saat memproses permintaan." }, { status: 500 })
   }
-
-
 
 }

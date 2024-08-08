@@ -4,8 +4,6 @@ import { NextResponse } from 'next/server'
 
 import { getToken } from 'next-auth/jwt'
 
-import { logToFile } from '@/app/lib/logger'
-
 import prisma from '@/app/lib/prisma'
 
 export const PUT = async (req) => {
@@ -15,8 +13,6 @@ export const PUT = async (req) => {
 
   if (!token) {
     console.log('Unauthorized Access : API Ambil Status Pembelian')
-
-    logToFile('Unauthorized Access : API Ambil Status Pembelian')
 
     return NextResponse.json({ error: 'Unauthorized Access' }, { status: 401 })
   }
