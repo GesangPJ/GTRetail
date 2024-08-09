@@ -1,3 +1,0 @@
--- AlterTable
-ALTER TABLE "Produk" ALTER COLUMN "barcode" DROP DEFAULT,
-ALTER COLUMN "barcode" SET DATA TYPE TEXT;
