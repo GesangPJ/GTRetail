@@ -76,16 +76,16 @@ export const POST = async (req) => {
 
     switch(metode) {
       case "CASH":
-        namaAkun = "CASH";
-        break;
+        namaAkun = "CASH"
+        break
       case "TRANSFER":
-        namaAkun = "BANK";
-        break;
+        namaAkun = "BANK"
+        break
       case "QRIS":
-        namaAkun = "BANK";
-        break;
+        namaAkun = "BANK"
+        break
       default:
-        namaAkun = "BANK";
+        namaAkun = "BANK"
     }
 
     // Membuat transaksi baru
