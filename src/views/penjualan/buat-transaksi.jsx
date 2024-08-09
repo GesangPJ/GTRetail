@@ -4,9 +4,8 @@ import React, { useEffect, useState, useRef } from 'react'
 
 import { useSession } from 'next-auth/react'
 import {
-  Grid, Button, TextField, InputAdornment, Alert, FormControl, InputLabel
+  Grid, Button, TextField, InputAdornment, Alert, FormControl, InputLabel, Select, MenuItem, Box
 } from '@mui/material'
-import Box from '@mui/material/Box'
 import Autocomplete from '@mui/material/Autocomplete'
 import { DataGrid } from '@mui/x-data-grid'
 import SaveIcon from '@mui/icons-material/Save'
@@ -39,6 +38,7 @@ const MesinKasir = () => {
   const [rows, setRows] = useState([])
   const [alert, setAlert] = useState(null)
   const [message, setMessage] = useState('')
+  const [metode, setMetode] = useState('')
   const formRef = useRef(null)
 
   useEffect(() => {
@@ -130,6 +130,10 @@ const MesinKasir = () => {
     setRows(prevRows => prevRows.filter(item => item.id !== row.id))
   }
 
+  const handleMetodeChange = (event) => {
+    setMetode(event.target.value)
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault()
 
@@ -142,6 +146,7 @@ const MesinKasir = () => {
 
     const payload = {
       userId: session.user?.id,
+      metode: metode,
       pelangganId: selectedPelanggan?.id || null,
       pelangganNama: selectedPelanggan?.nama || data.pelangganNama || '-',
       produk: rows
@@ -254,6 +259,22 @@ const MesinKasir = () => {
           />
         )}
       />
+      <br />
+
+      <FormControl fullWidth className=' pb-[8px] '>
+        <InputLabel htmlFor='metode'>Metode Pembayaran</InputLabel>
+        <Select
+          labelId='metode'
+          placeholder='Metode Pembayaran'
+          id='metode'
+          value={metode} // Gunakan nilai state metode
+          onChange={handleMetodeChange} // Panggil fungsi handleMetodeChange
+        >
+          <MenuItem value={'CASH'}>Cash</MenuItem>
+          <MenuItem value={'TRANSFER'}>Transfer</MenuItem>
+          <MenuItem value={'QRIS'}>QRIS</MenuItem>
+        </Select>
+      </FormControl>
       <br />
 
       <TextField
