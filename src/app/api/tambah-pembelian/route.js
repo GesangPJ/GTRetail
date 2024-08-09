@@ -67,6 +67,7 @@ export const POST = async (req) => {
     }
 
     const status = "DIPESAN"
+    const namaAkun = "BANK"
 
     // Membuat kode baru
     const newKode = `GT/PURCHASE/${currentMonth}/${currentYear}/${newNumber}`
@@ -88,15 +89,17 @@ export const POST = async (req) => {
       },
     })
 
-    const newJurnalPembelian = await prisma.jurnalPembelian.create({
-      data:{
-        pembelianId: newPembelian.id,
+    // Membuat jurnal pembelian baru
+    const newJurnal = await prisma.jurnal.create({
+      data: {
+        transaksiId: newTransaksi.id,
+        debit: totalHarga,
+        akun: namaAkun,
         kode: newKode,
-        pengeluaran: totalHarga,
-      }
+      },
     })
 
-    return NextResponse.json(newPembelian, { status: 201 })
+    return NextResponse.json(newPembelian, newJurnal, { status: 201 })
 
   } catch (error) {
     console.error('Error menambah pembelian:', error)
