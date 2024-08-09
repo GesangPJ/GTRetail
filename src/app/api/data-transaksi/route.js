@@ -31,6 +31,7 @@ export async function GET(req){
       select:{
         id:true,
         kode:true,
+        metode:true,
         namapelanggan:true,
         status: true,
         jumlahTotal:true,
