@@ -101,14 +101,13 @@ const VerticalMenu = ({ scrollMenu }) => {
 
             </SubMenu>
             <SubMenu
-              label='Cetak Laporan'
+              label='Laporan'
               icon={<i className="ri-printer-line"></i>}
             >
               <MenuItem href='/dashboard/cetak-bulanan'>Transaksi Bulanan</MenuItem>
               <MenuItem href='/dashboard/cetak-produk'>Produk</MenuItem>
               <MenuItem href='/dashboard/cetak-pembelian'>Pembelian Barang</MenuItem>
-              <MenuItem href='/dashboard/cetak-pelanggan'>Pelanggan</MenuItem>
-              <MenuItem></MenuItem>
+              <MenuItem href='/dashboard/jurnal'>Jurnal</MenuItem>
             </SubMenu>
             <SubMenu
               label='Manajemen Akun'
