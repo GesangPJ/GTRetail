@@ -203,6 +203,8 @@ const MesinKasir = () => {
     },
   ]
 
+  const totalHarga = rows.reduce((sum, row) => sum + row.totalharga, 0)
+
   return (
     <div>
       {alert && (
@@ -298,37 +300,44 @@ const MesinKasir = () => {
         sx={{ marginBottom: 2 }}
       />
       <br />
-      <Button
-      variant="contained"
-      color="primary"
-      onClick={handleAddProduct}
-      sx={{ borderRadius: 30 }}
-      startIcon={<AddShoppingCartIcon/>}
-      >
-        Tambah
-      </Button>
-      <br />
-
-      <Box sx={{ height: 300, width: '100%', marginTop: 2 }}>
-        <DataGrid
-          rows={rows}
-          columns={columns}
-          pageSize={5}
-          rowsPerPageOptions={[5]}
-        />
-        <br />
+      <Box sx={{ display: 'flex', gap: '15px', mb: 2, alignItems: 'center' }}>
         <Button
-        type="submit"
-        variant="contained"
-        color="success"
-        size='large'
-        onClick={handleSubmit}
-        sx={{ borderRadius: 30 }}
-        startIcon={<SaveIcon/>}
-      >
-        Simpan Transaksi
-      </Button>
+          variant='contained'
+          color='primary'
+          sx={{ borderRadius: 30 }}
+          onClick={handleAddProduct}
+          startIcon={<AddShoppingCartIcon />}
+        >
+          Tambah
+        </Button>
+
+        <Box>
+          <span>Jumlah Total : {formatCurrency(totalHarga)}</span>
+        </Box>
+
+        <Button
+          sx={{ borderRadius: 30 }}
+          variant='contained'
+          color='success'
+          onClick={handleSubmit}
+          endIcon={<SaveIcon />}
+        >
+          Simpan Transaksi
+        </Button>
       </Box>
+
+      <div className='w-[100%] max-h-[250px]'>
+        <DataGrid
+        rows={rows}
+        columns={columns}
+        pageSize={5}
+        initialState={{
+          pagination: {
+            paginationModel: { pageSize: 5 },
+          },
+        }}
+         />
+      </div>
     </div>
   )
 }
