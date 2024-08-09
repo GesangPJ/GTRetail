@@ -18,7 +18,7 @@ export const POST = async (req) => {
   }
 
   try {
-    const { pelangganId, userId, pelangganNama, produk } = await req.json()
+    const { pelangganId, userId, metode, pelangganNama, produk } = await req.json()
 
     if (!produk) {
       return NextResponse.json({ error: 'Data tidak lengkap' }, { status: 400 })
@@ -72,6 +72,22 @@ export const POST = async (req) => {
     // Membuat kode baru
     const newKode = `GT/SALES/${currentMonth}/${currentYear}/${newNumber}`
 
+    let namaAkun = ""
+
+    switch(metode) {
+      case "CASH":
+        namaAkun = "CASH";
+        break;
+      case "TRANSFER":
+        namaAkun = "BANK";
+        break;
+      case "QRIS":
+        namaAkun = "BANK";
+        break;
+      default:
+        namaAkun = "BANK";
+    }
+
     // Membuat transaksi baru
     const newTransaksi = await prisma.transaksi.create({
       data: {
@@ -80,6 +96,7 @@ export const POST = async (req) => {
         pelangganId,
         namapelanggan: pelangganNama,
         status,
+        metode,
         jumlahTotal: totalHarga,
         transaksidetail: {
           create: produk.map(produk => ({
@@ -93,11 +110,12 @@ export const POST = async (req) => {
     })
 
     // Membuat jurnal transaksi baru
-    const newJurnalTransaksi = await prisma.jurnalTransaksi.create({
+    const newJurnal = await prisma.jurnal.create({
       data: {
         transaksiId: newTransaksi.id,
+        akun: namaAkun,
         kode: newKode,
-        pemasukan: totalHarga,
+        kredit: totalHarga,
       },
     })
 
@@ -109,7 +127,7 @@ export const POST = async (req) => {
       })
     }
 
-    return NextResponse.json(newTransaksi, { status: 201 })
+    return NextResponse.json(newTransaksi, newJurnal, { status: 201 })
 
   } catch (error) {
     console.error('Error menambah Transaksi:', error)
