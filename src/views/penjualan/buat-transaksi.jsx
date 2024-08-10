@@ -39,37 +39,11 @@ const MesinKasir = () => {
   const [alert, setAlert] = useState(null)
   const [message, setMessage] = useState('')
   const [metode, setMetode] = useState('')
+  const [editedRows, setEditedRows] = useState({})
+  const [totalHarga, setTotalHarga] = useState(0)
   const formRef = useRef(null)
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const [produkResponse, pelangganResponse] = await Promise.all([
-          fetch(`/api/data-produk?userId=${session.user.id}`),
-          fetch(`/api/data-pelanggan?userId=${session.user.id}`)
-        ])
 
-        const produkData = await produkResponse.json()
-        const pelangganData = await pelangganResponse.json()
-
-        setProducts(produkData)
-        setPelanggans(pelangganData)
-      } catch (error) {
-        console.error('Error mengambil data produk dan pelanggan', error)
-      }
-    }
-
-    fetchData()
-
-    if (alert) {
-      const timer = setTimeout(() => {
-        setAlert(null)
-        setMessage('')
-      }, 5000)
-
-      return () => clearTimeout(timer)
-    }
-  }, [alert, session])
 
   const handleChange = (e) => {
     const { name, value } = e.target
@@ -134,6 +108,24 @@ const MesinKasir = () => {
     setMetode(event.target.value)
   }
 
+  const handleProcessRowUpdate = (updatedRow, originalRow) => {
+    // Hitung ulang total harga berdasarkan nilai jumlah yang baru
+    const updatedTotalHarga = updatedRow.jumlah * updatedRow.harga
+
+    // Update row dengan total harga baru
+    const updatedRows = rows.map((row) =>
+      row.id === updatedRow.id ? { ...updatedRow, totalharga: updatedTotalHarga } : row
+    )
+
+    setRows(updatedRows)
+
+    return { ...updatedRow, totalharga: updatedTotalHarga }
+  }
+
+  const handleProcessRowUpdateError = (error) => {
+    console.error('Error updating row:', error)
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault()
 
@@ -184,7 +176,7 @@ const MesinKasir = () => {
     { field: 'id', headerName: 'ID', width: 100 },
     { field: 'nama', headerName: 'Nama Produk', width: 200 },
     { field: 'harga', headerName: 'Harga Jual', width: 150, renderCell: (params) => <div>{formatCurrency(params.value)}</div>, },
-    { field: 'jumlah', headerName: 'Jumlah', width: 150 },
+    { field: 'jumlah', headerName: 'Jumlah', width: 150, editable:true, },
     { field: 'totalharga', headerName: 'Total Harga', width: 150, renderCell: (params) => <div>{formatCurrency(params.value)}</div>, },
     {
       field: 'hapus',
@@ -203,7 +195,40 @@ const MesinKasir = () => {
     },
   ]
 
-  const totalHarga = rows.reduce((sum, row) => sum + row.totalharga, 0)
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const [produkResponse, pelangganResponse] = await Promise.all([
+          fetch(`/api/data-produk?userId=${session.user.id}`),
+          fetch(`/api/data-pelanggan?userId=${session.user.id}`)
+        ])
+
+        const produkData = await produkResponse.json()
+        const pelangganData = await pelangganResponse.json()
+
+        setProducts(produkData)
+        setPelanggans(pelangganData)
+      } catch (error) {
+        console.error('Error mengambil data produk dan pelanggan', error)
+      }
+    }
+
+    fetchData()
+
+    // Hitung total harga keseluruhan setiap kali `rows` diperbarui
+    const total = rows.reduce((sum, row) => sum + row.totalharga, 0)
+
+    setTotalHarga(total)
+
+    if (alert) {
+      const timer = setTimeout(() => {
+        setAlert(null)
+        setMessage('')
+      }, 5000)
+
+      return () => clearTimeout(timer)
+    }
+  }, [alert, session, rows])
 
   return (
     <div>
@@ -336,6 +361,8 @@ const MesinKasir = () => {
             paginationModel: { pageSize: 5 },
           },
         }}
+        processRowUpdate={handleProcessRowUpdate}
+        onProcessRowUpdateError={handleProcessRowUpdateError}
          />
       </div>
     </div>
