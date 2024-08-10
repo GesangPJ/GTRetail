@@ -11,12 +11,14 @@ export async function GET(req){
 
   console.log('Token:', token)
 
+  // Cek apakah API diakses dengan menggunakan token
   if (!token) {
     console.log('Unauthorized Access : API Data Produk')
 
     return NextResponse.json({ error: 'Unauthorized Access' }, { status: 401 })
   }
 
+  // Cek user Id yang mengakses API ini
   const { searchParams } = new URL(req.url)
   const userId = searchParams.get('userId')
 
@@ -26,6 +28,7 @@ export async function GET(req){
 
   console.log('User dengan Id : ',userId,' mengakses API data jurnal')
 
+  // Ambil data jurnal dari database
   try{
     const jurnals = await prisma.jurnal.findMany({
       select:{
@@ -39,11 +42,13 @@ export async function GET(req){
       }
     })
 
+    // Format tanggal update
     const formatjurnal = jurnals.map(jurnal => ({
       ...jurnal,
       updatedAt: jurnal.updatedAt.toISOString()
     }))
 
+    // Kirim data ke client
     return NextResponse.json(formatjurnal, {status:200})
 
   }
