@@ -11,12 +11,14 @@ export async function GET(req){
 
   console.log('Token:', token)
 
+  // Cek apakah API diakses dengan menggunakan token
   if (!token) {
     console.log('Unauthorized Access : API Ambil Detail pembelian')
 
     return NextResponse.json({ error: 'Unauthorized Access' }, { status: 401 })
   }
 
+  // Cek user Id yang mengakses API ini
   const url = new URL(req.url)
   const id = url.searchParams.get("id")
 
@@ -25,8 +27,11 @@ export async function GET(req){
       return NextResponse.json({error:"ID pembelian tidak ada"}, {status:400})
     }
 
+    // Ambil data pembelian
     const pembelian = await prisma.pembelian.findUnique({
       where: { id: parseInt(id) },
+
+      // termasuk pembelian detail
       include: {
         pembeliandetail: {
           select: {
@@ -42,6 +47,8 @@ export async function GET(req){
             },
           }
         },
+
+        // ambil nama distributor
         distributor:{
           select:{
             nama:true,
@@ -50,6 +57,7 @@ export async function GET(req){
       }
     })
 
+    // format nama distributor, tanggal dibuat, diupdate, dan detail pembelian
     const datapembelian = {
       ...pembelian,
       namaDistributor: pembelian.distributor.nama || "-",
@@ -61,6 +69,7 @@ export async function GET(req){
       }))
     }
 
+    // kirim data ke client
     return NextResponse.json(datapembelian)
   }
   catch(error){
