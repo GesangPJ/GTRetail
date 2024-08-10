@@ -13,12 +13,14 @@ export async function GET(req) {
 
   console.log('Token:', token)
 
+  // cek apakah API diakses dengan menggunakan token
   if (!token) {
     console.log('Unauthorized Access : API Ambil Daftar Kategori')
 
     return NextResponse.json({ error: 'Unauthorized Access' }, { status: 401 })
   }
 
+  // Ambil data dari database
   try{
     const kategoris = await prisma.kategori.findMany({
       select:{
@@ -28,6 +30,7 @@ export async function GET(req) {
       }
     })
 
+    // kirim data ke client
     return NextResponse.json(kategoris, { status: 200})
   }
   catch(error){
