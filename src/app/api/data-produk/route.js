@@ -11,12 +11,14 @@ export async function GET(req){
 
   console.log('Token:', token)
 
+  // Cek apakah API diakses dengan menggunakan token
   if (!token) {
     console.log('Unauthorized Access : API Data Produk')
 
     return NextResponse.json({ error: 'Unauthorized Access' }, { status: 401 })
   }
 
+  // Cek user Id yang mengakses API ini
   const { searchParams } = new URL(req.url)
   const userId = searchParams.get('userId')
 
@@ -26,6 +28,7 @@ export async function GET(req){
 
   console.log('User dengan Id : ',userId,' mengakses API data produk')
 
+  // Ambil data produk dari database
   try{
     const produks = await prisma.produk.findMany({
       select:{
@@ -42,12 +45,14 @@ export async function GET(req){
       }
     })
 
+    // Format nama Kategori dan tanggal kadaluarsa
     const formattedproduk = produks.map(produk => ({
       ...produk,
       namaKategori: produk.kategori?.nama || '-',
       kadaluarsa: produk.kadaluarsa ? produk.kadaluarsa.toISOString() : "-",
     }))
 
+    // Kirim data ke client
     return NextResponse.json(formattedproduk, {status:200})
   }
   catch(error){
