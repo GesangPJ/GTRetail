@@ -39,7 +39,6 @@ const MesinKasir = () => {
   const [alert, setAlert] = useState(null)
   const [message, setMessage] = useState('')
   const [metode, setMetode] = useState('')
-  const [editedRows, setEditedRows] = useState({})
   const [totalHarga, setTotalHarga] = useState(0)
   const formRef = useRef(null)
 
