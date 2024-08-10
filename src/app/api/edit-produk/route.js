@@ -11,12 +11,14 @@ export const PUT = async (req) => {
 
   console.log('Token :', token)
 
+  // cek apakah API diakses dengan menggunakan token
   if(!token){
     console.log('Unauthorized Access : API Edit Produk')
 
     return NextResponse.json({error:'Unauthorized Access'}, {status:401})
   }
 
+  // parsing data yang dikirim ke API
   try{
     const {produkId, nama, barcode, harga, hargabeli, satuan,
           status, keterangan } = await req.json()
@@ -25,9 +27,11 @@ export const PUT = async (req) => {
       return NextResponse.json({error:"Data tidak boleh kosong!"}, {status:400})
     }
 
+    // Masukkan data ke database
     try{
-
       const updateproduk = await prisma.produk.update({
+
+        // sesuai dengan Id
         where: {id:produkId},
         data:{
           nama,
@@ -40,6 +44,7 @@ export const PUT = async (req) => {
         },
       })
 
+      // kirim response berhasil
       return NextResponse.json({message:"Data Produk berhasil diperbarui", updateproduk}, {status:200})
 
     }
