@@ -11,12 +11,14 @@ export const POST = async (req) => {
 
   console.log('Token:', token)
 
+  // cek apakah API diakses dengan menggunakan token
   if (!token) {
     console.log('Unauthorized Access : API Tambah Transaksi Admin')
 
     return NextResponse.json({ error: 'Unauthorized Access' }, { status: 401 })
   }
 
+  // parsing data yang dikirim ke API
   try {
     const { pelangganId, userId, metode, pelangganNama, produk } = await req.json()
 
@@ -74,6 +76,7 @@ export const POST = async (req) => {
 
     let namaAkun = ""
 
+    // Switch untuk nilai namaAkun berdasarkan nilai metode
     switch(metode) {
       case "CASH":
         namaAkun = "CASH"
@@ -127,6 +130,7 @@ export const POST = async (req) => {
       })
     }
 
+    // kirim response berhasil
     return NextResponse.json(newTransaksi, newJurnal, { status: 201 })
 
   } catch (error) {
