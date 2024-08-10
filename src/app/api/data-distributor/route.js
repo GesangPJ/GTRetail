@@ -11,12 +11,14 @@ export async function GET(req){
 
   console.log('Token:', token)
 
+  // cek apakah API diakses dengan menggunakan token
   if (!token) {
     console.log('Unauthorized Access : API Data Distributor')
 
     return NextResponse.json({ error: 'Unauthorized Access' }, { status: 401 })
   }
 
+  // cek user Id yang mengakses API
   const { searchParams } = new URL(req.url)
   const userId = searchParams.get('userId')
 
@@ -26,6 +28,7 @@ export async function GET(req){
 
   console.log('User dengan Id : ',userId,' mengakses API data Distributor')
 
+  // mengambil data dari database
   try{
     const distributors = await prisma.distributor.findMany({
       select:{
@@ -37,6 +40,7 @@ export async function GET(req){
       }
     })
 
+    // kirim data ke client
     return NextResponse.json(distributors, {status:200})
   }
   catch(error){
