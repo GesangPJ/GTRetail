@@ -28,27 +28,19 @@ model User {
   kedatangan  Kedatangan[]
 }
 
-model JurnalTransaksi {
-  id            Int      @id  @default(autoincrement())
-  transaksiId   Int
-  kode          String
-  pemasukan     Int       @default(0)
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+model Jurnal {
+  id           Int      @id @default(autoincrement())
+  kode         String
+  akun         String
+  transaksiId  Int?
+  pembelianId  Int?
+  debit        Int?
+  kredit       Int?
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
 
-  transaksi     Transaksi @relation(fields: [transaksiId], references: [id])
-}
-
-model JurnalPembelian {
-  id            Int       @id @default(autoincrement())
-  pembelianId   Int
-  kode          String
-  pengeluaran   Int       @default(0)
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-
-  pembelian     Pembelian @relation(fields: [pembelianId], references: [id])
-
+  pembelian   Pembelian?   @relation(fields: [pembelianId], references: [id])
+  transaksi   Transaksi?   @relation(fields: [transaksiId], references: [id])
 
 }
 
@@ -99,7 +91,7 @@ model Pembelian {
 
   pembeliandetail PembelianDetail[]
   distributor   Distributor @relation(fields: [distributorId], references: [id])
-  jurnalpembelian   JurnalPembelian[]
+  jurnal        Jurnal[]
 }
 
 model PembelianDetail {
@@ -176,6 +168,7 @@ model Transaksi {
   userId         Int
   pelangganId    Int?
   namapelanggan  String?
+  metode         String
   jumlahTotal    Int
   createdAt      DateTime         @default(now())
   updatedAt      DateTime         @updatedAt
@@ -183,7 +176,7 @@ model Transaksi {
   user           User             @relation("TransaksiUser", fields: [userId], references: [id])
   pelanggan      Pelanggan?       @relation("TransaksiPelanggan", fields: [pelangganId], references: [id])
   transaksidetail  TransaksiDetail[]
-  jurnaltransaksi  JurnalTransaksi[]
+  jurnal          Jurnal[]
 
 }
 

@@ -4,9 +4,8 @@ import React, { useEffect, useState, useRef } from 'react'
 
 import { useSession } from 'next-auth/react'
 import {
-  Grid, Button, TextField, InputAdornment, Alert, FormControl, InputLabel
+  Grid, Button, TextField, InputAdornment, Alert, FormControl, InputLabel, Select, MenuItem, Box
 } from '@mui/material'
-import Box from '@mui/material/Box'
 import Autocomplete from '@mui/material/Autocomplete'
 import { DataGrid } from '@mui/x-data-grid'
 import SaveIcon from '@mui/icons-material/Save'
@@ -39,37 +38,11 @@ const MesinKasir = () => {
   const [rows, setRows] = useState([])
   const [alert, setAlert] = useState(null)
   const [message, setMessage] = useState('')
+  const [metode, setMetode] = useState('')
+  const [totalHarga, setTotalHarga] = useState(0)
   const formRef = useRef(null)
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const [produkResponse, pelangganResponse] = await Promise.all([
-          fetch(`/api/data-produk?userId=${session.user.id}`),
-          fetch(`/api/data-pelanggan?userId=${session.user.id}`)
-        ])
 
-        const produkData = await produkResponse.json()
-        const pelangganData = await pelangganResponse.json()
-
-        setProducts(produkData)
-        setPelanggans(pelangganData)
-      } catch (error) {
-        console.error('Error mengambil data produk dan pelanggan', error)
-      }
-    }
-
-    fetchData()
-
-    if (alert) {
-      const timer = setTimeout(() => {
-        setAlert(null)
-        setMessage('')
-      }, 5000)
-
-      return () => clearTimeout(timer)
-    }
-  }, [alert, session])
 
   const handleChange = (e) => {
     const { name, value } = e.target
@@ -130,6 +103,28 @@ const MesinKasir = () => {
     setRows(prevRows => prevRows.filter(item => item.id !== row.id))
   }
 
+  const handleMetodeChange = (event) => {
+    setMetode(event.target.value)
+  }
+
+  const handleProcessRowUpdate = (updatedRow, originalRow) => {
+    // Hitung ulang total harga berdasarkan nilai jumlah yang baru
+    const updatedTotalHarga = updatedRow.jumlah * updatedRow.harga
+
+    // Update row dengan total harga baru
+    const updatedRows = rows.map((row) =>
+      row.id === updatedRow.id ? { ...updatedRow, totalharga: updatedTotalHarga } : row
+    )
+
+    setRows(updatedRows)
+
+    return { ...updatedRow, totalharga: updatedTotalHarga }
+  }
+
+  const handleProcessRowUpdateError = (error) => {
+    console.error('Error updating row:', error)
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault()
 
@@ -142,6 +137,7 @@ const MesinKasir = () => {
 
     const payload = {
       userId: session.user?.id,
+      metode: metode,
       pelangganId: selectedPelanggan?.id || null,
       pelangganNama: selectedPelanggan?.nama || data.pelangganNama || '-',
       produk: rows
@@ -179,7 +175,7 @@ const MesinKasir = () => {
     { field: 'id', headerName: 'ID', width: 100 },
     { field: 'nama', headerName: 'Nama Produk', width: 200 },
     { field: 'harga', headerName: 'Harga Jual', width: 150, renderCell: (params) => <div>{formatCurrency(params.value)}</div>, },
-    { field: 'jumlah', headerName: 'Jumlah', width: 150 },
+    { field: 'jumlah', headerName: 'Jumlah', width: 150, editable:true, },
     { field: 'totalharga', headerName: 'Total Harga', width: 150, renderCell: (params) => <div>{formatCurrency(params.value)}</div>, },
     {
       field: 'hapus',
@@ -197,6 +193,41 @@ const MesinKasir = () => {
       ),
     },
   ]
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const [produkResponse, pelangganResponse] = await Promise.all([
+          fetch(`/api/data-produk?userId=${session.user.id}`),
+          fetch(`/api/data-pelanggan?userId=${session.user.id}`)
+        ])
+
+        const produkData = await produkResponse.json()
+        const pelangganData = await pelangganResponse.json()
+
+        setProducts(produkData)
+        setPelanggans(pelangganData)
+      } catch (error) {
+        console.error('Error mengambil data produk dan pelanggan', error)
+      }
+    }
+
+    fetchData()
+
+    // Hitung total harga keseluruhan setiap kali `rows` diperbarui
+    const total = rows.reduce((sum, row) => sum + row.totalharga, 0)
+
+    setTotalHarga(total)
+
+    if (alert) {
+      const timer = setTimeout(() => {
+        setAlert(null)
+        setMessage('')
+      }, 5000)
+
+      return () => clearTimeout(timer)
+    }
+  }, [alert, session, rows])
 
   return (
     <div>
@@ -256,6 +287,22 @@ const MesinKasir = () => {
       />
       <br />
 
+      <FormControl fullWidth className=' pb-[8px] '>
+        <InputLabel htmlFor='metode'>Metode Pembayaran</InputLabel>
+        <Select
+          labelId='metode'
+          placeholder='Metode Pembayaran'
+          id='metode'
+          value={metode} // Gunakan nilai state metode
+          onChange={handleMetodeChange} // Panggil fungsi handleMetodeChange
+        >
+          <MenuItem value={'CASH'}>Cash</MenuItem>
+          <MenuItem value={'TRANSFER'}>Transfer</MenuItem>
+          <MenuItem value={'QRIS'}>QRIS</MenuItem>
+        </Select>
+      </FormControl>
+      <br />
+
       <TextField
         id='jumlah'
         name='jumlah'
@@ -277,37 +324,46 @@ const MesinKasir = () => {
         sx={{ marginBottom: 2 }}
       />
       <br />
-      <Button
-      variant="contained"
-      color="primary"
-      onClick={handleAddProduct}
-      sx={{ borderRadius: 30 }}
-      startIcon={<AddShoppingCartIcon/>}
-      >
-        Tambah
-      </Button>
-      <br />
-
-      <Box sx={{ height: 300, width: '100%', marginTop: 2 }}>
-        <DataGrid
-          rows={rows}
-          columns={columns}
-          pageSize={5}
-          rowsPerPageOptions={[5]}
-        />
-        <br />
+      <Box sx={{ display: 'flex', gap: '15px', mb: 2, alignItems: 'center' }}>
         <Button
-        type="submit"
-        variant="contained"
-        color="success"
-        size='large'
-        onClick={handleSubmit}
-        sx={{ borderRadius: 30 }}
-        startIcon={<SaveIcon/>}
-      >
-        Simpan Transaksi
-      </Button>
+          variant='contained'
+          color='primary'
+          sx={{ borderRadius: 30 }}
+          onClick={handleAddProduct}
+          startIcon={<AddShoppingCartIcon />}
+        >
+          Tambah
+        </Button>
+
+        <Box>
+          <span>Jumlah Total : {formatCurrency(totalHarga)}</span>
+        </Box>
+
+        <Button
+          sx={{ borderRadius: 30 }}
+          variant='contained'
+          color='success'
+          onClick={handleSubmit}
+          endIcon={<SaveIcon />}
+        >
+          Simpan Transaksi
+        </Button>
       </Box>
+
+      <div className='w-[100%] max-h-[250px]'>
+        <DataGrid
+        rows={rows}
+        columns={columns}
+        pageSize={5}
+        initialState={{
+          pagination: {
+            paginationModel: { pageSize: 5 },
+          },
+        }}
+        processRowUpdate={handleProcessRowUpdate}
+        onProcessRowUpdateError={handleProcessRowUpdateError}
+         />
+      </div>
     </div>
   )
 }

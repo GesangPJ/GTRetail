@@ -11,17 +11,20 @@ export const POST = async (req) => {
 
   console.log('Token:', token)
 
+  // cek apakah API diakses dengan menggunakan token
   if (!token) {
     console.log('Unauthorized Access : API Tambah Kategori Produk')
 
     return NextResponse.json({ error: 'Unauthorized Access' }, { status: 401 })
   }
 
+  // parsing data yang dikirim ke database
   try {
     const data = await req.json()
 
     console.log('Request Data:', data)
 
+    // mengambil masing-masing data
     const { userId, kategoriId, barcode, nama, harga, hargabeli, jenis, stok, satuan, keterangan, kadaluarsa } = data
 
     if (!nama || !stok || !kategoriId || !satuan || !harga) {
@@ -29,9 +32,11 @@ export const POST = async (req) => {
       return NextResponse.json({ error: "Semua bidang harus diisi." }, { status: 400 });
     }
 
+    // set variable
     const status = "AKTIF"
     const barcodeValue = barcode || "0"
 
+    // memasukkan data ke database
     try {
       const produk = await prisma.produk.create({
         data: {
@@ -52,6 +57,7 @@ export const POST = async (req) => {
 
       console.log('Produk dibuat :', produk)
 
+      // kirim response berhasil
       return NextResponse.json(produk, { status: 201 })
     } catch (error) {
       console.error('Error membuat produk:', error)

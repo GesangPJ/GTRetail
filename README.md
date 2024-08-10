@@ -33,6 +33,22 @@ Aplikasi Sistem Manajemen Penjualan untuk UMKM berbasis Node.JS dengan framework
 
 ## Changelog
 
+### v1.3.2
+
+- Membuat kolom jumlah pada penjualan dapat diedit
+- Membuat kolom jumlah pada pembelian dapat diedit
+- Memperbaiki Typo
+- Code Refraction
+- Update design form Transaksi
+- Update design form Purchasing / Pembelian
+
+### v1.2.1-Beta
+
+- Membuat Jurnal Model
+- Menambahkan Metode Transaksi
+- Membuat function buat jurnal setiap ada transaksi penjualan produk
+- Membuat function buat jurnal setiap ada transaksi pembelian produk
+
 ### v1.1.7
 
 - Fix Bug Tambah Produk, dimana kategoriId berisi Null.

@@ -309,6 +309,13 @@ const FormTambahProduk = () =>{
                     }}
                   />
                 </Grid>
+                <Grid item xs={12}>
+                {alert && (
+                  <Alert severity={alert} style={{ marginBottom: '1rem' }}>
+                    {message}
+                  </Alert>
+                )}
+                </Grid>
                 <Grid item xs={12} style={{ display: 'flex', justifyContent: 'space-between' }}>
                   <Button variant="contained" onClick={handleReset} color="error" sx={{ borderRadius: 30 }}>
                     Reset Form

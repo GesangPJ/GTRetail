@@ -1,4 +1,4 @@
-// API data transaksi
+// API Data Jurnal | Mengambil data jurnal
 
 import { NextResponse } from 'next/server'
 
@@ -26,37 +26,33 @@ export async function GET(req){
     return NextResponse.json({ error: 'User ID tidak ditemukan!' }, { status: 400 })
   }
 
-  console.log('User dengan Id : ',userId,' mengakses API data transaksi')
+  console.log('User dengan Id : ',userId,' mengakses API data jurnal')
 
-  // Ambil data transaksi dari database
+  // Ambil data jurnal dari database
   try{
-    const datatransaksi = await prisma.transaksi.findMany({
+    const jurnals = await prisma.jurnal.findMany({
       select:{
         id:true,
         kode:true,
-        metode:true,
-        namapelanggan:true,
-        status: true,
-        jumlahTotal:true,
-        updatedAt: true,
-        pelanggan:{select:{nama:true,},},
+        akun:true,
+        debit:true,
+        kredit:true,
+        createdAt:false,
+        updatedAt:true,
       }
     })
 
-    // Format tanggal update dan nama pelanggan
-    const formattransaksi = datatransaksi.map(transaksi => ({
-      ...transaksi,
-      namaPelanggan: transaksi.pelanggan?.nama || transaksi.namapelanggan || '-',
-      updatedAt: transaksi.updatedAt.toISOString(),
+    // Format tanggal update
+    const formatjurnal = jurnals.map(jurnal => ({
+      ...jurnal,
+      updatedAt: jurnal.updatedAt.toISOString()
     }))
 
     // Kirim data ke client
-    return NextResponse.json(formattransaksi, {status:200})
+    return NextResponse.json(formatjurnal, {status:200})
+
   }
   catch(error){
-    console.error('Error mengambil data transaksi:', error)
-
-    return NextResponse.json({ error: 'Terjadi kesalahan saat mengambil data transaksi' }, { status: 500 })
 
   }
 

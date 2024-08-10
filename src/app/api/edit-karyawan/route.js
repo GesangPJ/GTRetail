@@ -14,12 +14,14 @@ export const PUT = async (req) =>{
 
   console.log('Token :', token)
 
+  // Cek apakah API diakses dengan menggunakan token
   if(!token){
     console.log('Unauthorized Access : API Edit Karyawan')
 
     return NextResponse.json({error:'Unauthorized Access'}, {status:401})
   }
 
+  // parsing data yang dikirim ke API
   try{
     const {userId, nama, email, masterKey} = await req.json()
 
@@ -27,12 +29,16 @@ export const PUT = async (req) =>{
       return NextResponse.json({error:"Data tidak boleh kosong!"}, {status:400})
     }
 
+    // cek apakah masterKey benar
     if(masterKey !== resetKey){
       return NextResponse.json({error: "MasterKey Salah!"}, {status:403})
     }
 
+    // Masukkan data ke database
     try{
       const user = await prisma.user.update({
+
+        // sesuai dengan Id
         where: {id: userId},
         data:{
           name:nama,
@@ -40,6 +46,7 @@ export const PUT = async (req) =>{
         },
       })
 
+      // kirim response berhasil
       return NextResponse.json({message:"Data Akun Berhasil diubah", user}, {status:200})
     }
     catch(error){

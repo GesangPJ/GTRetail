@@ -4,15 +4,9 @@ import React, { useEffect, useState } from 'react'
 
 import { useRouter } from 'next/navigation'
 
-import Chip from '@mui/material/Chip'
 import { useSession } from 'next-auth/react'
 import { DataGrid} from '@mui/x-data-grid'
-import { Button} from '@mui/material'
 import Box from '@mui/material/Box'
-import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline'
-import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline'
-import PauseCircleIcon from '@mui/icons-material/PauseCircle'
-import DoneAllIcon from '@mui/icons-material/DoneAll'
 
 const formatCurrency = (amount) => {
   return new Intl.NumberFormat('id-ID', {
@@ -20,21 +14,6 @@ const formatCurrency = (amount) => {
     currency: 'IDR',
     minimumFractionDigits: 0,
   }).format(amount)
-}
-
-const getStatusChip = (status) => {
-  switch (status) {
-    case 'PENDING':
-      return <Chip label="PENDING" color="warning" variant="outlined" icon= {<PauseCircleIcon/>} />
-    case 'HUTANG':
-      return <Chip label="HUTANG" color="warning" variant="outlined" icon= {<CheckCircleOutlineIcon/>} />
-    case 'SELESAI':
-      return <Chip label="SELESAI" color="success" variant="outlined" icon= {<DoneAllIcon/>} />
-    case 'BATAL':
-      return <Chip label="BATAL" color="error" variant="outlined"  icon= {<ErrorOutlineIcon/>} />
-    default:
-      return <Chip label="TIDAK DIKETAHUI" color="default" variant="outlined" />
-  }
 }
 
 const formatDate = (dateString) => {
@@ -49,7 +28,7 @@ const formatDate = (dateString) => {
   return `${day}-${month}-${year} ${hours}:${minutes}`
 }
 
-const TableTransaksi = () => {
+const TableJurnal = () => {
   const router = useRouter()
   const { data: session } = useSession()
   const [rows, setRows] = useState([])
@@ -59,7 +38,7 @@ const TableTransaksi = () => {
     if (session) {
       const fetchData = async () => {
         try {
-          const response = await fetch(`/api/data-transaksi?userId=${session.user.id}`)
+          const response = await fetch(`/api/data-jurnal?userId=${session.user.id}`)
           const data = await response.json()
 
           // Tambahkan nomor urut
@@ -78,7 +57,7 @@ const TableTransaksi = () => {
   }, [session])
 
   const columns = [
-    // { field: 'no', headerName: 'No', width: 50, headerClassName:'app-theme--header', },
+    { field: 'no', headerName: 'No', width: 50, headerClassName:'app-theme--header', },
     {
       field: 'updatedAt',
       headerName: 'Waktu',
@@ -89,53 +68,50 @@ const TableTransaksi = () => {
     { field: 'kode',
       headerName: 'Kode',
       headerClassName:'app-theme--header',
-      width: 250 },
-
+      width: 250
+    },
     {
-      field: 'jumlahTotal',
-      headerName: 'Total Harga',
+      field: 'akun',
+      headerName: 'Akun',
+      headerClassName:'app-theme--header',
+      width: 100,
+    },
+    {
+      field: 'debit',
+      headerName: 'Debit',
       headerClassName:'app-theme--header',
       width: 120,
       renderCell: (params) => <div>{formatCurrency(params.value)}</div>,
     },
     {
-      field: 'status',
-      headerName: 'Status',
+      field: 'kredit',
+      headerName: 'Kredit',
       headerClassName:'app-theme--header',
-      width: 130,
-      renderCell: (params) => getStatusChip(params.value),
+      width: 120,
+      renderCell: (params) => <div>{formatCurrency(params.value)}</div>,
     },
-    { field: 'metode',
-      headerName: 'Metode',
-      headerClassName:'app-theme--header',
-      width: 100 },
-    {
-      field: 'namaPelanggan',
-      headerName: 'Pelanggan',
-      headerClassName:'app-theme--header',
-      width: 180,
-    },
-    {
-      field: 'detail',
-      disableExport: true,
-      headerName: 'Detail',
-      headerClassName:'app-theme--header',
-      width: 100,
-      renderCell: (params) => (
-        <Button variant="contained" color="primary" onClick={() => handleDetailClick(params.row)}>
-          Detail &raquo;
-        </Button>
-      ),
-    },
+
+    // {
+    //   field: 'detail',
+    //   disableExport: true,
+    //   headerName: 'Detail',
+    //   headerClassName:'app-theme--header',
+    //   width: 100,
+    //   renderCell: (params) => (
+    //     <Button variant="contained" color="primary" onClick={() => handleDetailClick(params.row)}>
+    //       Detail &raquo;
+    //     </Button>
+    //   ),
+    // },
   ]
 
-  const handleDetailClick = (row) => {
-    if (row && row.id) {
-      router.push(`/dashboard/detail-transaksi/${row.id}`)
-    } else {
-      console.error('ID tidak valid:', row)
-    }
-  }
+  // const handleDetailClick = (row) => {
+  //   if (row && row.id) {
+  //     router.push(`/dashboard/detail-jurnal/${row.id}`)
+  //   } else {
+  //     console.error('ID tidak valid:', row)
+  //   }
+  // }
 
   return(
     <div>
@@ -163,9 +139,8 @@ const TableTransaksi = () => {
           />
         </Box>
       </div>
-
     </div>
   )
 }
 
-export default TableTransaksi
+export default TableJurnal
