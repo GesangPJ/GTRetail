@@ -11,12 +11,14 @@ export const POST = async (req) => {
 
   console.log('Token:', token)
 
+  // cek apakah API diakses dengan menggunakan token
   if (!token) {
     console.log('Unauthorized Access : API Tambah Pembelian Admin')
 
     return NextResponse.json({ error: 'Unauthorized Access' }, { status: 401 })
   }
 
+  // parsing data yang dikirim ke API
   try {
     const { distributorId, produk } = await req.json()
 
@@ -66,12 +68,14 @@ export const POST = async (req) => {
       newNumber = '00001'
     }
 
+    // Set beberapa variabel
     const status = "DIPESAN"
     const namaAkun = "BANK"
 
     // Membuat kode baru
     const newKode = `GT/PURCHASE/${currentMonth}/${currentYear}/${newNumber}`
 
+    // memasukkan data ke database
     const newPembelian = await prisma.pembelian.create({
       data: {
         kode: newKode,
@@ -99,6 +103,7 @@ export const POST = async (req) => {
       },
     })
 
+    // kirim response berhasil
     return NextResponse.json(newPembelian, newJurnal, { status: 201 })
 
   } catch (error) {
