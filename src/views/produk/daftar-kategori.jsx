@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from 'react'
 
 import { useSession } from 'next-auth/react'
-import { DataGrid, GridToolbar } from '@mui/x-data-grid'
+import { DataGrid} from '@mui/x-data-grid'
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField } from '@mui/material'
 import Select from '@mui/material/Select'
 import InputLabel from '@mui/material/InputLabel'
@@ -88,7 +88,7 @@ const TabelKategori = () => {
   const columns = [
     { field: 'no', headerName: 'No', width: 90 },
     { field: 'nama', headerName: 'Nama Kategori', width: 170 },
-    { field: 'status', headerName: 'Status Kategori', width: 100 },
+    { field: 'status', headerName: 'Status', width: 100 },
     { field: 'edit', headerName:'Edit', width: 100,
       renderCell: (params)=>(
         <Button
@@ -108,17 +108,13 @@ const TabelKategori = () => {
       <br />
       <DataGrid
         rows={rows}
-        sx={{
-          boxShadow: 2,
-          border: 2,
-          borderColor: 'primary.light',
-          '& .MuiDataGrid-cell:hover': {
-            color: 'primary.main',
+        columns={columns}
+        initialState={{
+          pagination: {
+            paginationModel: { pageSize: 5 },
           },
         }}
-        columns={columns}
-        pageSize={5}
-        pageSizeOptions={[5, 10, 25]}
+        pageSizeOptions={[5, 10, 25, 50, 100]}
         rowsPerPageOptions={[5]}
         checkboxSelection
         disableRowSelectionOnClick
