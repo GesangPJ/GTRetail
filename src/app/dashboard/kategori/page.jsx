@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect } from 'react'
+import { useEffect, Suspense } from 'react'
 
 import { useRouter } from 'next/navigation'
 
@@ -33,16 +33,17 @@ const HalamanKategori = () => {
         Halaman Kategori Produk
       </h1>
       </div>
-        <br />
-      <div>
-        <TabelKategori/>
-      </div>
       <br />
-
       <div>
         <FormTambahKategori/>
       </div>
-
+        <br />
+        <Suspense fallback={<div>Memuat Data...</div>}>
+          <div>
+            <TabelKategori/>
+          </div>
+        </Suspense>
+      <br />
     </div>
   )
 }
