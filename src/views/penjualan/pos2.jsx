@@ -394,8 +394,8 @@ const PointOfSale = () => {
               label="Metode Pembayaran"
               onChange={handleMetodeChange}>
               <MenuItem value={'CASH'}>Cash</MenuItem>
-              <MenuItem value={'TRANSFER'}>Debit</MenuItem>
-              <MenuItem value={'DEBIT'}>Credit</MenuItem>
+              <MenuItem value={'TRANSFER'}>Transfer</MenuItem>
+              <MenuItem value={'DEBIT'}>Debit / QRIS</MenuItem>
             </Select>
           </FormControl>
         </Grid>
@@ -462,13 +462,13 @@ const PointOfSale = () => {
           </DialogActions>
         </Dialog>
         <br />
-        {alert && (
+        {/* {alert && (
         <Grid item xs={12}>
           <Alert severity={alert} style={{ marginBottom: '1rem' }}>
             {message}
           </Alert>
         </Grid>
-      )}
+      )} */}
     </Grid>
   )
 }
