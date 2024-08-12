@@ -10,6 +10,8 @@ import { useSession } from 'next-auth/react'
 
 import PointOfSale from '@/views/penjualan/pos2'
 
+import DashboardBanner from '@/views/dashboard/detail-banner'
+
 const DashboardAnalytics = () => {
   const { data: session, status } = useSession()
   const router = useRouter()
@@ -34,6 +36,9 @@ const DashboardAnalytics = () => {
         {isAdmin && (
           <div>
             <Suspense fallback={<div>Memuat Data...</div>}>
+            <div className='mb-[10px]'>
+              <DashboardBanner/>
+            </div>
             <div>
               <PointOfSale/>
             </div>
