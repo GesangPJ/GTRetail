@@ -10,9 +10,9 @@
  * Another way is to clear the cookie from the browser's Application/Storage tab and then reload the page.
  */
 const themeConfig = {
-  templateName: 'KASBON MANAGER',
-  settingsCookieName: 'kasbon-manager',
-  mode: 'dark', // 'light', 'dark'
+  templateName: 'GT-RETAIL',
+  settingsCookieName: 'gt-retail',
+  mode: 'light', // 'light', 'dark'
   layoutPadding: 24, // Common padding for header, content, footer layout components (in px)
   compactContentWidth: 1440, // in px
   disableRipple: false // true, false

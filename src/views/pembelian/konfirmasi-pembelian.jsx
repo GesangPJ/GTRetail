@@ -10,6 +10,7 @@ import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline'
 import PauseCircleIcon from '@mui/icons-material/PauseCircle'
 import DoneAllIcon from '@mui/icons-material/DoneAll'
 import Chip from '@mui/material/Chip'
+import { idr } from 'matauang'
 
 const formatDate = (dateString) => {
   if (!dateString) return 'Invalid Date'
@@ -21,14 +22,6 @@ const formatDate = (dateString) => {
   const minutes = String(date.getMinutes()).padStart(2, '0')
 
   return `${day}-${month}-${year} ${hours}:${minutes}`
-}
-
-const formatCurrency = (amount) => {
-  return new Intl.NumberFormat('id-ID', {
-    style: 'currency',
-    currency: 'IDR',
-    minimumFractionDigits: 0,
-  }).format(amount)
 }
 
 const getStatusChip = (status) => {
@@ -134,7 +127,7 @@ export const FormKonfirmasiPembelian = () => {
       headerName: 'Total Harga',
       headerClassName:'app-theme--header',
       width: 120,
-      renderCell: (params) => <div>{formatCurrency(params.value)}</div>,
+      renderCell: (params) => <div>{idr(params.value)}</div>,
     },
     {
       field: 'status',

@@ -1,3 +1,4 @@
+
 'use client'
 
 import { useEffect, Suspense } from 'react'
@@ -6,11 +7,9 @@ import { useRouter } from 'next/navigation'
 
 import { useSession } from 'next-auth/react'
 
-import TabelKategori from '@/views/produk/daftar-kategori'
+import TableJurnal from '@/views/jurnal/daftar-jurnal-cash'
 
-import FormTambahKategori from '@/views/produk/tambah-kategori'
-
-const HalamanKategori = () => {
+const HalamanJurnalCash = () =>{
   const { data: session, status } = useSession()
   const router = useRouter()
 
@@ -28,24 +27,17 @@ const HalamanKategori = () => {
 
   return(
     <div>
-      <div>
-      <h1 className="text-3xl font-extrabold">
-        Halaman Kategori Produk
+      <h1 className="text-2xl font-bold">
+        Jurnal Cash
       </h1>
-      </div>
       <br />
+      <Suspense fallback={<div>Memuat Data...</div>}>
       <div>
-        <FormTambahKategori/>
+        <TableJurnal/>
       </div>
-        <br />
-        <Suspense fallback={<div>Memuat Data...</div>}>
-          <div>
-            <TabelKategori/>
-          </div>
-        </Suspense>
-      <br />
+      </Suspense>
     </div>
   )
 }
 
-export default HalamanKategori
+export default HalamanJurnalCash

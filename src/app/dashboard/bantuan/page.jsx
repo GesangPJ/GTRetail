@@ -15,76 +15,73 @@ const HalamanBantuan = () =>{
           <Divider/>
           <br />
           <Typography variant="h3">
-            A. Menambahkan Kasbon
+            A. Membuat Transaksi
           </Typography><br />
           <div className="ml-[22px] pl-[22px] text-xl">
             <ol type="number">
-              <li>Karyawan Login.</li>
-              <li>Sidebar &gt; Menu Kasbon &gt; Tambah Kasbon.</li>
-              <li>Masukkan jumlah permintaan kasbon.</li>
-              <li>Masukkan Keterangan Kasbon.</li>
-              <li>Masukkan Metode Pembayaran Kasbon : <code>&quot;TRANSFER&quot; / &quot;CASH&quot;</code></li>
-              <li>Jika data yang dimasukkan sudah benar maka klik tombol <code>KIRIM</code></li>
+              <li>Buka Dashboard dengan klik <code>DASHBOARD</code> di sidebar</li>
+              <li>Pilih / Ketik nama pelanggan (optional) </li>
+              <li>Pilih / Ketik produk.</li>
+              <li>Masukkan Jumlah produk</li>
+              <li>Anda bisa mengganti harga produk jika ingin saat transaksi / menggunakan harga yang ditentukan.</li>
+              <li>Klik tombol <code>TAMBAH</code> untuk menambahkan produk ke daftar transaksi</li>
+              <li>Ulangi untuk menambah produk lain yang dibeli</li>
+              <li>Jika semua produk yang ditentukan sudah dipilih, klik <code>SIMPAN TRANSAKSI</code> untuk menyelesaikan dan menyimpan transaksi</li>
             </ol>
           </div>
           <br />
           <Typography variant="h3">
-            B. Dashboard
+            B. Daftar & Detail Transaksi
           </Typography><br />
           <div className="ml-[22px] pl-[22px] text-xl">
-            <p>Adalah halaman yang berisi tabel data Kasbon, untuk Karyawan, data kasbon adalah
-              data milik masing-masing karyawan untuk Admin, dashboard berisi data semua kasbon yang masuk, yang terdiri dari :</p>
+            <p>Anda bisa melihat daftar dari transaksi penjualan yang telah dilakukan, sekaligus detail dari setiap transaksi melalui menu <code>PENJUALAN &gt; DAFTAR TRANSAKSI</code>
+            , berikut dibawah ini adalah penjelasan dari setiap kolom :</p>
               <ol type="number">
-                <li><code>tanggal / jam :</code> Berisi data tanggal dan jam dimana data kasbon terakhir diubah.</li>
-                <li><code>nama :</code> Adalah nama Karyawan terdaftar yang meminta Kasbon.</li>
-                <li><code>jumlah :</code> Berisi Jumlah nilai Kasbon yang diminta.</li>
-                <li><code>status request :</code> Berisi keterangan status permintaan, seperti : &quot;BELUM&quot; ; &quot;SETUJU&quot; ; &quot;DITOLAK&quot; </li>
-                <li><code>status bayar :</code> Berisi keterangan status pembayaran kasbon, seperti : &quot;BELUM&quot; ; &quot;LUNAS&quot;</li>
-                <li><code>keterangan :</code> Adalah keterangan atau alasan mengenai permintaan kasbon, kenapa karyawan meminta kasbon sebesar jumlah yang diminta.</li>
-                <li><code>metode :</code> Adalah metode yang dipilih oleh Karyawan untuk membayar kasbon, seperti : &quot;TRANSFER&quot; ; &quot;CASH&quot;</li>
-                <li><code>admin :</code> Adalah nama Admin / Petugas yang mengubah status kasbon, nama yang ditampilkan adalah nama admin terbaru yang mengubah data status kasbon.</li>
-                <li><code>detail :</code> Adalah tombol yang digunakan untuk melihat Detail Kasbon ketika diklik / ditekan.</li>
-              </ol><br />
-              <p>Didalam Dashboard terdapat beberapa tombol, berikut adalah daftar tombol beserta dengan fungsinya :</p>
-            <ul>
-              <li>Tombol <code>PDF Export :</code> Digunakan untuk ekspor / download data kasbon ke format PDF.</li>
-              <li>Tombol <code>Export XLSX :</code> Digunakan untuk ekspor / download data kasbon ke format Excel.</li>
-              <li>Tombol <code>JSON : </code> Digunakan untuk ekspor / download data kasbon ke format JSON.</li>
-            </ul>
-          </div><br />
+                <li><code>waktu :</code> Berisi data tanggal dan jam dimana transaksi terakhir disimpan dan diubah.</li>
+                <li><code>kode :</code> Adalah kode unik setiap transaksi, terdiri dari keterangan penjualan, tahun, bulan dan nomor urut.</li>
+                <li><code>total harga :</code> Adalah jumlah total harga dari transaksi tersebut</li>
+                <li><code>status :</code> Berisi keterangan status transaksi, seperti : &quot;SELESAI&quot; ; &quot;BATAL&quot; </li>
+                <li><code>metode :</code> Adalah metode yang pembayaran yang digunakan seperti CASH dan BANK / Transfer </li>
+                <li><code>pelanggan :</code> Adalah nama pelanggan terdaftar yang dipilih atau dimasukkan secara manual (optional) </li>
+                <li><code>detail :</code> Adalah tombol yang digunakan untuk melihat Detail Transaksi ketika diklik / ditekan.</li>
+              </ol>
+          </div>
+          <br />
           <Typography variant="h3">
-            C. Request Kasbon
+            C. Daftar Pelanggan
           </Typography>
           <div className="ml-[22px] pl-[22px] text-xl">
-            <p>Adalah halaman yang digunakan oleh Admin untuk menentukan Status Request / permintaan Kasbon, halaman ini berisi tabel permintaan kasbon terbaru dengan status request awal &quot;BELUM&quot; . Kemudian admin akan menentukan apakah permintaan kasbon ini DISETUJUI atau DITOLAK dengan menekan salah satu tombol &quot;SETUJU&quot; atau &quot;TOLAK&quot;</p>
+            <p>Adalah halaman yang berisi daftar pelanggan terdaftar</p>
           </div><br />
           <Typography variant="h3">
-            D. Konfirmasi Bayar
+            D. Tambah Pelanggan
           </Typography>
           <div className="ml-[22px] pl-[22px] text-xl">
-            <p>Adalah halaman yang digunakan oleh Admin untuk menentukan Status Bayar / pembayaran kasbon, berikut dibawah ini cara untuk merubah status bayar kasbon :</p>
+            <p>Adalah halaman yang digunakan untuk mendaftarkan pelanggan ke sistem. Berikut adalah cara bagaimana untuk mendaftarkan pelanggan ke sistem penjualan :</p>
             <ol type="number">
-              <li>Masukkan Nama Karyawan di Input Nama.</li>
-              <li>Tekan tombol <code>CARI</code>.</li>
-              <li>Kemudian data kasbon Karyawan yang anda cari akan muncul di tabel bawah.</li>
-              <li>Jika data kasbon tidak muncul, maka Kasbon Karyawan tersebut semuanya dalam status DITOLAK atau anda salah mengetik nama Karyawan.</li>
-              <li>Jika data karyawan ditampilkan maka anda bisa memilih Kasbon mana yang sudah lunas, maka anda klik tombol <code>LUNAS</code></li>
-              <li>Anda juga bisa mengganti status LUNAS menjadi BELUM dengan menekan tombol <code>BELUM</code></li>
+              <li>Masukkan Nama Pelanggan di Input Nama.</li>
+              <li>Masukkan email pelanggan (jika ada)</li>
+              <li>Masukkan nomor telepon pelanggan (jika ada)</li>
+              <li>Masukkan alamat pelanggan (opsional)</li>
+              <li>Klik tombol Tambah Pelanggan untuk menyimpan data pelanggan</li>
             </ol>
           </div><br />
           <Typography variant="h3">
-            E. Ekspor Laporan
+            E. Daftar Produk
           </Typography>
           <div className="ml-[22px] pl-[22px] text-xl">
-            <p>Adalah halaman yang digunakan untuk mengambil data kasbon per bulan dan tahun yang kemudian dapat diekspor / didownload ke berbagai format yang disediakan. Berikut dibawah ini adalah cara ekspor data :</p>
+            <p>Adalah halaman yang berisi daftar produk yang dimasukkan kedalam sistem, berikut dibawah ini adalah penjelasan dari masing-masing kolom pada daftar produk :</p>
             <ol type="number">
-              <li>Klik Ikon Kalender untuk menampilkan dialog Bulan dan Tahun / Ketik tahun dan bulan dalam format &quot;TAHUN-BULAN&quot;.</li>
-              <li>Untuk memilih tahun lainnya lewat dialog, klik tanda panah kebawah maka akan muncul daftar tahun.</li>
-              <li>Jika Bulan dan tahun telah dipilih / diketik, maka klik tombol <code>CARI DATA</code></li>
-              <li>Kemudian data kasbon untuk bulan dan tahun yang dipilih akan ditampilkan ditabel bawah.</li>
-              <li>Klik tombol <code>PDF Export</code> untuk download data kasbon dalam format PDF.</li>
-              <li>Klik tombol <code>Export XLSX</code> untuk download data kasbon dalam formal Excel.</li>
-              <li>Klik tombol <code>JSON</code> untuk download data kasbon dalam format JSON.</li>
+              <li><code>no :</code> Nomor urut produk.</li>
+              <li><code>nama :</code> Adalah Nama Produk yang didaftarkan.</li>
+              <li><code>harga :</code> Adalah nilai harga jual yang ditentukan untuk menjual barang</li>
+              <li><code>harga beli :</code> Adalah nilai harga beli yang ditentukan untuk membeli / re-stock barang</li>
+              <li><code>satuan :</code> Adalah format satuan dari produk tersebut.</li>
+              <li><code>stok :</code> Adalah nilai stok produk yang ada.</li>
+              <li><code>kategori :</code> Adalah nama kategori dari produk </li>
+              <li><code>jenis :</code> Adalah jenis produk yang dijual, ada 2 yaitu jenis &quot;BARANG&quot; dan &quot;PANGAN&quot; ini menentukan apakah produk tersebut memiliki tanggal kadaluarsa.</li>
+              <li><code>status :</code> Adalah status produk tersebut, masih aktif dijual atau tidak.</li>
+              <li><code>detail :</code> Adalah tombol yang digunakan untuk melihat Detail Produk ketika diklik / ditekan.</li>
             </ol>
           </div><br />
           <Typography variant="h3">

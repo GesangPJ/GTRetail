@@ -8,7 +8,9 @@ import { useRouter } from 'next/navigation'
 
 import { useSession } from 'next-auth/react'
 
-import MesinKasir from '@/views/penjualan/buat-transaksi'
+import PointOfSale from '@/views/penjualan/pos2'
+
+import DashboardBanner from '@/views/dashboard/detail-banner'
 
 const DashboardAnalytics = () => {
   const { data: session, status } = useSession()
@@ -33,17 +35,24 @@ const DashboardAnalytics = () => {
     <div style={{ width: '100%' }}>
         {isAdmin && (
           <div>
-            <h1 className='text-2xl font-bold'>Dashboard Admin</h1>
-            <br />
-            <MesinKasir/>
+            <Suspense fallback={<div>Memuat Data...</div>}>
+            <div className='mb-[10px]'>
+              <DashboardBanner/>
+            </div>
+            <div>
+              <PointOfSale/>
+            </div>
+            </Suspense>
             <br />
           </div>
         )}
         {isKaryawan && (
             <div>
-              <h1 className='text-2xl font-bold'>Dashboard Karyawan</h1>
-              <br />
-              <MesinKasir/>
+              <Suspense fallback={<div>Memuat Data...</div>}>
+                <div>
+                  <PointOfSale/>
+                </div>
+              </Suspense>
             </div>
         )}
     </div>

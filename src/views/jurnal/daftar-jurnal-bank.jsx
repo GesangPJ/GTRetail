@@ -4,30 +4,16 @@ import React, { useEffect, useState } from 'react'
 
 import { useRouter } from 'next/navigation'
 
-import Chip from '@mui/material/Chip'
 import { useSession } from 'next-auth/react'
 import { DataGrid} from '@mui/x-data-grid'
-import { Button} from '@mui/material'
 import Box from '@mui/material/Box'
-import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline'
-import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline'
-import PauseCircleIcon from '@mui/icons-material/PauseCircle'
-import DoneAllIcon from '@mui/icons-material/DoneAll'
-import { idr } from 'matauang'
 
-const getStatusChip = (status) => {
-  switch (status) {
-    case 'PENDING':
-      return <Chip label="PENDING" color="warning" variant="outlined" icon= {<PauseCircleIcon/>} />
-    case 'DIPESAN':
-      return <Chip label="DIPESAN" color="success" variant="outlined" icon= {<CheckCircleOutlineIcon/>} />
-    case 'SELESAI':
-      return <Chip label="SELESAI" color="primary" variant="outlined" icon= {<DoneAllIcon/>} />
-    case 'BATAL':
-      return <Chip label="BATAL" color="error" variant="outlined"  icon= {<ErrorOutlineIcon/>} />
-    default:
-      return <Chip label="UNKNOWN" color="default" variant="outlined" />
-  }
+const formatCurrency = (amount) => {
+  return new Intl.NumberFormat('id-ID', {
+    style: 'currency',
+    currency: 'IDR',
+    minimumFractionDigits: 0,
+  }).format(amount)
 }
 
 const formatDate = (dateString) => {
@@ -42,7 +28,7 @@ const formatDate = (dateString) => {
   return `${day}-${month}-${year} ${hours}:${minutes}`
 }
 
-const TabelDaftarPembelian = () => {
+const TableJurnal = () => {
   const router = useRouter()
   const { data: session } = useSession()
   const [rows, setRows] = useState([])
@@ -52,7 +38,7 @@ const TabelDaftarPembelian = () => {
     if (session) {
       const fetchData = async () => {
         try {
-          const response = await fetch(`/api/data-pembelian?userId=${session.user.id}`)
+          const response = await fetch(`/api/data-jurnal-bank?userId=${session.user.id}`)
           const data = await response.json()
 
           // Tambahkan nomor urut
@@ -71,10 +57,10 @@ const TabelDaftarPembelian = () => {
   }, [session])
 
   const columns = [
-    // { field: 'no', headerName: 'No', width: 50, headerClassName:'app-theme--header', },
+    { field: 'no', headerName: 'No', width: 50, headerClassName:'app-theme--header', },
     {
       field: 'updatedAt',
-      headerName: 'Tanggal/Jam',
+      headerName: 'Waktu',
       headerClassName:'app-theme--header',
       width: 130,
       renderCell: (params) => <div>{formatDate(params.value)}</div>,
@@ -82,49 +68,50 @@ const TabelDaftarPembelian = () => {
     { field: 'kode',
       headerName: 'Kode',
       headerClassName:'app-theme--header',
-      width: 250 },
-
-    {
-      field: 'namaDistributor',
-      headerName: 'Distributor',
-      headerClassName:'app-theme--header',
-      width: 180,
+      width: 250
     },
     {
-      field: 'jumlahtotalharga',
-      headerName: 'Total Harga',
-      headerClassName:'app-theme--header',
-      width: 120,
-      renderCell: (params) => <div>{idr(params.value)}</div>,
-    },
-    {
-      field: 'status',
-      headerName: 'Status',
-      headerClassName:'app-theme--header',
-      width: 160,
-      renderCell: (params) => getStatusChip(params.value),
-    },
-    {
-      field: 'detail',
-      disableExport: true,
-      headerName: 'Detail',
+      field: 'akun',
+      headerName: 'Akun',
       headerClassName:'app-theme--header',
       width: 100,
-      renderCell: (params) => (
-        <Button variant="contained" color="primary" onClick={() => handleDetailClick(params.row)}>
-          Detail &raquo;
-        </Button>
-      ),
     },
+    {
+      field: 'debit',
+      headerName: 'Debit',
+      headerClassName:'app-theme--header',
+      width: 120,
+      renderCell: (params) => <div>{formatCurrency(params.value)}</div>,
+    },
+    {
+      field: 'kredit',
+      headerName: 'Kredit',
+      headerClassName:'app-theme--header',
+      width: 120,
+      renderCell: (params) => <div>{formatCurrency(params.value)}</div>,
+    },
+
+    // {
+    //   field: 'detail',
+    //   disableExport: true,
+    //   headerName: 'Detail',
+    //   headerClassName:'app-theme--header',
+    //   width: 100,
+    //   renderCell: (params) => (
+    //     <Button variant="contained" color="primary" onClick={() => handleDetailClick(params.row)}>
+    //       Detail &raquo;
+    //     </Button>
+    //   ),
+    // },
   ]
 
-  const handleDetailClick = (row) => {
-    if (row && row.id) {
-      router.push(`/dashboard/detail-pembelian/${row.id}`)
-    } else {
-      console.error('ID tidak valid:', row)
-    }
-  }
+  // const handleDetailClick = (row) => {
+  //   if (row && row.id) {
+  //     router.push(`/dashboard/detail-jurnal/${row.id}`)
+  //   } else {
+  //     console.error('ID tidak valid:', row)
+  //   }
+  // }
 
   return(
     <div>
@@ -152,9 +139,8 @@ const TabelDaftarPembelian = () => {
           />
         </Box>
       </div>
-
     </div>
   )
 }
 
-export default TabelDaftarPembelian
+export default TableJurnal

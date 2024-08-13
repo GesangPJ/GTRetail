@@ -1,3 +1,4 @@
+
 'use client'
 
 import React, { useEffect, useState } from 'react'
@@ -38,7 +39,7 @@ const TableJurnal = () => {
     if (session) {
       const fetchData = async () => {
         try {
-          const response = await fetch(`/api/data-jurnal?userId=${session.user.id}`)
+          const response = await fetch(`/api/data-jurnal-cash?userId=${session.user.id}`)
           const data = await response.json()
 
           // Tambahkan nomor urut

@@ -16,22 +16,8 @@ import TableRow from '@mui/material/TableRow'
 import Paper from '@mui/material/Paper'
 import Box from '@mui/material/Box'
 import { Button } from '@mui/material'
-
-const formatDate = (dateString) => {
-  if (!dateString) return 'Invalid Date'
-  const date = new Date(dateString)
-  const options = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' }
-
-  return new Intl.DateTimeFormat('id-ID', options).format(date)
-}
-
-const formatCurrency = (amount) => {
-  return new Intl.NumberFormat('id-ID', {
-    style: 'currency',
-    currency: 'IDR',
-    minimumFractionDigits: 0,
-  }).format(amount)
-}
+import {idr} from 'matauang'
+import formatTanggal from 'formattanggal'
 
 const DetailTransaksi = () => {
   const params = useParams()
@@ -100,11 +86,11 @@ const DetailTransaksi = () => {
   const rows_Transaksi = [
     { label: 'Kode Transaksi', value: data.kode },
     { label: 'Pelanggan', value: data.namaPelanggan },
-    { label: 'Total Harga', value: formatCurrency(data.jumlahTotal) },
+    { label: 'Total Harga', value: idr(data.jumlahTotal) },
     { label: 'Status', value: data.status },
     { label: 'Pembuat Transaksi', value: data.namaKasir},
-    { label: 'Tanggal Transaksi Dibuat', value: formatDate(data.createdAt) },
-    { label: 'Tanggal Transaksi Diperbarui', value: formatDate(data.updatedAt) },
+    { label: 'Tanggal Transaksi Dibuat', value: formatTanggal(data.createdAt) },
+    { label: 'Tanggal Transaksi Diperbarui', value: formatTanggal(data.updatedAt) },
   ]
 
   const columns = [
@@ -119,7 +105,7 @@ const DetailTransaksi = () => {
       headerName: 'Harga Jual',
       headerClassName: 'app-theme--header',
       width: 150,
-      renderCell: (params) => <div>{formatCurrency(params.value)}</div>,
+      renderCell: (params) => <div>{idr(params.value)}</div>,
     },
     {
       field: 'jumlah',
@@ -132,7 +118,7 @@ const DetailTransaksi = () => {
       headerName: 'Total Harga',
       headerClassName: 'app-theme--header',
       width: 160,
-      renderCell: (params) => <div>{formatCurrency(params.value)}</div>,
+      renderCell: (params) => <div>{idr(params.value)}</div>,
     },
   ]
 

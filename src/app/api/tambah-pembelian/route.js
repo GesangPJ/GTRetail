@@ -96,7 +96,7 @@ export const POST = async (req) => {
     // Membuat jurnal pembelian baru
     const newJurnal = await prisma.jurnal.create({
       data: {
-        transaksiId: newTransaksi.id,
+        pembelianId: newPembelian.id,
         debit: totalHarga,
         akun: namaAkun,
         kode: newKode,

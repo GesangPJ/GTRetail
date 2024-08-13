@@ -12,14 +12,7 @@ import { DataGrid } from '@mui/x-data-grid'
 import SaveIcon from '@mui/icons-material/Save'
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart'
 import DeleteIcon from '@mui/icons-material/Delete'
-
-const formatCurrency = (amount) => {
-  return new Intl.NumberFormat('id-ID', {
-    style: 'currency',
-    currency: 'IDR',
-    minimumFractionDigits: 0,
-  }).format(amount)
-}
+import { idr } from 'matauang'
 
 const FormPembelianProduk = () => {
   const {data: session} = useSession()
@@ -164,9 +157,9 @@ const FormPembelianProduk = () => {
   const columns = [
     { field: 'id', headerName: 'ID', width: 100 },
     { field: 'nama', headerName: 'Nama Produk', width: 200 },
-    { field: 'hargabeli', headerName: 'Harga Beli', width: 150, renderCell: (params) => <div>{formatCurrency(params.value)}</div>, },
+    { field: 'hargabeli', headerName: 'Harga Beli', width: 150, renderCell: (params) => <div>{idr(params.value)}</div>, },
     { field: 'jumlah', headerName: 'Jumlah', width: 150, editable:true, },
-    { field: 'totalharga', headerName: 'Total Harga', width: 150, renderCell: (params) => <div>{formatCurrency(params.value)}</div>,},
+    { field: 'totalharga', headerName: 'Total Harga', width: 150, renderCell: (params) => <div>{idr(params.value)}</div>,},
     {
       field: 'hapus',
       headerName: 'Hapus',
@@ -298,7 +291,7 @@ const FormPembelianProduk = () => {
         </Button>
 
         <Box>
-          <span>Jumlah Total : {formatCurrency(totalHarga)}</span>
+          <span>Jumlah Total : {idr(totalHarga)}</span>
         </Box>
 
         <Button

@@ -1,6 +1,6 @@
 {
   "name": "GTRetail",
-  "version": "1.3.2",
+  "version": "1.4.1",
   "license": "Commercial",
   "private": true,
   "scripts": {
@@ -37,6 +37,7 @@
     "dayjs": "^1.11.11",
     "exceljs": "^4.4.0",
     "fast-loops": "^1.1.4",
+    "formattanggal": "^1.0.4",
     "jsonwebtoken": "^9.0.2",
     "jspdf": "^2.5.1",
     "jspdf-autotable": "^3.8.2",
@@ -60,6 +61,7 @@
     "eslint-config-next": "^14.2.3",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-import": "^2.29.1",
+    "matauang": "^1.0.3",
     "postcss": "^8.4.38",
     "postcss-styled-syntax": "^0.6.4",
     "prettier": "^3.3.2",

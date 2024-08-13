@@ -7,9 +7,9 @@ import { useRouter } from 'next/navigation'
 
 import { useSession } from 'next-auth/react'
 
-import TableJurnal from '@/views/jurnal/daftar-jurnal'
+import TableJurnal from '@/views/jurnal/daftar-jurnal-bank'
 
-const HalamanJurnal = () =>{
+const HalamanJurnalBank = () =>{
   const { data: session, status } = useSession()
   const router = useRouter()
 
@@ -28,7 +28,7 @@ const HalamanJurnal = () =>{
   return(
     <div>
       <h1 className="text-2xl font-bold">
-        Halaman Jurnal
+        Jurnal Bank
       </h1>
       <br />
       <Suspense fallback={<div>Memuat Data...</div>}>
@@ -40,4 +40,4 @@ const HalamanJurnal = () =>{
   )
 }
 
-export default HalamanJurnal
+export default HalamanJurnalBank

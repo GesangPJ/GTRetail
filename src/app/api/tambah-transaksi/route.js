@@ -84,7 +84,7 @@ export const POST = async (req) => {
       case "TRANSFER":
         namaAkun = "BANK"
         break
-      case "QRIS":
+      case "DEBIT":
         namaAkun = "BANK"
         break
       default:
