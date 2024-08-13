@@ -14,14 +14,7 @@ import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart'
 import DeleteIcon from '@mui/icons-material/Delete'
 import { styled } from '@mui/material/styles'
 import BackspaceIcon from '@mui/icons-material/Backspace'
-
-const formatCurrency = (amount) => {
-  return new Intl.NumberFormat('id-ID', {
-    style: 'currency',
-    currency: 'IDR',
-    minimumFractionDigits: 0,
-  }).format(amount)
-}
+import {idr} from 'matauang'
 
 const NumpadButton = styled(Button)({
   width: '100%',
@@ -214,9 +207,9 @@ const PointOfSale = () => {
 
   const columns = [
     { field: 'nama', headerName: 'Produk', width: 200, headerClassName:'app-theme--header', },
-    { field: 'harga', headerName: 'Harga', width: 110, headerClassName:'app-theme--header', renderCell: (params) => <div>{formatCurrency(params.value)}</div> },
+    { field: 'harga', headerName: 'Harga', width: 110, headerClassName:'app-theme--header', renderCell: (params) => <div>{idr(params.value)}</div> },
     { field: 'jumlah', headerName: 'Jumlah', width: 100, headerClassName:'app-theme--header', editable: true },
-    { field: 'totalharga', headerName: 'Total Harga', width: 150, headerClassName:'app-theme--header', renderCell: (params) => <div>{formatCurrency(params.value)}</div> },
+    { field: 'totalharga', headerName: 'Total Harga', width: 150, headerClassName:'app-theme--header', renderCell: (params) => <div>{idr(params.value)}</div> },
     {
       field: 'hapus',
       headerClassName:'app-theme--header',
@@ -425,7 +418,7 @@ const PointOfSale = () => {
         </Grid>
         <Grid item>
           <Typography variant="h3" align="center">
-            Jumlah Total : {formatCurrency(totalHarga)}
+            Jumlah Total : {idr(totalHarga)}
           </Typography>
         </Grid>
         <Grid item>
