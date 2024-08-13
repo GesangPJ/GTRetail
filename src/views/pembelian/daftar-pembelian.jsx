@@ -13,14 +13,7 @@ import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline'
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline'
 import PauseCircleIcon from '@mui/icons-material/PauseCircle'
 import DoneAllIcon from '@mui/icons-material/DoneAll'
-
-const formatCurrency = (amount) => {
-  return new Intl.NumberFormat('id-ID', {
-    style: 'currency',
-    currency: 'IDR',
-    minimumFractionDigits: 0,
-  }).format(amount)
-}
+import { idr } from 'matauang'
 
 const getStatusChip = (status) => {
   switch (status) {
@@ -102,7 +95,7 @@ const TabelDaftarPembelian = () => {
       headerName: 'Total Harga',
       headerClassName:'app-theme--header',
       width: 120,
-      renderCell: (params) => <div>{formatCurrency(params.value)}</div>,
+      renderCell: (params) => <div>{idr(params.value)}</div>,
     },
     {
       field: 'status',
