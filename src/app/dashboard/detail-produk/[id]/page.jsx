@@ -25,35 +25,8 @@ import Select from '@mui/material/Select'
 import InputLabel from '@mui/material/InputLabel'
 import FormControl from '@mui/material/FormControl'
 import ModeEditIcon from '@mui/icons-material/ModeEdit'
-
-
-const formatDate = (dateString) => {
-  // Cek apakah tanggal bernilai null/tidak sesuai format
-  if (!dateString || dateString === '-') return '-'
-
-  const date = new Date(dateString)
-
-  // Cek apakah valid
-  if (isNaN(date.getTime())) return '-'
-
-  const options = {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit',
-  }
-
-  return new Intl.DateTimeFormat('id-ID', options).format(date)
-}
-
-const formatCurrency = (amount) => {
-  return new Intl.NumberFormat('id-ID', {
-    style: 'currency',
-    currency: 'IDR',
-    minimumFractionDigits: 0,
-  }).format(amount)
-}
+import {idr} from 'matauang'
+import formatTanggal from 'formattanggal'
 
 const DetailPage = () => {
   const params = useParams()
@@ -146,18 +119,18 @@ const DetailPage = () => {
     { label: 'ID Produk', value: data.id },
     { label: 'Barcode', value: data.barcode},
     { label: 'Nama Produk', value: data.nama },
-    { label: 'Harga Produk', value: formatCurrency(data.harga) },
-    { label: 'Harga Beli', value: formatCurrency(data.hargabeli)},
+    { label: 'Harga Produk', value: idr(data.harga) },
+    { label: 'Harga Beli', value: idr(data.hargabeli)},
     { label: 'Satuan', value: data.satuan},
     { label: 'Stok', value: data.stok},
     { label: 'Kategori', value: data.kategori},
     { label: 'Jenis Produk', value: data.jenis},
-    { label: 'Kadaluarsa', value: formatDate(data.kadaluarsa)},
+    { label: 'Kadaluarsa', value: formatTanggal(data.kadaluarsa)},
     { label: 'Keterangan', value: data.keterangan },
     { label: 'Status', value: data.status},
     { label: 'Dibuat / Diedit oleh ', value: data.namaKaryawan },
-    { label: 'Tanggal Produk Dibuat', value: formatDate(data.createdAt) },
-    { label: 'Tanggal Produk Diperbarui', value: formatDate(data.updatedAt) },
+    { label: 'Tanggal Produk Dibuat', value: formatTanggal(data.createdAt) },
+    { label: 'Tanggal Produk Diperbarui', value: formatTanggal(data.updatedAt) },
   ]
 
   const handleClickOpen = (row) => {
