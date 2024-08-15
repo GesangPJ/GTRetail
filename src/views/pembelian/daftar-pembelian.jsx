@@ -13,6 +13,7 @@ import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline'
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline'
 import PauseCircleIcon from '@mui/icons-material/PauseCircle'
 import DoneAllIcon from '@mui/icons-material/DoneAll'
+import CancelIcon from '@mui/icons-material/Cancel'
 import { idr } from 'matauang'
 
 const getStatusChip = (status) => {
@@ -24,8 +25,10 @@ const getStatusChip = (status) => {
     case 'SELESAI':
       return <Chip label="SELESAI" color="primary" variant="outlined" icon= {<DoneAllIcon/>} />
     case 'BATAL':
-      return <Chip label="BATAL" color="error" variant="outlined"  icon= {<ErrorOutlineIcon/>} />
-    default:
+      return <Chip label="BATAL" color="error" variant="outlined"  icon= {<CancelIcon/>} />
+    case 'BERMASALAH':
+      return <Chip label="BERMASALAH" color='error' variant='outlined' icon={<ErrorOutlineIcon/>}/>
+      default:
       return <Chip label="UNKNOWN" color="default" variant="outlined" />
   }
 }
