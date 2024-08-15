@@ -105,7 +105,24 @@ model PembelianDetail {
   kedatangan    Kedatangan[]
   pembelian     Pembelian @relation(fields: [pembelianId], references: [id])
   produk        Produk    @relation(fields: [produkId], references: [id])
+  pembelianbermasalah PembelianBermasalah[]
 
+}
+
+model PembelianBermasalah {
+  id            Int      @id  @default(autoincrement())
+  pembeliandetailId Int
+  kodepembelian String?
+  produkId      Int
+  jumlahpesanan Int
+  jumlahkedatangan Int
+  selisih       Int
+  status        String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  produk        Produk  @relation(fields: [produkId], references: [id])
+  pembeliandetail PembelianDetail @relation(fields: [pembeliandetailId], references: [id])
 }
 
 model Kedatangan {
@@ -147,6 +164,7 @@ model Produk {
   userproduk      User    @relation(fields: [userId], references: [id])
   kategori  Kategori  @relation(fields: [kategoriId], references: [id])
   pembelian PembelianDetail[]
+  pembelianbermasalah PembelianBermasalah[]
 }
 
 model TransaksiDetail {
