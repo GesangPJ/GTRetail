@@ -1,6 +1,6 @@
 {
   "name": "GTRetail",
-  "version": "1.4.1",
+  "version": "1.4.5",
   "license": "Commercial",
   "private": true,
   "scripts": {
@@ -16,6 +16,7 @@
     "seedadmin": "node prisma/seedAdmin.js",
     "seedkaryawan": "node prisma/seedKaryawan.js",
     "resettransaksi": "node prisma/resetTransaksi.js",
+    "resetpembelian": "node prisma/resetPembelian.js",
     "seedkategori": "node prisma/seedkategori.js"
   },
   "dependencies": {
