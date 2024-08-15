@@ -129,13 +129,21 @@ model Kedatangan {
   id                Int               @id @default(autoincrement())
   pembeliandetailId Int
   tanggalkedatangan DateTime          @default(now())
-  jumlahproduk      Int
   status            String            @default("pending")
   receivedBy        Int?
   notes             String?
 
   pembelian         PembelianDetail   @relation(fields: [pembeliandetailId], references: [id])
   user              User?             @relation(fields: [receivedBy], references: [id])
+}
+
+model KedatanganDetail {
+  id               Int               @id @default(autoincrement())
+  kedatanganId     Int
+  produkId         Int
+  jumlahkedatangan Int
+
+  produk          Produk            @relation(fields: [produkId], references: [id])
 }
 
 enum jenis_p {
@@ -160,6 +168,7 @@ model Produk {
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
 
+  kedatangandetail  KedatanganDetail[]
   transaksi TransaksiDetail[]
   userproduk      User    @relation(fields: [userId], references: [id])
   kategori  Kategori  @relation(fields: [kategoriId], references: [id])
