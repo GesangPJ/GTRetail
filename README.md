@@ -45,7 +45,7 @@ Aplikasi Sistem Manajemen Penjualan untuk UMKM berbasis Node.JS dengan framework
 - Membuat kolom jumlah pada penjualan dapat diedit
 - Membuat kolom jumlah pada pembelian dapat diedit
 - Memperbaiki Typo
-- Code Refraction
+- Code Refactoring
 - Update design form Transaksi
 - Update design form Purchasing / Pembelian
 
