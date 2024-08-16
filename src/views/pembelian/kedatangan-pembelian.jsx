@@ -28,50 +28,18 @@ export const ViewKedatangan = () => {
   const [alertMessage, setAlertMessage] = useState('')
   const [alertSeverity, setAlertSeverity] = useState('success')
   const [openDialog, setOpenDialog] = useState(false)
-  const [dialogType, setDialogType] = useState('') // 'komplit' atau 'tidakSama'
-  const [selectedData, setSelectedData] = useState(null)
-  const [dialogAction, setDialogAction] = useState(null)
-
-
-  const handleKonfirmasi = () => {
-    let isComplete = true
-
-    // Cek apakah semua jumlahdatang sama dengan jumlahpesanan
-    rows.forEach((row) => {
-      if (row.jumlahdatang !== row.jumlahpesanan) {
-        isComplete = false
-      }
-    })
-
-    if (isComplete) {
-      setDialogType('komplit')
-      setDialogAction(handleKedatangan)
-    } else {
-      setDialogType('bermasalah')
-      setDialogAction(handleBermasalah)
-    }
-
-    setOpenDialog(true)
-  }
-
-  const handleCloseDialog = () => {
-    setOpenDialog(false)
-  }
-
-  const handleDialogAction = () => {
-    if (dialogAction) {
-      dialogAction()
-    }
-
-    setOpenDialog(false)
-  }
+  const [dialogType, setDialogType] = useState('')
 
   const handleKedatangan = async () => {
     try {
       const payload = {
         kode: data.kode,
         id: data.id,
-        items: rows,
+        items: rows.map(row => ({
+          produkId: row.produkId,
+          jumlahpesanan: row.jumlahpesanan,
+          jumlahdatang: row.jumlahdatang,
+        })),
       }
 
       const response = await fetch('/api/konfirmasi-kedatangan', {
@@ -79,7 +47,7 @@ export const ViewKedatangan = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(payload), // Gabungkan data.kode, data.id, dan rows menjadi satu objek
+        body: JSON.stringify(payload),
       })
 
       if (response.ok) {
@@ -99,7 +67,13 @@ export const ViewKedatangan = () => {
       const payload = {
         kode: data.kode,
         id: data.id,
-        items: rows,
+        items: rows.map(row => ({
+          produkId: row.produkId,
+          nama: row.nama,
+          hargabeli: row.hargabeli,
+          jumlahpesanan: row.jumlahpesanan,
+          jumlahdatang: jumlahdatang,
+        })),
       }
 
       const response = await fetch('/api/pembelian-bermasalah', {
@@ -150,7 +124,14 @@ export const ViewKedatangan = () => {
   }
 
   const handleProcessRowUpdate = (updatedRow, originalRow) => {
-    return { ...updatedRow }
+    // Update rows state with the new value for jumlahdatang
+    const updatedRows = rows.map(row =>
+      row.id === updatedRow.id ? { ...row, jumlahdatang: updatedRow.jumlahdatang } : row
+    )
+
+    setRows(updatedRows)
+
+    return { ...updatedRow, jumlahdatang: updatedRow.jumlahdatang }
   }
 
   const handleProcessRowUpdateError = (error) => {
@@ -201,6 +182,23 @@ export const ViewKedatangan = () => {
       editable: true,
     },
   ]
+
+  const handleKonfirmasi = () => {
+    // Cek apakah semua jumlahdatang sama dengan jumlahpesanan
+    const isComplete = rows.every(row => row.jumlahdatang == row.jumlahpesanan)
+
+    if (isComplete) {
+      setDialogType('complete')
+    } else {
+      setDialogType('incomplete')
+    }
+
+    setOpenDialog(true)
+  }
+
+  const handleCloseDialog = () => {
+    setOpenDialog(false)
+  }
 
   useEffect(() => {
     if (session) {
@@ -282,35 +280,31 @@ export const ViewKedatangan = () => {
             />
           </Box>
           <br />
-          <Button variant="contained" onClick={handleKonfirmasi}>
+          <Button variant="contained" color='success' onClick={handleKonfirmasi} sx={ { borderRadius: 30 } }>
             Konfirmasi Kedatangan
           </Button>
-
-          <Dialog
-            open={openDialog}
-            onClose={handleCloseDialog}
-            aria-labelledby="alert-dialog-title"
-            aria-describedby="alert-dialog-description"
-          >
-            <DialogTitle id="alert-dialog-title">
-              {dialogType === 'komplit' ? 'Konfirmasi Kedatangan' : 'Pesanan Tidak Sesuai'}
-            </DialogTitle>
-            <DialogContent>
-              <DialogContentText id="alert-dialog-description">
-                {dialogType === 'komplit'
-                  ? 'Pesanan komplit, apakah anda ingin menyelesaikan pesanan?'
-                  : 'Jumlah pesanan datang berbeda, apakah anda ingin melaporkan?'}
-              </DialogContentText>
-            </DialogContent>
-            <DialogActions>
-              <Button onClick={handleCloseDialog}>Batal</Button>
-              <Button onClick={handleDialogAction} color="primary">
-                {dialogType === 'komplit' ? 'Selesai' : 'Lapor'}
-              </Button>
-            </DialogActions>
-          </Dialog>
         </>
       )}
+      <Dialog
+        open={openDialog}
+        onClose={handleCloseDialog}
+      >
+        <DialogTitle>{dialogType === 'complete' ? 'Konfirmasi Kedatangan' : 'Laporkan Masalah'}</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            {dialogType === 'complete'
+              ? 'Semua produk telah dikonfirmasi datang dengan jumlah yang sesuai pesanan. Apakah Anda ingin melanjutkan?'
+              : 'Ada ketidaksesuaian antara jumlah produk datang dan jumlah pesanan. Apakah Anda ingin melaporkan masalah ini?'}
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseDialog}>Batal</Button>
+          {dialogType === 'complete'
+            ? <Button onClick={handleKedatangan}>Konfirmasi</Button>
+            : <Button onClick={handleBermasalah}>Laporkan</Button>
+          }
+        </DialogActions>
+      </Dialog>
     </div>
   )
 }
