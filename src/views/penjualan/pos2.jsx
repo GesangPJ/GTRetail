@@ -158,6 +158,8 @@ const PointOfSale = () => {
 
       const result = await response.json()
 
+      setDialogOpen(false)
+
       if (response.ok) {
         setAlert('success')
         setMessage('Transaksi berhasil dibuat')
