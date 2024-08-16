@@ -101,7 +101,6 @@ model PembelianDetail {
   hargabeli     Int
   total         Int
 
-  kedatangan    Kedatangan[]
   pembelian     Pembelian @relation(fields: [pembelianId], references: [id])
   produk        Produk    @relation(fields: [produkId], references: [id])
   pembelianbermasalah PembelianBermasalah[]
@@ -127,7 +126,6 @@ model PembelianBermasalah {
 model Kedatangan {
   id            Int       @id @default(autoincrement())
   kodepembelian String
-  pembeliandetailId   Int
   produkId      Int
   jumlahpesanan Int
   jumlahkedatangan Int
@@ -136,7 +134,6 @@ model Kedatangan {
   updatedAt     DateTime    @updatedAt
 
   produk        Produk    @relation(fields: [produkId], references: [id])
-  pembeliandetail PembelianDetail   @relation(fields: [pembeliandetailId], references: [id])
 
 }
 
