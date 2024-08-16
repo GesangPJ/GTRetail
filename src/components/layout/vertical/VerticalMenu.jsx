@@ -88,6 +88,7 @@ const VerticalMenu = ({ scrollMenu }) => {
                 <MenuItem href='/dashboard/tambah-produk'>Tambah Produk</MenuItem>
                 <MenuItem href='/dashboard/kategori'>Kategori Produk</MenuItem>
                 <MenuItem href='/dashboard/atur-stok'>Atur Stok Produk</MenuItem>
+                <MenuItem href='/dashboard/kedatangan'>Kedatangan Pembelian</MenuItem>
             </SubMenu>
             <SubMenu
               label='Pembelian'
@@ -110,11 +111,12 @@ const VerticalMenu = ({ scrollMenu }) => {
             </SubMenu>
             <SubMenu
               label='Laporan'
-              icon={<i className="ri-printer-line"></i>}
+              icon={<i className="ri-file-chart-line"></i>}
             >
-              <MenuItem href='/dashboard/cetak-bulanan'>Transaksi Bulanan</MenuItem>
-              <MenuItem href='/dashboard/cetak-produk'>Produk</MenuItem>
-              <MenuItem href='/dashboard/cetak-pembelian'>Pembelian Barang</MenuItem>
+              <MenuItem href='/dashboard/laporan/transaksi'>Transaksi Bulanan</MenuItem>
+              <MenuItem href='/dashboard/laporan/produk'>Produk</MenuItem>
+              <MenuItem href='/dashboard/laporan/pembelian'>Pembelian Barang</MenuItem>
+              <MenuItem href='/dashboard/laporan/pembelian-bermasalah'>Pembelian Bermasalah</MenuItem>
 
             </SubMenu>
             <SubMenu
@@ -153,13 +155,14 @@ const VerticalMenu = ({ scrollMenu }) => {
               </SubMenu>
             <MenuSection Label=''>
               <SubMenu
-                label='Produk'
+                label='Inventaris'
                 icon={<i className="ri-archive-2-line"></i>}
               >
                 <MenuItem href='/dashboard/produk'>Daftar Produk</MenuItem>
                 <MenuItem href='/dashboard/tambah-produk'>Tambah Produk</MenuItem>
                 <MenuItem href='/dashboard/kategori'>Kategori Produk</MenuItem>
                 <MenuItem href='/dashboard/atur-stok'>Atur Stok Produk</MenuItem>
+                <MenuItem href='/dashboard/kedatangan'>Kedatangan Pembelian</MenuItem>
               </SubMenu>
 
             <SubMenu
