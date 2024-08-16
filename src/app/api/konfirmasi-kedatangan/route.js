@@ -38,12 +38,12 @@ export async function POST(req) {
       prisma.kedatangan.create({
         data: {
           kodepembelian: kode,
-          items: {
+          status: "SELESAI",
+          kedatangandetail: {
             create: items.map(item => ({
-              produkId: item.produkId,
-              jumlahpesanan: item.jumlahpesanan,
-              jumlahkedatangan: item.jumlahdatang,
-              status: "SELESAI",
+              produkId: parseInt(item.produkId),
+              jumlahpesanan: parseInt(item.jumlahpesanan),
+              jumlahkedatangan: parseInt(item.jumlahdatang),
             })),
           },
         },
