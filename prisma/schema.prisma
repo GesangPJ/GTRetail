@@ -114,7 +114,6 @@ model PembelianBermasalah {
   produkId      Int
   jumlahpesanan Int
   jumlahkedatangan Int
-  selisih       Int
   status        String?
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
