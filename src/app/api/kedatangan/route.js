@@ -25,7 +25,7 @@ export async function GET(req){
     return NextResponse.json({ error: 'User ID tidak ditemukan!' }, { status: 400 })
   }
 
-  console.log('User dengan Id : ',userId,' mengakses API data pembelian')
+  console.log('User dengan Id : ',userId,' mengakses API data kedatangan')
 
   try{
     const datapembelian = await prisma.pembelian.findMany({
@@ -65,9 +65,11 @@ export async function GET(req){
       createdAt: pembelian.createdAt.toISOString(),
       pembeliandetail: pembelian.pembeliandetail.map(detail=>({
         ...detail,
+        pembeliandetailId: detail.id,
         nama: detail.produk.nama,
         hargabeli: detail.hargabeli,
         jumlahpesanan: detail.jumlah,
+        produkId: detail.produkId,
       }))
     }))
 
