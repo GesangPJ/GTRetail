@@ -6,10 +6,8 @@ import { getToken } from 'next-auth/jwt'
 
 import prisma from '@/app/lib/prisma'
 
-export async function POST(req){
+export async function POST(req) {
   const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET })
-
-  console.log('Token:', token)
 
   if (!token) {
     console.log('Unauthorized Access : API Data Kedatangan')
@@ -17,7 +15,7 @@ export async function POST(req){
     return NextResponse.json({ error: 'Unauthorized Access' }, { status: 401 })
   }
 
-  const {kode, id, items} = await req.json()
+  const { kode, id, items } = await req.json()
 
   if (!kode || !id || !items || !items.length) {
     console.error("Data yang dikirim kosong atau tidak lengkap")
@@ -25,38 +23,53 @@ export async function POST(req){
     return NextResponse.json({ error: "Data tidak boleh kosong atau tidak lengkap" }, { status: 400 })
   }
 
-  try{
-
-    const statusbeli = "SELESAI"
-
-    const statuspembelian = await prisma.pembelian.update({
-      where: {id:id},
-      data:{
-        status:statusbeli,
-      }
-    })
-
-    const kedatangan = await prisma.kedatangan.create({
-      data: {
-        kodepembelian: kode,
-        items: {
-          create: items.map(item => ({
-            produkId: item.produkId,
-            jumlahpesanan: item.jumlahpesanan,
-            jumlahkedatangan: item.jumlahdatang,
-            status: statusbeli,
-          })),
+  try {
+    // Memulai transaksi
+    const [statuspembelian, kedatangan, updatestok] = await prisma.$transaction([
+      // Update status pembelian
+      prisma.pembelian.update({
+        where: { id: id },
+        data: {
+          status: "SELESAI",
         },
-      },
-    })
+      }),
 
-    console.log("Berhasil konfirmasi kedatangan :", kode)
+      // Buat kedatangan
+      prisma.kedatangan.create({
+        data: {
+          kodepembelian: kode,
+          items: {
+            create: items.map(item => ({
+              produkId: item.produkId,
+              jumlahpesanan: item.jumlahpesanan,
+              jumlahkedatangan: item.jumlahdatang,
+              status: "SELESAI",
+            })),
+          },
+        },
+      }),
 
-    return NextResponse.json(statuspembelian, kedatangan, {status:201})
-  }
-  catch(error){
-    console.error('Error konfirmasi kedatangan :', error)
+      // Update stok produk untuk setiap item
+      ...items.map(item =>
+        prisma.produk.update({
+          where: {
+            id: item.produkId,
+          },
+          data: {
+            stok: {
+              increment: item.jumlahdatang,
+            },
+          },
+        })
+      ),
+    ])
 
-    return NextResponse.json({error:'Terjadi kesalahan ketika konfirmasi kedatangan'}, {status:500})
+    console.log("Berhasil konfirmasi kedatangan:", kode)
+
+    return NextResponse.json({ statuspembelian, kedatangan, updatestok }, { status: 201 })
+  } catch (error) {
+    console.error('Error konfirmasi kedatangan:', error)
+
+    return NextResponse.json({ error: 'Terjadi kesalahan ketika konfirmasi kedatangan' }, { status: 500 })
   }
 }
