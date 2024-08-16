@@ -88,6 +88,7 @@ model Pembelian {
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
 
+  pembelianbermasalah PembelianBermasalah[]
   pembeliandetail PembelianDetail[]
   distributor   Distributor @relation(fields: [distributorId], references: [id])
   jurnal        Jurnal[]
@@ -108,11 +109,13 @@ model PembelianDetail {
 
 model PembelianBermasalah {
   id            Int      @id  @default(autoincrement())
+  pembelianId   Int
   kodepembelian String?
   status        String?
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
 
+  pembelian         Pembelian   @relation(fields: [pembelianId], references: [id])
   detailbermasalah  DetailBermasalah[]
 
 }
