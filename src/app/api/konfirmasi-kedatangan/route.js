@@ -24,49 +24,43 @@ export async function POST(req) {
   }
 
   try {
-    // Memulai transaksi
-    const [statuspembelian, kedatangan, updatestok] = await prisma.$transaction([
-      // Update status pembelian
-      prisma.pembelian.update({
-        where: { id: id },
+    const statuspembelian = await prisma.pembelian.update({
+      where: { id: id },
         data: {
           status: "SELESAI",
         },
-      }),
+    })
 
-      // Buat kedatangan
-      prisma.kedatangan.create({
+    const kedatangan = await prisma.kedatangan.create({
+      data: {
+        kodepembelian: kode,
+        status: "SELESAI",
+        kedatangandetail: {
+          create: items.map(item => ({
+            produkId: parseInt(item.produkId),
+            jumlahpesanan: parseInt(item.jumlahpesanan),
+            jumlahkedatangan: parseInt(item.jumlahdatang),
+          })),
+        },
+      },
+    })
+
+    const updateStokPromises = items.map(item =>
+      prisma.produk.update({
+        where: { id: parseInt(item.produkId) },
         data: {
-          kodepembelian: kode,
-          status: "SELESAI",
-          kedatangandetail: {
-            create: items.map(item => ({
-              produkId: parseInt(item.produkId),
-              jumlahpesanan: parseInt(item.jumlahpesanan),
-              jumlahkedatangan: parseInt(item.jumlahdatang),
-            })),
+          stok: {
+            increment: parseInt(item.jumlahpesanan),
           },
         },
-      }),
+      })
+    )
 
-      // Update stok produk untuk setiap item
-      ...items.map(item =>
-        prisma.produk.update({
-          where: {
-            id: item.produkId,
-          },
-          data: {
-            stok: {
-              increment: item.jumlahdatang,
-            },
-          },
-        })
-      ),
-    ])
+    const updatedStok = await Promise.all(updateStokPromises)
 
     console.log("Berhasil konfirmasi kedatangan:", kode)
 
-    return NextResponse.json({ statuspembelian, kedatangan, updatestok }, { status: 201 })
+    return NextResponse.json({ statuspembelian, kedatangan, updatedStok }, { status: 201 })
   } catch (error) {
     console.error('Error konfirmasi kedatangan:', error)
 
