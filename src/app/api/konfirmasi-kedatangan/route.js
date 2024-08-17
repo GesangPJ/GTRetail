@@ -33,6 +33,7 @@ export async function POST(req) {
 
     const kedatangan = await prisma.kedatangan.create({
       data: {
+        pembelianId: id,
         kodepembelian: kode,
         status: "SELESAI",
         kedatangandetail: {
