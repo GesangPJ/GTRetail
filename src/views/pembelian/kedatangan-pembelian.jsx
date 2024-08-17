@@ -54,11 +54,13 @@ export const ViewKedatangan = () => {
         setAlertMessage('Kedatangan berhasil dikonfirmasi.')
         setAlertSeverity('success')
         setAlertOpen(true)
+        setOpenDialog(false)
       }
     } catch (error) {
       setAlertMessage('Gagal mengonfirmasi kedatangan.')
       setAlertSeverity('error')
       setAlertOpen(true)
+      setOpenDialog(false)
     }
   }
 
@@ -72,7 +74,7 @@ export const ViewKedatangan = () => {
           nama: row.nama,
           hargabeli: row.hargabeli,
           jumlahpesanan: row.jumlahpesanan,
-          jumlahdatang: jumlahdatang,
+          jumlahdatang: row.jumlahdatang,
         })),
       }
 
@@ -84,15 +86,19 @@ export const ViewKedatangan = () => {
         body: JSON.stringify(payload), // Kirim seluruh row yang ada di DataGrid
       })
 
+
+
       if (response.ok) {
         setAlertMessage('Pesanan bermasalah telah dilaporkan.')
         setAlertSeverity('warning')
         setAlertOpen(true)
+        setOpenDialog(false)
       }
     } catch (error) {
       setAlertMessage('Gagal melaporkan pesanan bermasalah.')
       setAlertSeverity('error')
       setAlertOpen(true)
+      setOpenDialog(false)
     }
   }
 
