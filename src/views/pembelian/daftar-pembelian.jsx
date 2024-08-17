@@ -14,6 +14,7 @@ import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline'
 import PauseCircleIcon from '@mui/icons-material/PauseCircle'
 import DoneAllIcon from '@mui/icons-material/DoneAll'
 import CancelIcon from '@mui/icons-material/Cancel'
+import KeyboardDoubleArrowLeftIcon from '@mui/icons-material/KeyboardDoubleArrowLeft'
 import { idr } from 'matauang'
 
 const getStatusChip = (status) => {
@@ -28,6 +29,8 @@ const getStatusChip = (status) => {
       return <Chip label="BATAL" color="error" variant="outlined"  icon= {<CancelIcon/>} />
     case 'BERMASALAH':
       return <Chip label="BERMASALAH" color='error' variant='outlined' icon={<ErrorOutlineIcon/>}/>
+    case 'RETURN':
+      return <Chip label="RETURN" color='error' variant='outlined' icon={<KeyboardDoubleArrowLeftIcon/>}/>
       default:
       return <Chip label="UNKNOWN" color="default" variant="outlined" />
   }
