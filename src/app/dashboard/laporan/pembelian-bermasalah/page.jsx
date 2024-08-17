@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation'
 
 import { useSession } from 'next-auth/react'
 
+import ViewPembelianBermasalah from '@/views/laporan/pembelian-bermasalah'
 
 const LaporanPembelianBermasalah = () => {
   const { data: session, status } = useSession()
@@ -34,7 +35,7 @@ const LaporanPembelianBermasalah = () => {
       <br />
       <Suspense fallback={<div>Memuat Data...</div>}>
       <div>
-
+        <ViewPembelianBermasalah/>
       </div>
       </Suspense>
 
