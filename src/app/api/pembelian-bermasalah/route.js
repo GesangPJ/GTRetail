@@ -24,32 +24,27 @@ export async function POST(req) {
   }
 
   try {
-    // Memulai transaksi
-    const [statuspembelian, pembelianBermasalah] = await prisma.$transaction([
-      // Update status pembelian
-      prisma.pembelian.update({
-        where: { id: id },
+    const statuspembelian = await prisma.pembelian.update({
+      where: { id: id },
         data: {
           status: "BERMASALAH",
         },
-      }),
+    })
 
-      // Buat kedatangan
-      prisma.pembelianBermasalah.create({
-        data: {
-          kodepembelian: kode,
-          status: "BUKA",
-          detailbermasalah: {
-            create: items.map(item => ({
-              produkId: parseInt(item.produkId),
-              jumlahpesanan: parseInt(item.jumlahpesanan),
-              jumlahkedatangan: parseInt(item.jumlahdatang),
-            })),
-          },
+    const pembelianBermasalah = await prisma.pembelianBermasalah.create({
+      data: {
+        pembelianId: id,
+        kodepembelian: kode,
+        status: "BUKA",
+        detailbermasalah: {
+          create: items.map(item => ({
+            produkId: parseInt(item.produkId),
+            jumlahpesanan: parseInt(item.jumlahpesanan),
+            jumlahkedatangan: parseInt(item.jumlahdatang),
+          })),
         },
-      }),
-
-    ])
+      },
+    })
 
     console.log("Berhasil lapor pembelian bermasalah :", kode)
 
