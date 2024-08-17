@@ -33,6 +33,12 @@ Aplikasi Sistem Manajemen Penjualan untuk UMKM berbasis Node.JS dengan framework
 
 ## Changelog
 
+### v1.5.1
+
+- Menambahkan fungsi Return pembelian / purchasing
+- Mmebuat Jurnal kode RETURN dan masukkan jumlahtotal pembelian ke kredit ketika RETURN dilakukan
+- Membuat Daftar RETURN pembelian
+
 ### v1.4.5
 
 - Update Dashboard Design
