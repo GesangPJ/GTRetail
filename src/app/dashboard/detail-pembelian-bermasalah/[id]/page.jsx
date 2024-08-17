@@ -146,7 +146,13 @@ const DetailPembelianBermasalah = () => {
       </h1>
       <br />
       <Box sx={{ height: 400, width: '100%' }}>
-        <DataGrid rows={data.detailbermasalah} columns={columns} pageSize={5} rowsPerPageOptions={[5]} />
+        <DataGrid
+        rows={data.detailbermasalah}
+        columns={columns}
+        pageSize={5}
+        rowsPerPageOptions={[5]}
+        getRowId={(row) => row.id}
+        />
       </Box>
       <br />
       <Box sx={{ display: 'flex', gap: 15, flexWrap: 'wrap' }}>
