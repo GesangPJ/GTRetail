@@ -37,7 +37,6 @@ Aplikasi Sistem Manajemen Penjualan untuk UMKM berbasis Node.JS dengan framework
 
 - Menambahkan fungsi Return pembelian / purchasing
 - Mmebuat Jurnal kode RETURN dan masukkan jumlahtotal pembelian ke kredit ketika RETURN dilakukan
-- Membuat Daftar RETURN pembelian
 
 ### v1.4.5
 
