@@ -19,7 +19,7 @@ export const POST = async (req) => {
   }
 
   try{
-    const {pembelianId, produk, jumlahtotal} = await req.json()
+    const {pembelianId, pembelianbermasalahId, produk, jumlahtotal} = await req.json()
 
     // Mengambil bulan dan tahun saat ini
     const currentDate = new Date()
@@ -27,9 +27,12 @@ export const POST = async (req) => {
     const currentMonth = monthNames[currentDate.getMonth()]
     const currentYear = currentDate.getFullYear()
 
-    // Mengambil nomor urut terakhir dari Transaksi bulan dan tahun ini
+    // Mengambil nomor urut terakhir dari Jurnal yang berawalan dengan 'GT/RETURN/' untuk bulan dan tahun ini
     const lastJurnal = await prisma.jurnal.findFirst({
       where: {
+        kode: {
+          startsWith: `GT/RETURN/${currentMonth}/${currentYear}/`,
+        },
         createdAt: {
           gte: new Date(currentYear, currentDate.getMonth(), 1),
           lte: new Date(currentYear, currentDate.getMonth() + 1, 0),
@@ -43,18 +46,9 @@ export const POST = async (req) => {
     let newNumber
 
     if (lastJurnal) {
-      const lastJurnalDate = new Date(lastJurnal.createdAt)
-      const lastMonth = monthNames[lastJurnalDate.getMonth()]
-      const lastYear = lastJurnalDate.getFullYear()
+      const lastNumber = parseInt(lastJurnal.kode.split('/').pop(), 10)
 
-      // Reset nomor seri jika masuk bulan baru
-      if (currentMonth !== lastMonth || currentYear !== lastYear) {
-        newNumber = '00001'
-      } else {
-        const lastNumber = parseInt(lastJurnal.kode.split('/').pop(), 10)
-
-        newNumber = (lastNumber + 1).toString().padStart(5, '0')
-      }
+      newNumber = (lastNumber + 1).toString().padStart(5, '0')
     } else {
       newNumber = '00001'
     }
@@ -65,7 +59,7 @@ export const POST = async (req) => {
     // Buat data di tabel return
     const buatreturn = await prisma.returnPembelian.create({
         data:{
-          pembelianId,
+          pembelianId: parseInt(pembelianId),
           returndetail:{
             create: produk.map(produk =>({
               produkId: parseInt(produk.produkId),
@@ -78,7 +72,7 @@ export const POST = async (req) => {
     // Ganti status pembelian bermasalah ke tutup
     const statusbermasalah = await prisma.pembelianBermasalah.update({
       where:{
-        pembelianId:pembelianId,
+        id:parseInt(pembelianbermasalahId),
       },
       data:{
         status: "TUTUP",
@@ -87,7 +81,7 @@ export const POST = async (req) => {
 
     // Ganti status pembelia ke BATAL
     const statuspembelian = await prisma.pembelian.update({
-      where:{id:pembelianId,},
+      where:{id:parseInt(pembelianId),},
       data:{
         status:"RETURN",
       },
@@ -96,10 +90,10 @@ export const POST = async (req) => {
     // Buat Jurnal Return
     const buatjurnalreturn = await prisma.jurnal.create({
       data:{
-        pembelianId,
+        pembelianId:parseInt(pembelianId),
         akun:"BANK",
         kode: newKode,
-        kredit: jumlahtotal,
+        kredit: parseInt(jumlahtotal),
       }
     })
 
