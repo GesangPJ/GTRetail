@@ -25,7 +25,6 @@ model User {
 
   transaksi  Transaksi[]  @relation("TransaksiUser")
   produk      Produk[]
-  kedatangan  Kedatangan[]
 }
 
 model Jurnal {
@@ -89,9 +88,11 @@ model Pembelian {
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
 
+  pembelianbermasalah PembelianBermasalah[]
   pembeliandetail PembelianDetail[]
   distributor   Distributor @relation(fields: [distributorId], references: [id])
   jurnal        Jurnal[]
+  kedatangan    Kedatangan[]
 }
 
 model PembelianDetail {
@@ -102,23 +103,62 @@ model PembelianDetail {
   hargabeli     Int
   total         Int
 
-  kedatangan    Kedatangan[]
   pembelian     Pembelian @relation(fields: [pembelianId], references: [id])
   produk        Produk    @relation(fields: [produkId], references: [id])
 
 }
 
-model Kedatangan {
-  id                Int               @id @default(autoincrement())
-  pembeliandetailId Int
-  tanggalkedatangan DateTime          @default(now())
-  jumlahproduk      Int
-  status            String            @default("pending")
-  receivedBy        Int?
-  notes             String?
+model PembelianBermasalah {
+  id            Int      @id  @default(autoincrement())
+  pembelianId   Int
+  kodepembelian String?
+  status        String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
 
-  pembelian         PembelianDetail   @relation(fields: [pembeliandetailId], references: [id])
-  user              User?             @relation(fields: [receivedBy], references: [id])
+  pembelian         Pembelian   @relation(fields: [pembelianId], references: [id])
+  detailbermasalah  DetailBermasalah[]
+
+}
+
+model DetailBermasalah {
+  id            Int       @id @default(autoincrement())
+  pembelianbermasalahId   Int
+  produkId      Int
+  jumlahpesanan Int
+  jumlahkedatangan Int
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  pembelianbermasalah PembelianBermasalah @relation(fields: [pembelianbermasalahId], references: [id])
+  produk        Produk  @relation(fields: [produkId], references: [id])
+
+}
+
+model Kedatangan {
+  id            Int       @id @default(autoincrement())
+  pembelianId   Int
+  kodepembelian String
+  status        String?
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+
+  kedatangandetail  KedatanganDetail[]
+  pembelian     Pembelian   @relation(fields: [pembelianId], references: [id])
+
+}
+
+model KedatanganDetail {
+  id            Int       @id @default(autoincrement())
+  kedatanganId  Int
+  produkId      Int
+  jumlahpesanan Int
+  jumlahkedatangan Int
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  kedatangan    Kedatangan  @relation(fields: [kedatanganId], references: [id])
+  produk        Produk    @relation(fields: [produkId], references: [id])
 }
 
 enum jenis_p {
@@ -143,10 +183,12 @@ model Produk {
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
 
+  kedatangandetail  KedatanganDetail[]
   transaksi TransaksiDetail[]
   userproduk      User    @relation(fields: [userId], references: [id])
   kategori  Kategori  @relation(fields: [kategoriId], references: [id])
   pembelian PembelianDetail[]
+  detailbermasalah DetailBermasalah[]
 }
 
 model TransaksiDetail {

@@ -45,7 +45,7 @@ const formatDate = (dateString) => {
   return `${day}-${month}-${year} ${hours}:${minutes}`
 }
 
-const TabelDaftarPembelian = () => {
+const ViewPembelianBermasalah = () => {
   const router = useRouter()
   const { data: session } = useSession()
   const [rows, setRows] = useState([])
@@ -55,7 +55,7 @@ const TabelDaftarPembelian = () => {
     if (session) {
       const fetchData = async () => {
         try {
-          const response = await fetch(`/api/data-pembelian?userId=${session.user.id}`)
+          const response = await fetch(`/api/ambil-status-bermasalah?userId=${session.user.id}`)
           const data = await response.json()
 
           // Tambahkan nomor urut
@@ -74,7 +74,6 @@ const TabelDaftarPembelian = () => {
   }, [session])
 
   const columns = [
-    // { field: 'no', headerName: 'No', width: 50, headerClassName:'app-theme--header', },
     {
       field: 'updatedAt',
       headerName: 'Tanggal/Jam',
@@ -123,7 +122,7 @@ const TabelDaftarPembelian = () => {
 
   const handleDetailClick = (row) => {
     if (row && row.id) {
-      router.push(`/dashboard/detail-pembelian/${row.id}`)
+      router.push(`/dashboard/detail-pembelian-bermasalah/${row.id}`)
     } else {
       console.error('ID tidak valid:', row)
     }
@@ -160,4 +159,4 @@ const TabelDaftarPembelian = () => {
   )
 }
 
-export default TabelDaftarPembelian
+export default ViewPembelianBermasalah

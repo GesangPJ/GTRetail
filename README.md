@@ -33,12 +33,14 @@ Aplikasi Sistem Manajemen Penjualan untuk UMKM berbasis Node.JS dengan framework
 
 ## Changelog
 
-### v1.4.1
+### v1.4.5
 
 - Update Dashboard Design
 - Fix Typo
 - Fix Bug Transaksi
 - Fix Bug Pembelian / Purchasing
+- Konfirmasi Kedatangan pembelian
+- Fitur Laporan pembelian bermasalah (jumlah produk yang diterima tidak sesuai dengan pesanan pembelian / purchasing)
 
 ### v1.3.2
 
