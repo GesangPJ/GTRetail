@@ -21,16 +21,18 @@ export async function GET(req){
   const id = url.searchParams.get("id")
 
   try{
-    const databermasalah = await prisma.pembelianBermasalah.findMany({
-      where:{pembelianId:id,},
+    const databermasalah = await prisma.pembelianBermasalah.findFirst({
+      where:{pembelianId: parseInt(id),},
       select:{
         id:true,
+        pembelianId:true,
         kodepembelian:true,
         status:true,
         createdAt:true,
         updatedAt:true,
         detailbermasalah:{
           select:{
+            id:true,
             produkId:true,
             jumlahpesanan:true,
             jumlahkedatangan:true,
@@ -43,11 +45,11 @@ export async function GET(req){
         },
         pembelian:{
           select:{
+            jumlahtotalharga:true,
             distributor:{
               select:{
                 nama:true,
               },
-              jumlahtotalharga:true,
             },
           },
         },
@@ -76,6 +78,9 @@ export async function GET(req){
 
   }
   catch(error){
+    console.error("Error Mengambil data :", error)
+
+    return NextResponse.json({error:"Error mengambil data"}, {status:500})
 
   }
 
