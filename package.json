@@ -17,6 +17,7 @@
     "seedkaryawan": "node prisma/seedKaryawan.js",
     "resettransaksi": "node prisma/resetTransaksi.js",
     "resetpembelian": "node prisma/resetPembelian.js",
+    "resetkedatangan":"node prisma/resetKedatangan.js",
     "seedkategori": "node prisma/seedkategori.js"
   },
   "dependencies": {
