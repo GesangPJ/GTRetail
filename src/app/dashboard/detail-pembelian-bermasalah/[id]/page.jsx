@@ -8,14 +8,14 @@ import { useSession } from 'next-auth/react'
 
 import { DataGrid } from '@mui/x-data-grid'
 
+import { Button, Box, Snackbar, Alert } from '@mui/material'
+
 import Table from '@mui/material/Table'
 import TableBody from '@mui/material/TableBody'
 import TableCell from '@mui/material/TableCell'
 import TableContainer from '@mui/material/TableContainer'
 import TableRow from '@mui/material/TableRow'
 import Paper from '@mui/material/Paper'
-import Box from '@mui/material/Box'
-import { Button } from '@mui/material'
 import {idr} from 'matauang'
 import formatTanggal from 'formattanggal'
 
@@ -24,10 +24,12 @@ const DetailPembelianBermasalah = () => {
   const id = params.id
   const {data: session, status} = useSession()
   const router = useRouter()
-
   const [data, setData] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
+  const [alertOpen, setAlertOpen] = useState(false)
+  const [alertMessage, setAlertMessage] = useState('')
+  const [alertSeverity, setAlertSeverity] = useState('success')
 
   useEffect(() => {
     if (status === 'loading') return
@@ -120,8 +122,54 @@ const DetailPembelianBermasalah = () => {
     },
   ]
 
+  const handleReturn = async() =>{
+    try{
+      const payload = {
+        pembelianId: id,
+        jumlahtotal: data.jumlahTotal,
+        produk: data.detailbermasalah.map(row=>({
+          produkId: data.detailbermasalah.produkId,
+          jumlah: data.detailbermasalah.jumlahdatang,
+        }))
+      }
+
+      const response = await fetch('/api/return-pembelian', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      })
+
+      if (response.ok) {
+        setAlertMessage('Berhasil Return Pembelian.')
+        setAlertSeverity('success')
+        setAlertOpen(true)
+      }
+    }
+    catch(error){
+      setAlertMessage('Gagal Return Pembelian.')
+      setAlertSeverity('error')
+      setAlertOpen(true)
+
+    }
+  }
+
   return (
     <div>
+      <Snackbar
+        open={alertOpen}
+        autoHideDuration={5000}
+        onClose={() => setAlertOpen(false)}
+      >
+        <Alert
+          onClose={() => setAlertOpen(false)}
+          severity={alertSeverity}
+          sx={{ width: '100%' }}
+        >
+          {alertMessage}
+        </Alert>
+      </Snackbar>
       <h1 className='text-xl font-bold'>
         Kode Pembelian : {data.kodepembelian}
       </h1>
@@ -158,6 +206,9 @@ const DetailPembelianBermasalah = () => {
       <Box sx={{ display: 'flex', gap: 15, flexWrap: 'wrap' }}>
         <Button variant='contained' color="primary" sx={{ borderRadius: 30 }} href="/dashboard/laporan/pembelian-bermasalah" size="large">
           &laquo; Daftar Pembelian Bermasalah
+        </Button>
+        <Button variant='outlined' color="warning" sx={{ borderRadius: 30 }} onClick={handleReturn} size="large">
+          Return Pembelian
         </Button>
       </Box>
     </div>
