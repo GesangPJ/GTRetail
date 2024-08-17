@@ -78,6 +78,25 @@ model Distributor {
   pembelian     Pembelian[]
 }
 
+model ReturnPembelian {
+  id            Int       @id  @default(autoincrement())
+  pembelianId   Int
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  pembelian     Pembelian @relation(fields: [pembelianId], references: [id])
+  returndetail  ReturnDetail[]
+}
+
+model ReturnDetail {
+  id            Int       @id   @default(autoincrement())
+  returnId      Int
+  produkId      Int
+  jumlahreturn  Int
+
+  return        ReturnPembelian    @relation(fields: [returnId], references: [id])
+}
+
 model Pembelian {
   id            Int       @id @default(autoincrement())
   kode          String    @unique
@@ -93,6 +112,7 @@ model Pembelian {
   distributor   Distributor @relation(fields: [distributorId], references: [id])
   jurnal        Jurnal[]
   kedatangan    Kedatangan[]
+  return        ReturnPembelian[]
 }
 
 model PembelianDetail {

@@ -30,7 +30,12 @@ export async function GET(req){
   try{
     const datapembelian = await prisma.pembelian.findMany({
 
-      where: { status: "BERMASALAH"},
+      where: {
+        OR: [
+          { status: "BERMASALAH" },
+          { status: "RETURN" }
+        ]
+      },
       select:{
         id:true,
         kode:true,

@@ -8,14 +8,16 @@ import { useSession } from 'next-auth/react'
 
 import { DataGrid } from '@mui/x-data-grid'
 
+import { Button, Box, Snackbar, Alert,
+  Dialog, DialogActions, DialogContent,
+  DialogContentText, DialogTitle } from '@mui/material'
+
 import Table from '@mui/material/Table'
 import TableBody from '@mui/material/TableBody'
 import TableCell from '@mui/material/TableCell'
 import TableContainer from '@mui/material/TableContainer'
 import TableRow from '@mui/material/TableRow'
 import Paper from '@mui/material/Paper'
-import Box from '@mui/material/Box'
-import { Button } from '@mui/material'
 import {idr} from 'matauang'
 import formatTanggal from 'formattanggal'
 
@@ -24,10 +26,13 @@ const DetailPembelianBermasalah = () => {
   const id = params.id
   const {data: session, status} = useSession()
   const router = useRouter()
-
   const [data, setData] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
+  const [alertOpen, setAlertOpen] = useState(false)
+  const [alertMessage, setAlertMessage] = useState('')
+  const [alertSeverity, setAlertSeverity] = useState('success')
+  const [dialogOpen, setDialogOpen] = useState(false)
 
   useEffect(() => {
     if (status === 'loading') return
@@ -120,8 +125,63 @@ const DetailPembelianBermasalah = () => {
     },
   ]
 
+  const handleReturn = async() =>{
+    try{
+      const payload = {
+        pembelianId: id,
+        pembelianbermasalahId: data.id,
+        jumlahtotal: data.jumlahTotal,
+        produk: data.detailbermasalah.map(row => ({
+          produkId: row.produkId,
+          jumlah: row.jumlahkedatangan,
+        }))
+      }
+
+      const response = await fetch('/api/return-pembelian', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      })
+
+      if (response.ok) {
+        setAlertMessage('Berhasil Return Pembelian.')
+        setAlertSeverity('success')
+        setAlertOpen(true)
+        setDialogOpen(false)
+      }
+    }
+    catch(error){
+      setAlertMessage('Gagal Return Pembelian.')
+      setAlertSeverity('error')
+      setAlertOpen(true)
+      setDialogOpen(false)
+
+    }
+  }
+
+  const handleBukaDialog = () => {
+    setDialogOpen(true)
+  }
+
+  const handleDialogClose = () => setDialogOpen(false)
+
   return (
     <div>
+      <Snackbar
+        open={alertOpen}
+        autoHideDuration={5000}
+        onClose={() => setAlertOpen(false)}
+      >
+        <Alert
+          onClose={() => setAlertOpen(false)}
+          severity={alertSeverity}
+          sx={{ width: '100%' }}
+        >
+          {alertMessage}
+        </Alert>
+      </Snackbar>
       <h1 className='text-xl font-bold'>
         Kode Pembelian : {data.kodepembelian}
       </h1>
@@ -159,7 +219,28 @@ const DetailPembelianBermasalah = () => {
         <Button variant='contained' color="primary" sx={{ borderRadius: 30 }} href="/dashboard/laporan/pembelian-bermasalah" size="large">
           &laquo; Daftar Pembelian Bermasalah
         </Button>
+        <Button variant='outlined' color="warning" sx={{ borderRadius: 30 }} onClick={handleBukaDialog} size="large">
+          Return Pembelian
+        </Button>
       </Box>
+      <Dialog open={dialogOpen} onClose={handleDialogClose}>
+          <DialogTitle>Konfirmasi</DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              <p className='text-md font-bold'>
+              Apakah Anda yakin ingin return pembelian ini?
+              </p>
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleDialogClose} variant='contained' color="error">
+              Batal
+            </Button>
+            <Button onClick={handleReturn} variant='contained' color="warning">
+              Return Pembelian
+            </Button>
+          </DialogActions>
+        </Dialog>
     </div>
   )
 }

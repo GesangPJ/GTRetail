@@ -10,6 +10,7 @@ import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline'
 import PauseCircleIcon from '@mui/icons-material/PauseCircle'
 import DoneAllIcon from '@mui/icons-material/DoneAll'
 import Chip from '@mui/material/Chip'
+import KeyboardDoubleArrowLeftIcon from '@mui/icons-material/KeyboardDoubleArrowLeft'
 import { idr } from 'matauang'
 
 const formatDate = (dateString) => {
@@ -34,7 +35,9 @@ const getStatusChip = (status) => {
       return <Chip label="SELESAI" color="primary" variant="outlined" icon= {<DoneAllIcon/>} />
     case 'BATAL':
       return <Chip label="BATAL" color="error" variant="outlined"  icon= {<ErrorOutlineIcon/>} />
-    default:
+    case 'RETURN':
+      return <Chip label="RETURN" color='error' variant='outlined' icon={<KeyboardDoubleArrowLeftIcon/>}/>
+      default:
       return <Chip label="UNKNOWN" color="default" variant="outlined" />
   }
 }
