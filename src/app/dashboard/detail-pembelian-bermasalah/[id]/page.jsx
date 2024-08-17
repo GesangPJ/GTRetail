@@ -8,7 +8,9 @@ import { useSession } from 'next-auth/react'
 
 import { DataGrid } from '@mui/x-data-grid'
 
-import { Button, Box, Snackbar, Alert } from '@mui/material'
+import { Button, Box, Snackbar, Alert,
+  Dialog, DialogActions, DialogContent,
+  DialogContentText, DialogTitle } from '@mui/material'
 
 import Table from '@mui/material/Table'
 import TableBody from '@mui/material/TableBody'
@@ -30,6 +32,7 @@ const DetailPembelianBermasalah = () => {
   const [alertOpen, setAlertOpen] = useState(false)
   const [alertMessage, setAlertMessage] = useState('')
   const [alertSeverity, setAlertSeverity] = useState('success')
+  const [dialogOpen, setDialogOpen] = useState(false)
 
   useEffect(() => {
     if (status === 'loading') return
@@ -126,10 +129,11 @@ const DetailPembelianBermasalah = () => {
     try{
       const payload = {
         pembelianId: id,
+        pembelianbermasalahId: data.id,
         jumlahtotal: data.jumlahTotal,
-        produk: data.detailbermasalah.map(row=>({
-          produkId: data.detailbermasalah.produkId,
-          jumlah: data.detailbermasalah.jumlahdatang,
+        produk: data.detailbermasalah.map(row => ({
+          produkId: row.produkId,
+          jumlah: row.jumlahkedatangan,
         }))
       }
 
@@ -145,15 +149,23 @@ const DetailPembelianBermasalah = () => {
         setAlertMessage('Berhasil Return Pembelian.')
         setAlertSeverity('success')
         setAlertOpen(true)
+        setDialogOpen(false)
       }
     }
     catch(error){
       setAlertMessage('Gagal Return Pembelian.')
       setAlertSeverity('error')
       setAlertOpen(true)
+      setDialogOpen(false)
 
     }
   }
+
+  const handleBukaDialog = () => {
+    setDialogOpen(true)
+  }
+
+  const handleDialogClose = () => setDialogOpen(false)
 
   return (
     <div>
@@ -207,10 +219,28 @@ const DetailPembelianBermasalah = () => {
         <Button variant='contained' color="primary" sx={{ borderRadius: 30 }} href="/dashboard/laporan/pembelian-bermasalah" size="large">
           &laquo; Daftar Pembelian Bermasalah
         </Button>
-        <Button variant='outlined' color="warning" sx={{ borderRadius: 30 }} onClick={handleReturn} size="large">
+        <Button variant='outlined' color="warning" sx={{ borderRadius: 30 }} onClick={handleBukaDialog} size="large">
           Return Pembelian
         </Button>
       </Box>
+      <Dialog open={dialogOpen} onClose={handleDialogClose}>
+          <DialogTitle>Konfirmasi</DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              <p className='text-md font-bold'>
+              Apakah Anda yakin ingin return pembelian ini?
+              </p>
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleDialogClose} variant='contained' color="error">
+              Batal
+            </Button>
+            <Button onClick={handleReturn} variant='contained' color="warning">
+              Return Pembelian
+            </Button>
+          </DialogActions>
+        </Dialog>
     </div>
   )
 }
