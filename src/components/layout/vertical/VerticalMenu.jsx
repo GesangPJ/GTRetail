@@ -115,7 +115,7 @@ const VerticalMenu = ({ scrollMenu }) => {
             >
               <MenuItem href='/dashboard/laporan/transaksi'>Transaksi Bulanan</MenuItem>
               <MenuItem href='/dashboard/laporan/produk'>Produk</MenuItem>
-              <MenuItem href='/dashboard/laporan/pembelian'>Pembelian Barang</MenuItem>
+              <MenuItem href='/dashboard/laporan/pembelian'>Pembelian Produk</MenuItem>
               <MenuItem href='/dashboard/laporan/pembelian-bermasalah'>Pembelian Bermasalah</MenuItem>
 
             </SubMenu>
