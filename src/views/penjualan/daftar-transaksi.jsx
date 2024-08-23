@@ -142,7 +142,7 @@ const TableTransaksi = () => {
       <div>
       <Box
           sx={{
-            height: 400,
+            height: 700,
             width: '100%',
             '& .app-theme--header': {
               fontWeight: 'bold',
