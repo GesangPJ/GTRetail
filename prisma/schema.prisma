@@ -13,6 +13,7 @@ generator client {
   provider = "prisma-client-js"
 }
 
+// Tabel User
 model User {
   id             Int       @id @default(autoincrement())
   name           String?
@@ -23,10 +24,32 @@ model User {
   accounts       Account[]
   sessions       Session[]
 
+  // relasi
   transaksi  Transaksi[]  @relation("TransaksiUser")
   produk      Produk[]
 }
 
+// Tabel Pengaturan toko
+model Pengaturan {
+  id           Int    @id
+  nama_toko    String
+  tarif_ppn    Decimal
+  alamat_toko  String
+  npwp_toko    String?
+  siup_toko    String?
+  notelp_toko  String?
+  email_toko   String?
+}
+
+model Pengiriman {
+  id          Int      @id @default(autoincrement())
+  nama        String
+  tarif       Int
+
+  updatedAt   DateTime  @updatedAt
+}
+
+// Tabel Jurnal
 model Jurnal {
   id           Int      @id @default(autoincrement())
   kode         String
@@ -38,11 +61,13 @@ model Jurnal {
   createdAt    DateTime   @default(now())
   updatedAt    DateTime   @updatedAt
 
+  // relasi
   pembelian   Pembelian?   @relation(fields: [pembelianId], references: [id])
   transaksi   Transaksi?   @relation(fields: [transaksiId], references: [id])
 
 }
 
+// Tabel Kategori
 model Kategori {
   id            Int       @id @default(autoincrement())
   nama          String
@@ -50,9 +75,11 @@ model Kategori {
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
 
+  // relasi
   produk        Produk[]
 }
 
+// tabel pelanggan
 model Pelanggan {
   id            Int       @id @default(autoincrement())
   nama          String
@@ -62,9 +89,11 @@ model Pelanggan {
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
 
+  // relasi
   transaksi  Transaksi[] @relation("TransaksiPelanggan")
 }
 
+// Tabel Distributor
 model Distributor {
   id            Int       @id @default(autoincrement())
   nama          String
@@ -75,38 +104,46 @@ model Distributor {
   createdAt     DateTime   @default(now())
   updatedAt     DateTime   @updatedAt
 
+  // relasi
   pembelian     Pembelian[]
 }
 
+// Tabel Pembelian Return
 model ReturnPembelian {
   id            Int       @id  @default(autoincrement())
   pembelianId   Int
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
 
+  // relasi
   pembelian     Pembelian @relation(fields: [pembelianId], references: [id])
   returndetail  ReturnDetail[]
 }
 
+// Tabel Detail pembelian return
 model ReturnDetail {
   id            Int       @id   @default(autoincrement())
   returnId      Int
   produkId      Int
   jumlahreturn  Int
 
+  // relasi
   return        ReturnPembelian    @relation(fields: [returnId], references: [id])
 }
 
+// Tabel Pembelian
 model Pembelian {
   id            Int       @id @default(autoincrement())
   kode          String    @unique
   status        String?
+  biayakirim    Int?
   distributorId Int
   jumlahtotalharga    Int
 
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
 
+  // relasi
   pembelianbermasalah PembelianBermasalah[]
   pembeliandetail PembelianDetail[]
   distributor   Distributor @relation(fields: [distributorId], references: [id])
@@ -115,6 +152,7 @@ model Pembelian {
   return        ReturnPembelian[]
 }
 
+// Tabel Detail Pembelian
 model PembelianDetail {
   id            Int      @id  @default(autoincrement())
   pembelianId   Int
@@ -123,11 +161,13 @@ model PembelianDetail {
   hargabeli     Int
   total         Int
 
+  // relasi
   pembelian     Pembelian @relation(fields: [pembelianId], references: [id])
   produk        Produk    @relation(fields: [produkId], references: [id])
 
 }
 
+// Tabel Pembelian Bermasalah (produk kurang)
 model PembelianBermasalah {
   id            Int      @id  @default(autoincrement())
   pembelianId   Int
@@ -136,11 +176,13 @@ model PembelianBermasalah {
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
 
+  // relasi
   pembelian         Pembelian   @relation(fields: [pembelianId], references: [id])
   detailbermasalah  DetailBermasalah[]
 
 }
 
+// Tabel Detail pembelian bermasalah
 model DetailBermasalah {
   id            Int       @id @default(autoincrement())
   pembelianbermasalahId   Int
@@ -150,11 +192,13 @@ model DetailBermasalah {
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
 
+  // relasi
   pembelianbermasalah PembelianBermasalah @relation(fields: [pembelianbermasalahId], references: [id])
   produk        Produk  @relation(fields: [produkId], references: [id])
 
 }
 
+// Tabel kedatangan pembelian
 model Kedatangan {
   id            Int       @id @default(autoincrement())
   pembelianId   Int
@@ -163,11 +207,13 @@ model Kedatangan {
   createdAt     DateTime    @default(now())
   updatedAt     DateTime    @updatedAt
 
+  // relasi
   kedatangandetail  KedatanganDetail[]
   pembelian     Pembelian   @relation(fields: [pembelianId], references: [id])
 
 }
 
+// Tabel Detail kedatangan
 model KedatanganDetail {
   id            Int       @id @default(autoincrement())
   kedatanganId  Int
@@ -177,6 +223,7 @@ model KedatanganDetail {
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
 
+  // relasi
   kedatangan    Kedatangan  @relation(fields: [kedatanganId], references: [id])
   produk        Produk    @relation(fields: [produkId], references: [id])
 }
@@ -186,6 +233,7 @@ enum jenis_p {
   PANGAN
 }
 
+// Tabel produk
 model Produk {
   id            Int       @id @default(autoincrement())
   userId        Int
@@ -203,6 +251,7 @@ model Produk {
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
 
+  // relasi
   kedatangandetail  KedatanganDetail[]
   transaksi TransaksiDetail[]
   userproduk      User    @relation(fields: [userId], references: [id])
@@ -211,6 +260,7 @@ model Produk {
   detailbermasalah DetailBermasalah[]
 }
 
+// Tabel detail transaksi
 model TransaksiDetail {
   id            Int        @id @default(autoincrement())
   transaksiId   Int
@@ -219,10 +269,12 @@ model TransaksiDetail {
   harga         Int
   total         Int        @default(0) // total = quantity * price
 
+  // relasi
   transaksi     Transaksi  @relation(fields: [transaksiId], references: [id])
   produk        Produk     @relation(fields: [produkId], references: [id])
 }
 
+// Tabel Transaksi (penjualan)
 model Transaksi {
   id             Int              @id @default(autoincrement())
   kode           String           @unique
@@ -235,6 +287,7 @@ model Transaksi {
   createdAt      DateTime         @default(now())
   updatedAt      DateTime         @updatedAt
 
+  // relasi
   user           User             @relation("TransaksiUser", fields: [userId], references: [id])
   pelanggan      Pelanggan?       @relation("TransaksiPelanggan", fields: [pelangganId], references: [id])
   transaksidetail  TransaksiDetail[]
@@ -242,6 +295,7 @@ model Transaksi {
 
 }
 
+// Tabel Akun (session)
 model Account {
   id                Int       @id @default(autoincrement())
   userId            Int
@@ -256,11 +310,13 @@ model Account {
   id_token          String?
   session_state     String?
 
+  // relasi
   user              User      @relation(fields: [userId], references: [id])
 
   @@unique([provider, providerAccountId])
 }
 
+// Tabel Session
 model Session {
   id           Int       @id @default(autoincrement())
   sessionToken String    @unique
