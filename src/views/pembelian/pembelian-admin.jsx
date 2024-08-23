@@ -4,7 +4,7 @@ import React, { useEffect, useState, useRef } from 'react'
 
 import { useSession } from 'next-auth/react'
 import {
-  Grid, Button, TextField, InputAdornment, Alert, FormControl, InputLabel
+  Grid, Button, TextField, Alert, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions
 } from '@mui/material'
 import Box from '@mui/material/Box'
 import Autocomplete from '@mui/material/Autocomplete'
@@ -16,6 +16,7 @@ import { idr } from 'matauang'
 
 const FormPembelianProduk = () => {
   const {data: session} = useSession()
+  const [dialogOpen, setDialogOpen] = useState(false)
 
   const [data, setData] = useState({
     produkId: '',
@@ -107,6 +108,21 @@ const FormPembelianProduk = () => {
     console.error('Error updating row:', error)
   }
 
+  const handleDialogOpen = () => {
+    if (!selectedDistributor || rows.length === 0) {
+      setAlert('warning')
+      setMessage('Pastikan distributor dan produk telah dipilih')
+
+      return
+    }
+    else{
+      setDialogOpen(true)
+    }
+
+  }
+
+  const handleDialogClose = () => setDialogOpen(false)
+
   const handleSubmit = async (e) => {
     e.preventDefault()
 
@@ -141,18 +157,23 @@ const FormPembelianProduk = () => {
       if (response.ok) {
         setAlert('success')
         setMessage('Pembelian berhasil dibuat')
+        setDialogOpen(false)
         setRows([])
         setSelectedDistributor(null)
       } else {
+        setDialogOpen(false)
         setAlert('error')
         setMessage(result.error || 'Terjadi kesalahan saat membuat pembelian')
       }
     } catch (error) {
       console.error('Error membuat pembelian:', error)
+      setDialogOpen(false)
       setAlert('error')
       setMessage('Terjadi kesalahan saat membuat pembelian')
     }
   }
+
+
 
   const columns = [
     { field: 'id', headerName: 'ID', width: 100 },
@@ -298,7 +319,7 @@ const FormPembelianProduk = () => {
             type="submit"
             variant="contained"
             color="primary"
-            onClick={handleSubmit}
+            onClick={handleDialogOpen}
             sx={{ borderRadius: 30 }}
             startIcon={<SaveIcon />}
           >
@@ -330,6 +351,25 @@ const FormPembelianProduk = () => {
       )}
 
       <br />
+
+      <Dialog open={dialogOpen} onClose={handleDialogClose}>
+          <DialogTitle>Konfirmasi</DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              <p className='text-md font-bold'>
+              Apakah Anda yakin ingin melakukan pembelian ini?
+              </p>
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleDialogClose} variant='contained' color="error">
+              Batal
+            </Button>
+            <Button onClick={handleSubmit} variant='contained' color="success">
+              Ya
+            </Button>
+          </DialogActions>
+        </Dialog>
 
 
     </div>
