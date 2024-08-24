@@ -10,8 +10,6 @@ export const PUT = async (req) => {
   const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET })
   const resetKey = process.env.ADMIN_KEY
 
-  console.log('Token :', token)
-
   if (!token) {
     console.log('Unauthorized Access : API Edit Bpjs')
 
@@ -20,21 +18,33 @@ export const PUT = async (req) => {
 
   try{
     const{
-      userId,
-      nama,
-      alamat,
-      notelp,
-      email,
-      npwp,
+      nama_toko,
+      alamat_toko,
+      notelp_toko,
+      email_toko,
+      npwp_toko,
       ppn,
-      no_izin,
+      siup_toko,
       masterKey,
 
     } = await req.json()
 
+    console.log({
+      nama_toko,
+      alamat_toko,
+      notelp_toko,
+      email_toko,
+      npwp_toko,
+      ppn,
+      siup_toko,
+      masterKey
+    })
+
     if (masterKey !== resetKey) {
       return NextResponse.json({ error: "MasterKey Salah!" }, { status: 403 })
     }
+
+    const convertToFloat = (percent) => parseFloat((percent / 100).toFixed(4))
 
     const nilai_ppn = convertToFloat(ppn)
 
@@ -42,14 +52,13 @@ export const PUT = async (req) => {
       const pengaturan = await prisma.pengaturan.update({
         where: {id:1},
         data:{
-          userId,
-          nama_toko: nama,
-          alamat_toko: alamat,
+          nama_toko,
+          alamat_toko,
           tarif_ppn: nilai_ppn,
-          notelp_toko: notelp,
-          email_toko: email,
-          npwp_toko: npwp,
-          siup_toko: no_izin,
+          notelp_toko,
+          email_toko,
+          npwp_toko,
+          siup_toko,
 
         }
       })
