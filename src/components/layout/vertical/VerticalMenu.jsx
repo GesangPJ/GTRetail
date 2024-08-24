@@ -128,6 +128,12 @@ const VerticalMenu = ({ scrollMenu }) => {
               <MenuItem href='/dashboard/reset-password-akun'>Reset Password Akun</MenuItem>
             </SubMenu>
             <SubMenu
+              label='Pengaturan'
+              icon={<i className="ri-settings-5-line"></i>}
+            >
+              <MenuItem href='/dashboard/pengaturan'>Pengaturan Toko</MenuItem>
+            </SubMenu>
+            <SubMenu
               label='Bantuan'
               icon={<i className="ri-question-line"></i>}
             >
