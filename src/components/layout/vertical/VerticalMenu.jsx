@@ -115,7 +115,7 @@ const VerticalMenu = ({ scrollMenu }) => {
             >
               <MenuItem href='/dashboard/laporan/transaksi'>Transaksi Bulanan</MenuItem>
               <MenuItem href='/dashboard/laporan/produk'>Produk</MenuItem>
-              <MenuItem href='/dashboard/laporan/pembelian'>Pembelian Barang</MenuItem>
+              <MenuItem href='/dashboard/laporan/pembelian'>Pembelian Produk</MenuItem>
               <MenuItem href='/dashboard/laporan/pembelian-bermasalah'>Pembelian Bermasalah</MenuItem>
 
             </SubMenu>
@@ -126,6 +126,12 @@ const VerticalMenu = ({ scrollMenu }) => {
               <MenuItem href='/dashboard/daftar-akun'>Tabel Akun</MenuItem>
               <MenuItem href='/dashboard/registrasi-akun'>Registrasi Akun</MenuItem>
               <MenuItem href='/dashboard/reset-password-akun'>Reset Password Akun</MenuItem>
+            </SubMenu>
+            <SubMenu
+              label='Pengaturan'
+              icon={<i className="ri-settings-5-line"></i>}
+            >
+              <MenuItem href='/dashboard/pengaturan'>Pengaturan Toko</MenuItem>
             </SubMenu>
             <SubMenu
               label='Bantuan'

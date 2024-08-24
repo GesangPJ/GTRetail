@@ -83,7 +83,7 @@ export async function GET(req){
   catch(error){
     console.error("Error mengambil data transaksi", error)
 
-    return NextResponse.json({ error: "Terjadi kesalahan saat mengambil data transaksik" }, { status: 500 })
+    return NextResponse.json({ error: "Terjadi kesalahan saat mengambil data transaksi :" }, { status: 500 })
 
   }
 

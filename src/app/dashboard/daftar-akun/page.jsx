@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect } from "react"
+import { useEffect, Suspense } from "react"
 
 import { useRouter } from "next/navigation"
 
@@ -30,6 +30,7 @@ const DaftarAkun = () => {
 <div>
       <h1>Tabel Daftar Akun</h1>
       <br />
+      <Suspense fallback={<div>Memuat Data...</div>}>
       <div>
         <TabelAkun/>
       </div>
@@ -37,6 +38,7 @@ const DaftarAkun = () => {
       <div>
         <TabelAkunAdmin/>
       </div>
+      </Suspense>
       <br />
     </div>
   )

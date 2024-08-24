@@ -91,7 +91,7 @@ const TabelDaftarProduk = () =>{
     { field: 'namaKategori',
        headerName: 'Kategori',
         headerClassName:'app-theme--header',
-         width: 150},
+         width: 120},
     { field: 'jenis',
     headerName: 'Jenis',
     headerClassName:'app-theme--header',
@@ -134,7 +134,7 @@ const TabelDaftarProduk = () =>{
       <div>
       <Box
           sx={{
-            height: 400,
+            height: 700,
             width: '100%',
             '& .app-theme--header': {
               fontWeight: 'bold',

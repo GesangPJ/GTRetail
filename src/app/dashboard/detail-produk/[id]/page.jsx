@@ -240,7 +240,7 @@ const DetailPage = () => {
       </Box>
 
       <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>Edit Data Admin</DialogTitle>
+        <DialogTitle>Edit Data Produk</DialogTitle>
         <DialogContent>
           <TextField
             autoFocus
