@@ -6,6 +6,8 @@ import { useRouter } from 'next/navigation'
 
 import { useSession } from 'next-auth/react'
 
+import ViewPengaturan from '@/views/pengaturan/view-pengaturan'
+
 const HalamanPengaturan = () => {
   const { data: session, status } = useSession()
   const router = useRouter()
@@ -26,11 +28,13 @@ const HalamanPengaturan = () => {
     <div>
       <div>
         <h1 className='text-2xl font-bold'>
-          Pengaturan
+          Pengaturan Toko
         </h1>
         <br />
         <Suspense fallback={<div>Memuat Data...</div>}>
-
+        <div>
+          <ViewPengaturan/>
+        </div>
         </Suspense>
       </div>
     </div>
