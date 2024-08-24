@@ -28,6 +28,12 @@ export async function GET(req){
 
   console.log('User dengan Id : ',userId,' mengakses API data pengaturan')
 
+  const formatToFixed = (num, decimals) => {
+    const factor = Math.pow(10, decimals)
+
+    return Math.round(num * factor) / factor
+  }
+
   try{
     const pengaturan = await prisma.pengaturan.findMany({
       select:{
@@ -39,22 +45,18 @@ export async function GET(req){
         npwp_toko:true,
         tarif_ppn:true,
         siup_toko:true,
-        user:{select:{name:true,},},
       }
     })
 
+    if (pengaturan.length === 0) {
+      return NextResponse.json({ error: "Data pengaturan tidak ditemukan." }, { status: 404 })
+    }
+
+    const dataPengaturan = pengaturan[0]
+
     const formatpengaturan = {
-      ...pengaturan,
-      namaAdmin: pengaturan.user?.name || '-',
-      nama: pengaturan.nama_toko || '-',
-      notelp: pengaturan.notelp_toko || '-',
-      email: pengaturan.email_toko || '-',
-      no_izin: pengaturan.siup_toko || '-',
-      alamat: pengaturan.alamat_toko || '-',
-      email: pengaturan.email_toko || '-',
-      npwp: pengaturan.npwp_toko || '-',
-      ppn: pengaturan.tarif_ppn || '-',
-      updatedAt: pengaturan.updatedAt.toISOString() || '-',
+      ...dataPengaturan,
+      ppn: formatToFixed(dataPengaturan.tarif_ppn * 100, 2),
     }
 
     console.log("Data Pengaturan berhasil diambil :", formatpengaturan)
