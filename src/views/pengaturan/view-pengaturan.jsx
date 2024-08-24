@@ -1,30 +1,32 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 "use client"
 
-import React, { useState, useEffect, useRef, useSession } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 
+import { useSession } from 'next-auth/react'
 import {
   Card, Grid, Button, TextField, CardHeader, CardContent,
-  InputAdornment, Alert, FormControl, InputLabel
+  InputAdornment, Alert, FormControl, InputLabel, Dialog,
+  DialogActions, DialogContent, DialogContentText, DialogTitle
 } from '@mui/material'
 
-const ViewPengaturan = () =>{
+const ViewPengaturan = () => {
   const { data: session } = useSession()
 
   const [data, setData] = useState({
-    userId:session.user.id,
-    nama: '',
+    nama_toko: '',
     ppn: '',
-    alamat: '',
-    notelp: '',
-    email: '',
-    npwp: '',
-    no_izin: '',
+    alamat_toko: '',
+    notelp_toko: '',
+    email_toko: '',
+    npwp_toko: '',
+    siup_toko: '',
     masterKey: ''
   })
 
   const [alert, setAlert] = useState(null)
   const [message, setMessage] = useState('')
+  const [openDialog, setOpenDialog] = useState(false) // State untuk membuka/menutup dialog
   const formRef = useRef(null)
 
   useEffect(() => {
@@ -33,11 +35,9 @@ const ViewPengaturan = () =>{
         const response = await fetch(`/api/data-pengaturan?userId=${session.user.id}`)
         const result = await response.json()
 
-        console.log(result)
-
-        setData(result.bpjs[0])
+        setData(result)
       } catch (error) {
-        console.error('Error fetching detail data:', error)
+        console.error('Error mengambil data pengaturan:', error)
       }
     }
 
@@ -59,6 +59,14 @@ const ViewPengaturan = () =>{
     setData(prevData => ({ ...prevData, [name]: value }))
   }
 
+  const handleDialogOpen = () => {
+    setOpenDialog(true)
+  }
+
+  const handleDialogClose = () => {
+    setOpenDialog(false)
+  }
+
   const handleSubmit = async (event) => {
     event.preventDefault()
     const payload = { ...data }
@@ -77,18 +85,21 @@ const ViewPengaturan = () =>{
       if (response.ok) {
         setAlert('success')
         setMessage('Data Pengaturan berhasil diganti!')
-        formRef.current.reset() // Kosongkan form setelah berhasil didaftarkan
+        formRef.current.reset()
       } else {
         setAlert('error')
         setMessage(result.error || 'Terjadi kesalahan saat mengubah Data Pengaturan.')
+        formRef.current.reset()
       }
     } catch (error) {
       setAlert('error')
       setMessage('Terjadi kesalahan saat mengubah Data Pengaturan.')
+    } finally {
+      setOpenDialog(false) // Tutup dialog setelah submit
     }
   }
 
-  return(
+  return (
     <div>
       <Card>
         <CardHeader title='' />
@@ -101,13 +112,13 @@ const ViewPengaturan = () =>{
           <form onSubmit={handleSubmit} ref={formRef}>
             <Grid container spacing={5}>
               {[
-                { id: 'nama', label: 'Nama Toko', value: 'nama' },
-                { id: 'alamat', label: 'Alamat Toko', value: 'alamat' },
-                { id: 'notelp', label: 'Nomor Telepon', value: 'notelp' },
-                { id: 'email', label: 'Email Toko', value: 'email' },
-                { id: 'ppn', label: 'Tarif PPn', value: 'ppn' },
-                { id: 'npwp', label: 'NPWP Toko', value: 'npwp' },
-                { id: 'no_izin', label: 'No. Izin', value: 'no_izin' },
+                { id: 'nama_toko', label: 'Nama Toko', value: 'nama_toko' },
+                { id: 'alamat_toko', label: 'Alamat Toko', value: 'alamat_toko' },
+                { id: 'notelp_toko', label: 'Nomor Telepon', value: 'notelp_toko' },
+                { id: 'email_toko', label: 'Email Toko', value: 'email_toko' },
+                { id: 'ppn', label: 'Tarif PPn (%)', value: 'ppn' },
+                { id: 'npwp_toko', label: 'NPWP Toko', value: 'npwp_toko' },
+                { id: 'siup_toko', label: 'No. Izin', value: 'siup_toko' },
               ].map(({ id, label, value }) => (
                 <Grid item xs={12} container alignItems="center" spacing={2} key={id}>
                   <Grid item xs={12} sm={3}>
@@ -119,22 +130,12 @@ const ViewPengaturan = () =>{
                   </Grid>
                   <Grid item xs={12} sm={9}>
                     <TextField
-                      className='max-w-[105px]'
+                      className=''
                       id={id}
                       name={value}
                       fullWidth
-                      type='number'
-                      min='0'
-                      max='100'
                       value={data[value]}
                       placeholder={label}
-                      InputProps={{
-                        endAdornment: (
-                          <InputAdornment position='end'>
-                            <i className="ri-percent-line"></i>
-                          </InputAdornment>
-                        )
-                      }}
                       onChange={handleChange}
                     />
                   </Grid>
@@ -162,7 +163,7 @@ const ViewPengaturan = () =>{
                 </Grid>
               </Grid>
               <Grid item xs={12} justifyContent="center" alignItems="center">
-                <Button variant='contained' type='submit' sx={ { borderRadius: 30 } }>
+                <Button variant='contained' onClick={handleDialogOpen} sx={{ borderRadius: 30 }}>
                   Edit Data
                 </Button>
               </Grid>
@@ -170,6 +171,22 @@ const ViewPengaturan = () =>{
           </form>
         </CardContent>
       </Card>
+
+      {/* Dialog Konfirmasi */}
+      <Dialog open={openDialog} onClose={handleDialogClose}>
+        <DialogTitle>Konfirmasi</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Apakah Anda yakin ingin mengubah data pengaturan ini?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleDialogClose}>Batal</Button>
+          <Button onClick={handleSubmit} variant="contained" color="primary">
+            Ya, Ubah
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   )
 }
