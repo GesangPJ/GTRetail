@@ -27,11 +27,13 @@ model User {
   // relasi
   transaksi  Transaksi[]  @relation("TransaksiUser")
   produk      Produk[]
+  pengaturan  Pengaturan[]
 }
 
 // Tabel Pengaturan toko
 model Pengaturan {
   id           Int    @id
+  userId       Int
   nama_toko    String
   tarif_ppn    Decimal
   alamat_toko  String
@@ -39,6 +41,10 @@ model Pengaturan {
   siup_toko    String?
   notelp_toko  String?
   email_toko   String?
+
+  updatedAt    DateTime   @updatedAt
+
+  user         User       @relation(fields: [userId], references: [id])
 }
 
 model Pengiriman {
